@@ -1,5 +1,15 @@
-The nekRS Computational Fluid Dynamics Code
+PyFTLE3D: Research Toolkit for 3D Lagrangian coherent structures with GUI
 ===================================================
+
+* Notice: The toolkit is undergoing an internal testing. Who would like to use it in advance to release, please feel free contact me.
+The planned release time is 2025.06 - 2025.07, while the author still holds the right to change the release time.*
+
+PyFTLE3D is a Python-based research toolkit for computing and visualizing
+Lagrangian coherent structures (LCS) in three-dimensional fluid flows and other complex systems by computing Finite Time Lyapunov Exponent.
+Coming with GUI and integrated environment, it is designed to be user-friendly and accessible, allowing peers to easily analyze and visualize LCS in their data,
+with no need for researchers to have extensive programming knowledge.
+Certainly, it is also suitable for those with programming experience who want to customize their analysis
+with multiple OOTB numerical methods, with various computation density, accuracy, and focus preferences.
 
 nekRS is a computational fluid dynamics code developed at :term:`ANL`, :term:`UIUC`, and :term:`PSU`.
 nekRS aims to leverage the present trend in :term:`GPU`-based :term:`HPC` systems to perform

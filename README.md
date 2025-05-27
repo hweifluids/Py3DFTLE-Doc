@@ -1,8 +1,8 @@
-# nekRS Documentation
+# Py3DFTLE-GPU Documentation
 
-This repository contains documentation of the [nekRS](https://github.com/Nek5000/nekRS) project
+This repository contains documentation of the [Py3DFTLE](https://github.com/hweifluids/Py3DFTLE-GPU) project
 using the [Sphinx](http://www.sphinx-doc.org/) documentation framework. A read the docs website
-is hosted [here](https://nekrsdoc.readthedocs.io/en/latest/index.html).
+is hosted [here](https://fluids.ac/Py3DFTLE-Doc/).
 
 ## How to build locally
 
