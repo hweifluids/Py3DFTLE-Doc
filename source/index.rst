@@ -3,7 +3,8 @@ PyFTLE3D: 3D LCS Research Toolkit with GUI
 
 .. note::
 
-   **The toolkit is undergoing an internal testing, and currently not publicly released. Who would like to use it in advance to release for non-profit use as early birds, please feel free contact me. The planned release time is 2025.06 - 2025.07 with high-freedom opensource license type, while the author still holds the right to change the release time.** 
+   **The toolkit is undergoing an internal testing, and currently not publicly released. Who would like to use it in advance to release for non-profit use as early birds, please feel free contact me. The planned release time is 2025.06 - 2025.07 with high-freedom opensource license type, while the author still holds the right to change the release time. **
+   **Terms marked with ``I.P.`` flag are under development. If they will be released with the toolkit at the same time is without my control due to my limited time and effort.** 
    **- Huanxia with Regards.**
 
 
@@ -33,7 +34,7 @@ Table of Contents
 .. toctree::
    :maxdepth: 2
 
-   
+   index
    1_requirements
    2_theory
    3_numerical
