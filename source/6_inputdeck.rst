@@ -6,7 +6,7 @@ Input Deck for Solver Parameters
 This section details the solver parameters in the structured input deck (``.par`` file), which is finally read by the main solver.
 In GUI mode, it is also the only purpose for the preprocessor to write out, and serves as the mid-file format for GUI resolve.
 It includes the path pointing to data, indicates the path to save results, and determines the modes and numerical methods for the solver.
-In other words, if the data is placed properly, this ``.par`` it the only input file by the solver.
+In other words, if the data is placed properly, this ``.par`` is the only input file by the solver.
 
 
 Input and Range Control
