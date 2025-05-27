@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Commonly-Used Variables in nekRS &mdash; PyFTLE3D 0.1 documentation</title>
+  <title>Plugins &mdash; PyFTLE3D 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -19,9 +19,7 @@
       <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Compiling nekRS" href="compiling.html" />
-    <link rel="prev" title="The nekRS Input Files" href="input_files.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,26 +41,17 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="input_files.html">The nekRS Input Files</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Commonly-Used Variables in nekRS</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#mesh">Mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#flow-solution-fields-and-simulation-settings">Flow Solution Fields and Simulation Settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#passive-scalar-solution-fields-and-simulation-settings">Passive Scalar Solution Fields and Simulation Settings</a></li>
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Plugins</a><ul>
+<li><a class="reference internal" href="#rans-k-tau-plugin">RANS <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> Plugin</a><ul>
+<li><a class="reference internal" href="#add-the-closure-properties-calculation">Add the Closure Properties Calculation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="compiling.html">Compiling nekRS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="detailed_usage.html">FAQs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="just_in_time_compilation.html">Just-in-time Compilation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="doxygen.html">Doxygen</a></li>
-<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 </ul>
-
+</li>
+</ul>
+</div>
         </div>
       </div>
     </nav>
@@ -77,9 +66,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Commonly-Used Variables in nekRS</li>
+      <li class="breadcrumb-item active">Plugins</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/commonly_used_variables.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/0_backup.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -87,50 +76,46 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="commonly-used-variables-in-nekrs">
-<span id="commonly-used-variables"></span><h1>Commonly-Used Variables in nekRS<a class="headerlink" href="#commonly-used-variables-in-nekrs" title="Link to this heading"></a></h1>
-<p>To become a proficient user of nekRS requires some knowledge of the data structures
-used to store the mesh, solution fields, and simulation settings. While many
-commercial <a class="reference internal" href="glossary.html#term-CFD"><span class="xref std std-term">CFD</span></a> codes have developed user interfaces that allow most user
-code interactions to occur through a <a class="reference internal" href="glossary.html#term-GUI"><span class="xref std std-term">GUI</span></a> or even a text-based format, nekRS
-very much remains a research tool. As such, even “routine” actions such as setting
-boundary and initial conditions requires an understanding of the source code structure in
-nekRS. This requirement is advantageous from a flexibility perspective, however, because
-almost any user action that can be written in C++ <code class="docutils literal notranslate"><span class="pre">.udf</span></code> or <a class="reference internal" href="glossary.html#term-OKL"><span class="xref std std-term">OKL</span></a> in <code class="docutils literal notranslate"><span class="pre">.oudf</span></code>
-files can be incorporated into a nekRS simulation.</p>
-<p>This page contains a summary of some of the most commonly-used variables and structures
-used to interact with nekRS. For array-type variables, the size of the array is also listed
-in terms of the length of each dimension of that array. For instance, if the size of an array
-is <code class="docutils literal notranslate"><span class="pre">Nelements</span> <span class="pre">*</span> <span class="pre">Np</span></code>, then the data is stored first by each element, and second by each
-quadrature point. If the variable is not an array type, the size is shown as <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
-<p>Some variables have an equivalent form that is stored on the device that can be accessed
-in device kernels. All such device variables and
-arrays that live on the device by convention are prefixed with <code class="docutils literal notranslate"><span class="pre">o_</span></code>. That is, <code class="docutils literal notranslate"><span class="pre">mesh-&gt;x</span></code>
-represents all the <span class="math notranslate nohighlight">\(x\)</span>-coordinates of the quadrature points, and is stored on the host.
-The same data, but accessible on the device, is <code class="docutils literal notranslate"><span class="pre">mesh-&gt;o_x</span></code>. Not all variables and arrays
-are automatically available on both the host and device, but those that are available are
-indicated with a <span class="math notranslate nohighlight">\(\checkmark\)</span> in the “Device?” table column.</p>
-<section id="mesh">
-<h2>Mesh<a class="headerlink" href="#mesh" title="Link to this heading"></a></h2>
-<p>This section describes commonly-used variables related to the mesh, which are all stored
-on data structures of type <code class="docutils literal notranslate"><span class="pre">mesh_t</span></code>. nekRS uses an archaic approach for conjugate heat
-transfer applications, i.e. problems with separate fluid and solid domains. For problems
-without conjugate heat transfer, all mesh information is stored on the <code class="docutils literal notranslate"><span class="pre">nrs-&gt;mesh</span></code> object,
-while for problems with conjugate heat transfer, all mesh information is stored on the
-<code class="docutils literal notranslate"><span class="pre">nrs-&gt;cds-&gt;mesh</span></code> object. More information is available in the
-<a class="reference internal" href="detailed_usage.html#cht-mesh"><span class="std std-ref">Creating a Mesh for Conjugate Heat Transfer</span></a> section. To keep the following
-summary table general, the variable names are referred to simply as living on the <code class="docutils literal notranslate"><span class="pre">mesh</span></code>
-object, without any differentiation between whether that <code class="docutils literal notranslate"><span class="pre">mesh</span></code> object is the object on
-<code class="docutils literal notranslate"><span class="pre">nrs</span></code> or <code class="docutils literal notranslate"><span class="pre">nrs-&gt;cds</span></code>.</p>
-<p>Some notable points of interest that require additional comment:</p>
-<ul class="simple">
-<li><p>The <a class="reference internal" href="glossary.html#term-MPI"><span class="xref std std-term">MPI</span></a> communicator is stored on the mesh, since domain decomposition
-is used to divide the mesh among processes. <em>Most</em> information stored on the <code class="docutils literal notranslate"><span class="pre">mesh</span></code> object
-strictly refers to the portion of the mesh “owned” by the current process. For instance,
-<code class="docutils literal notranslate"><span class="pre">mesh-&gt;Nelements</span></code> only refers to the number of elements “owned” by the current process
-(<code class="docutils literal notranslate"><span class="pre">mesh-&gt;rank</span></code>), not the total number of elements in the simulation mesh. Any exceptions
-to this process-local information is noted as applicable.</p></li>
-</ul>
+  <p>commercial <span class="xref std std-term">CFD</span> codes
+is <code class="docutils literal notranslate"><span class="pre">Nelements</span> <span class="pre">*</span> <span class="pre">Np</span></code>,
+the <span class="math notranslate nohighlight">\(x\)</span>-coordinates  a <span class="math notranslate nohighlight">\(\checkmark\)</span> in
+in the
+<span class="xref std std-ref">Creating a Mesh for Conjugate Heat Transfer</span> section</p>
+<section id="plugins">
+<h1>Plugins<a class="headerlink" href="#plugins" title="Link to this heading"></a></h1>
+<section id="rans-k-tau-plugin">
+<h2>RANS <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> Plugin<a class="headerlink" href="#rans-k-tau-plugin" title="Link to this heading"></a></h2>
+<section id="add-the-closure-properties-calculation">
+<h3>Add the Closure Properties Calculation<a class="headerlink" href="#add-the-closure-properties-calculation" title="Link to this heading"></a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">udf.sEqnSource</span></code> function pointer to a function
+local to the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file that actually computes the source terms</p></li>
+<li><p>Add that source term function to the <code class="docutils literal notranslate"><span class="pre">.udf</span></code></p></li>
+</ol>
+</div></blockquote>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">user_q</span><span class="p">(</span><span class="n">nrs_t</span><span class="w"> </span><span class="o">*</span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_S</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_FS</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">RANSktau</span><span class="o">::</span><span class="n">updateSourceTerms</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>nekRS’s <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> implementation currently requires that
+the laminar dynamic viscosity and the density are constant. Therefore, you
+should not have any other material properties being set in this function
+like there were in <span class="xref std std-ref">Setting Custom Properties</span>.</p>
+</div>
+<p id="setting-ics">Then, be sure to add this directory to your path:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>ALE</dt><dd><p>Arbitrary Lagrange Eulerian</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>ed in <a class="reference internal" href="8_references.html#persson" id="id1"><span>[Persson]</span></a>
+from <a class="reference external" href="https://github.com/Nek5000/nekRS">github</a>.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Variable Name</p></th>
@@ -227,26 +212,9 @@ to this process-local information is noted as applicable.</p></li>
 </tr>
 </tbody>
 </table>
-</section>
-<section id="flow-solution-fields-and-simulation-settings">
-<span id="flow-vars"></span><h2>Flow Solution Fields and Simulation Settings<a class="headerlink" href="#flow-solution-fields-and-simulation-settings" title="Link to this heading"></a></h2>
-<p>This section describes the members on the <code class="docutils literal notranslate"><span class="pre">nrs</span></code> object, which consist of user settings as well as the flow
-solution. Some of this information is simply assigned a value also stored on the <code class="docutils literal notranslate"><span class="pre">nrs-&gt;mesh</span></code> object.
-Some notable points that require additional comment:</p>
-<ul class="simple">
-<li><p>Like the mesh object, the solution fields are stored only on a per-rank basis. That is, <code class="docutils literal notranslate"><span class="pre">nrs-&gt;U</span></code> only
-contains the velocity solution for the elements “owned” by the current process.</p></li>
-<li><p>Solution arrays with more than one component (such as velocity, in <code class="docutils literal notranslate"><span class="pre">nrs-&gt;U</span></code>) are indexed according
-to a <code class="docutils literal notranslate"><span class="pre">fieldOffset</span></code>. This offset is chosen to be larger than the <em>actual</em> length of the velocity
-solution (which is the total number of quadrature points on that rank, or <code class="docutils literal notranslate"><span class="pre">nrs-&gt;Nlocal</span></code>) due to
-performance reasons. That is, you should use the <code class="docutils literal notranslate"><span class="pre">fieldOffset</span></code> to index between components, but
-within a single component, you should not attempt to access entries with indices between
-<code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">*</span> <span class="pre">(fieldOffset</span> <span class="pre">-</span> <span class="pre">Nlocal)</span></code>, where <code class="docutils literal notranslate"><span class="pre">i</span></code> is the component number, because those values are not actually
-used to store the solution (they are the end of a storage buffer).</p></li>
-</ul>
-<p>Some members only exist on the device - in this case, the variable name shown in the first column
-explicitly shows the <code class="docutils literal notranslate"><span class="pre">o_</span></code> prefix to differentiate that this member is not available in this form
-on the host. For instance, the <code class="docutils literal notranslate"><span class="pre">o_mue</span></code> member is only available on the device - there is no
+<p id="flow-vars">Flow Solution Fields and Simulation Settings
+Flow Solution Fields and Simulation Settings
+——————————————–
 corresponding array <code class="docutils literal notranslate"><span class="pre">nrs-&gt;mue</span></code> member.</p>
 <table class="docutils align-default">
 <thead>
@@ -369,62 +337,15 @@ corresponding array <code class="docutils literal notranslate"><span class="pre"
 </tr>
 </tbody>
 </table>
+<p>Passive Scalar Solution Fields and Simulation Settings</p>
 </section>
-<section id="passive-scalar-solution-fields-and-simulation-settings">
-<h2>Passive Scalar Solution Fields and Simulation Settings<a class="headerlink" href="#passive-scalar-solution-fields-and-simulation-settings" title="Link to this heading"></a></h2>
-<p>This section describes the members on the <code class="docutils literal notranslate"><span class="pre">cds</span></code> object, which consist of user settings as well as the
-passive scalar solution. Note that, from <a class="reference internal" href="#flow-vars"><span class="std std-ref">Flow Solution Fields and Simulation Settings</span></a>,
-the <code class="docutils literal notranslate"><span class="pre">cds</span></code> object is itself stored on the <code class="docutils literal notranslate"><span class="pre">nrs</span></code> flow solution object. Many of these members are
-copied from the analogous variable on the <code class="docutils literal notranslate"><span class="pre">nrs</span></code> object. For instance, <code class="docutils literal notranslate"><span class="pre">cds-&gt;fieldOffset</span></code> is simply
-set equal to <code class="docutils literal notranslate"><span class="pre">nrs-&gt;fieldOffset</span></code>. In a few cases, however, the names on the <code class="docutils literal notranslate"><span class="pre">cds</span></code> object differ
-from the analogous names on the <code class="docutils literal notranslate"><span class="pre">nrs</span></code> object, such as for <code class="docutils literal notranslate"><span class="pre">cds-&gt;NSfields</span></code> and <code class="docutils literal notranslate"><span class="pre">nrs-&gt;Nscalar</span></code>, which
-contain identical information.</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Variable Name</p></th>
-<th class="head"><p>Size</p></th>
-<th class="head"><p>Device?</p></th>
-<th class="head"><p>Meaning</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">fieldOffset</span></code></p></td>
-<td><p>1</p></td>
-<td></td>
-<td><p>offset in passive scalar solution arrays to access new component</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NSfields</span></code></p></td>
-<td><p>1</p></td>
-<td></td>
-<td><p>number of passive scalars to solve for</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">o_diff</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">NSfields</span> <span class="pre">*</span> <span class="pre">fieldOffset</span></code></p></td>
-<td><p><span class="math notranslate nohighlight">\(\checkmark\)</span></p></td>
-<td><p>diffusion coefficient (laminar plus turbulent) for the passive scalar equations</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">o_rho</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">NSfields</span> <span class="pre">*</span> <span class="pre">fieldOffset</span></code></p></td>
-<td><p><span class="math notranslate nohighlight">\(\checkmark\)</span></p></td>
-<td><p>coefficient on the time derivative for the passive scalar equations</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">prop</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">NSfields</span> <span class="pre">*</span> <span class="pre">fieldOffset</span></code></p></td>
-<td><p><span class="math notranslate nohighlight">\(\checkmark\)</span></p></td>
-<td><p>diffusion coefficient (laminar plus turbulent) and coefficient on the time derivative (in this order) for the passive scalar equations</p></td>
-</tr>
-</tbody>
-</table>
 </section>
 </section>
 
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="input_files.html" class="btn btn-neutral float-left" title="The nekRS Input Files" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="compiling.html" class="btn btn-neutral float-right" title="Compiling nekRS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

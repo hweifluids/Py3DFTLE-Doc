@@ -16,11 +16,9 @@
       <script src="_static/documentation_options.js?v=2709fde1"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Requirements" href="requirements.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,21 +40,14 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="input_files.html">The nekRS Input Files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="commonly_used_variables.html">Commonly-Used Variables in nekRS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="compiling.html">Compiling nekRS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="detailed_usage.html">FAQs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a></li>
-<li class="toctree-l1"><a class="reference internal" href="just_in_time_compilation.html">Just-in-time Compilation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="doxygen.html">Doxygen</a></li>
-<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">PyFTLE3D: 3D LCS Research Toolkit with GUI</a><ul>
+<li><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
 </ul>
-
+</li>
+</ul>
+</div>
         </div>
       </div>
     </nav>
@@ -100,71 +91,11 @@ Although, the new features would firstly be added to the GPU version, and the CP
 Some of the theories can be found in this section, it is more encouraged to learn LCS theories and numerical methods by reading the technical papers.</p>
 <p>The author has invested countless off-work hours developing this software, with the goal of making such a powerful turbulence/complex-systems research tool by Professor Haller’s team available to a wider audience and, through it, exploring charming phenomena in flow structures and instability. The author is not short of money and therefore does not accept donations or sponsorships. As the <em>“price”</em> for using this toolbox, if you publish a paper that employs it, you are asked to notify the author by email. These publications will be collected and listed in the “Articles” section for reference by peers. The author also encourages peers who have cited this toolbox for reference, even if they did not directly use it in their investigation, to inform the authors. Those works will likewise be advertised in the documentation and repository.</p>
 <p>We recommend working through this user guide in the order below. At the very least, please
-read <a class="reference internal" href="input_files.html#input"><span class="std std-ref">The nekRS Input Files</span></a> page before reading the <a class="reference internal" href="detailed_usage.html#detailed"><span class="std std-ref">FAQs</span></a>
+read <a class="reference internal" href="4_input.html#input"><span class="std std-ref">The nekRS Input Files</span></a> page before reading the <span class="xref std std-ref">FAQs</span>
 page, as some necessary concepts are introduced in this order.</p>
 <section id="table-of-contents">
 <h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
 <div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#incompressible-flow-model">Incompressible Flow Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#low-mach-partially-compressible-model">Low-Mach Partially-Compressible Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#stokes-equations">Stokes Equations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#rans-models">RANS Models</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="input_files.html">The nekRS Input Files</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="input_files.html#parameter-file-par">Parameter File (.par)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="input_files.html#mesh-file-re2">Mesh File (.re2)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="input_files.html#user-defined-host-functions-udf">User-Defined Host Functions (.udf)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="input_files.html#user-defined-device-functions-oudf">User-Defined Device Functions (.oudf)</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="commonly_used_variables.html">Commonly-Used Variables in nekRS</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="commonly_used_variables.html#mesh">Mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="commonly_used_variables.html#flow-solution-fields-and-simulation-settings">Flow Solution Fields and Simulation Settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="commonly_used_variables.html#passive-scalar-solution-fields-and-simulation-settings">Passive Scalar Solution Fields and Simulation Settings</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="compiling.html">Compiling nekRS</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="compiling.html#summit">Summit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compiling.html#sawtooth">Sawtooth</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="detailed_usage.html">FAQs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#building-the-nek5000-tool-scripts">Building the Nek5000 Tool Scripts</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#scripts-that-ship-with-nekrs">Scripts That Ship with nekRS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#converting-a-mesh-to-re2-format">Converting a Mesh to .re2 Format</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#creating-a-mesh-for-conjugate-heat-transfer">Creating a Mesh for Conjugate Heat Transfer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#setting-initial-conditions-with-udf-setup">Setting Initial Conditions with <code class="docutils literal notranslate"><span class="pre">UDF_Setup</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#grabbing-user-par-settings">Grabbing User .par Settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#defining-variables-to-access-in-device-kernels">Defining Variables to Access in Device Kernels</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#setting-boundary-conditions-with-device-kernels">Setting Boundary Conditions with Device Kernels</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#setting-custom-properties">Setting Custom Properties</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#setting-custom-source-terms">Setting Custom Source Terms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#solving-in-non-dimensional-form">Solving in Non-Dimensional Form</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#copying-from-device-to-host">Copying From Device to Host</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#writing-an-output-file">Writing an Output File</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#visualizing-output-files">Visualizing Output Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#calculating-the-distance-to-a-wall">Calculating the Distance to a Wall</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#periodic-boundary-conditions">Periodic Boundary Conditions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#stamping-initial-conditions">Stamping Initial Conditions</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="plugins.html#rans-k-tau-plugin">RANS <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> Plugin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plugins.html#low-mach-plugin">Low-Mach Plugin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plugins.html#turbulence-statistics-plugin">Turbulence Statistics Plugin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plugins.html#velocity-recycling-plugin">Velocity Recycling Plugin</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="just_in_time_compilation.html">Just-in-time Compilation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="doxygen.html">Doxygen</a></li>
-<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
-</ul>
 </div>
 </section>
 </section>
@@ -172,9 +103,7 @@ page, as some necessary concepts are introduced in this order.</p>
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="requirements.html" class="btn btn-neutral float-right" title="Requirements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

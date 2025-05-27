@@ -19,9 +19,7 @@
       <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Just-in-time Compilation" href="just_in_time_compilation.html" />
-    <link rel="prev" title="FAQs" href="detailed_usage.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,34 +41,24 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="input_files.html">The nekRS Input Files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="commonly_used_variables.html">Commonly-Used Variables in nekRS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="compiling.html">Compiling nekRS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="detailed_usage.html">FAQs</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Plugins</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#rans-k-tau-plugin">RANS <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> Plugin</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#add-the-physics-kernels">Add the Physics Kernels</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#add-the-closure-properties-calculation">Add the Closure Properties Calculation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#add-the-source-terms-calculation">Add the Source Terms Calculation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#add-the-turbulent-prandtl-number">Add the Turbulent Prandtl Number</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#initialize-the-rans-solve">Initialize the RANS Solve</a></li>
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Plugins</a><ul>
+<li><a class="reference internal" href="#rans-k-tau-plugin">RANS <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> Plugin</a><ul>
+<li><a class="reference internal" href="#add-the-physics-kernels">Add the Physics Kernels</a></li>
+<li><a class="reference internal" href="#add-the-closure-properties-calculation">Add the Closure Properties Calculation</a></li>
+<li><a class="reference internal" href="#add-the-source-terms-calculation">Add the Source Terms Calculation</a></li>
+<li><a class="reference internal" href="#add-the-turbulent-prandtl-number">Add the Turbulent Prandtl Number</a></li>
+<li><a class="reference internal" href="#initialize-the-rans-solve">Initialize the RANS Solve</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#low-mach-plugin">Low-Mach Plugin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#turbulence-statistics-plugin">Turbulence Statistics Plugin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#velocity-recycling-plugin">Velocity Recycling Plugin</a></li>
+<li><a class="reference internal" href="#low-mach-plugin">Low-Mach Plugin</a></li>
+<li><a class="reference internal" href="#turbulence-statistics-plugin">Turbulence Statistics Plugin</a></li>
+<li><a class="reference internal" href="#velocity-recycling-plugin">Velocity Recycling Plugin</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="just_in_time_compilation.html">Just-in-time Compilation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="doxygen.html">Doxygen</a></li>
-<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 </ul>
-
+</div>
         </div>
       </div>
     </nav>
@@ -98,15 +86,15 @@
   <section id="plugins">
 <h1>Plugins<a class="headerlink" href="#plugins" title="Link to this heading"></a></h1>
 <p>nekRS contains several “plugins” that provide both physics models and postprocessing
-capabilities. nekRS’s <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> and low-Mach models, for instance, are provided as
+capabilities. nekRS’s <span class="xref std std-term">RANS</span> and low-Mach models, for instance, are provided as
 plugins. While significant attention is not provided to most of the inner source code structure of nekRS,
 these plugins require more in-depth explanation because their usage requires non-trivial
 modifications to the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> files. Before reading this page, first consult
-<a class="reference internal" href="input_files.html#udf-functions"><span class="std std-ref">User-Defined Host Functions (.udf)</span></a> so that you have the necessary
+<span class="xref std std-ref">User-Defined Host Functions (.udf)</span> so that you have the necessary
 background on each of the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> functions that will be discussed.</p>
 <section id="rans-k-tau-plugin">
 <span id="rans-plugin"></span><h2>RANS <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> Plugin<a class="headerlink" href="#rans-k-tau-plugin" title="Link to this heading"></a></h2>
-<p>The <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> plugin is available in the <code class="docutils literal notranslate"><span class="pre">src/plugins/RANSktau.hpp</span></code>
+<p>The <span class="xref std std-term">RANS</span> <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> plugin is available in the <code class="docutils literal notranslate"><span class="pre">src/plugins/RANSktau.hpp</span></code>
 header file. In order to add the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model to your case, you need
 to include this file in your <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file and manually add all the requisite parts of
 the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> methodology. Unless otherwise noted, all code snippets in
@@ -117,13 +105,13 @@ of your <code class="docutils literal notranslate"><span class="pre">.udf</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;plugins/RANSktau.hpp&quot;</span>
 </pre></div>
 </div>
-<p>This is required in order to access the methods in the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> plugin. The
-following sections then each describe a step in the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> model setup using the plugin.</p>
+<p>This is required in order to access the methods in the <span class="xref std std-term">RANS</span> plugin. The
+following sections then each describe a step in the <span class="xref std std-term">RANS</span> model setup using the plugin.</p>
 <section id="add-the-physics-kernels">
 <span id="kernels"></span><h3>Add the Physics Kernels<a class="headerlink" href="#add-the-physics-kernels" title="Link to this heading"></a></h3>
 <p>The calculations performed to add contributions to the residuals occur within
-<a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a> kernels. In order to add the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> equations, the corresponding
-physics kernels must first be included. The <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> kernels are added to by
+<span class="xref std std-term">OCCA</span> kernels. In order to add the <span class="xref std std-term">RANS</span> equations, the corresponding
+physics kernels must first be included. The <span class="xref std std-term">RANS</span> kernels are added to by
 calling the <code class="docutils literal notranslate"><span class="pre">RANSktau::buildKernel</span></code> function within <code class="docutils literal notranslate"><span class="pre">UDF_LoadKernels</span></code>:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_LoadKernels</span><span class="p">(</span><span class="n">nrs_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">)</span>
 <span class="p">{</span>
@@ -134,10 +122,10 @@ calling the <code class="docutils literal notranslate"><span class="pre">RANSkta
 <p>The <code class="docutils literal notranslate"><span class="pre">RANSKtau::buildKernel</span></code> function performs two main actions -</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><p>Propagate the constants in the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model in <a class="reference internal" href="theory.html#rans-coeffs"><span class="std std-ref">RANS Coefficients</span></a>
-to become available in <a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a> kernels with the approach as described in
-<a class="reference internal" href="detailed_usage.html#defining-variables-for-device"><span class="std std-ref">Defining Variables to Access in Device Kernels</span></a>.</p></li>
-<li><p>Add the <a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a> kernels that will perform the calculations needed to apply
+<li><p>Propagate the constants in the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model in <span class="xref std std-ref">RANS Coefficients</span>
+to become available in <span class="xref std std-term">OCCA</span> kernels with the approach as described in
+<span class="xref std std-ref">Defining Variables to Access in Device Kernels</span>.</p></li>
+<li><p>Add the <span class="xref std std-term">OCCA</span> kernels that will perform the calculations needed to apply
 the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model.</p></li>
 </ol>
 </div></blockquote>
@@ -145,9 +133,9 @@ the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math no
 <section id="add-the-closure-properties-calculation">
 <span id="rans-props"></span><h3>Add the Closure Properties Calculation<a class="headerlink" href="#add-the-closure-properties-calculation" title="Link to this heading"></a></h3>
 <p>Next, add the function that will update the properties used in the governing equations.
-An example is shown in <a class="reference internal" href="detailed_usage.html#custom-properties"><span class="std std-ref">Setting Custom Properties</span></a> for setting
+An example is shown in <span class="xref std std-ref">Setting Custom Properties</span> for setting
 custom user-defined properties for a laminar flow scenario. The necessary steps to add
-the material properties for the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> model is much simpler, however, but consists of the
+the material properties for the <span class="xref std std-term">RANS</span> model is much simpler, however, but consists of the
 same essential steps:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -159,7 +147,7 @@ local to the <code class="docutils literal notranslate"><span class="pre">.udf</
 <p>For the first step, assign the <code class="docutils literal notranslate"><span class="pre">udf.properties</span></code> function pointer to a function in the
 <code class="docutils literal notranslate"><span class="pre">.udf</span></code> with signature <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(nrs_t*</span> <span class="pre">nrs,</span> <span class="pre">dfloat</span> <span class="pre">time,</span> <span class="pre">occa::memory</span> <span class="pre">o_U,</span> <span class="pre">occa::memory</span> <span class="pre">o_S,</span>
 <span class="pre">occa::memory</span> <span class="pre">o_UProp,</span> <span class="pre">occa::memory</span> <span class="pre">o_SProp)</span></code>. Based on the example shown in
-<a class="reference internal" href="detailed_usage.html#custom-properties"><span class="std std-ref">Setting Custom Properties</span></a>, for illustration purposes we will
+<span class="xref std std-ref">Setting Custom Properties</span>, for illustration purposes we will
 name this function <code class="docutils literal notranslate"><span class="pre">material_properties</span></code>:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_Setup</span><span class="p">(</span><span class="n">nrs_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">)</span>
 <span class="p">{</span>
@@ -183,13 +171,13 @@ in the <code class="docutils literal notranslate"><span class="pre">.udf</span><
 <p>nekRS’s <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> implementation currently requires that
 the laminar dynamic viscosity and the density are constant. Therefore, you
 should not have any other material properties being set in this function
-like there were in <a class="reference internal" href="detailed_usage.html#custom-properties"><span class="std std-ref">Setting Custom Properties</span></a>.</p>
+like there were in <span class="xref std std-ref">Setting Custom Properties</span>.</p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">RANSktau::updateProperties</span></code> function performs two main actions:</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p>Apply a limiter to <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> as described in
-<a class="reference internal" href="theory.html#rans-models"><span class="std std-ref">RANS Models</span></a>.</p></li>
+<span class="xref std std-ref">RANS Models</span>.</p></li>
 <li><p>Compute the turbulent viscosity as <span class="math notranslate nohighlight">\(\mu_T\equiv\rho k\tau\)</span>
 and then set the diffusion coefficients in the momentum, <span class="math notranslate nohighlight">\(k\)</span>,
 and <span class="math notranslate nohighlight">\(\tau\)</span> equations to be <span class="math notranslate nohighlight">\(\mu+\mu_T\)</span>,
@@ -203,10 +191,10 @@ and <span class="math notranslate nohighlight">\(\tau\)</span> equations to be <
 equation is used to solve the <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> passive scalar equations.
 However, these equations clearly have different forms - therefore, we need to explicitly
 add these unique source terms to the <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> equations. While we
-loaded the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> kernels in <a class="reference internal" href="#kernels"><span class="std std-ref">Add Physics Kernels</span></a>, we still
+loaded the <span class="xref std std-term">RANS</span> kernels in <a class="reference internal" href="#kernels"><span class="std std-ref">Add Physics Kernels</span></a>, we still
 need to add those kernels to the governing equations. An example was provided in
-<a class="reference internal" href="detailed_usage.html#custom-sources"><span class="std std-ref">Setting Custom Source Terms</span></a>, but the necessary steps to
-add the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> source terms is much simpler, but consists of the
+<span class="xref std std-ref">Setting Custom Source Terms</span>, but the necessary steps to
+add the <span class="xref std std-term">RANS</span> source terms is much simpler, but consists of the
 same essential steps:</p>
 <blockquote>
 <div><ol class="arabic simple">
@@ -218,7 +206,7 @@ local to the <code class="docutils literal notranslate"><span class="pre">.udf</
 <p>For the first step, assign the <code class="docutils literal notranslate"><span class="pre">udf.sEqnSource</span></code> function pointer to a function in the
 <code class="docutils literal notranslate"><span class="pre">.udf</span></code> with signature <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(nrs_t</span> <span class="pre">*nrs,</span> <span class="pre">dfloat</span> <span class="pre">time,</span> <span class="pre">occa::memory</span> <span class="pre">o_S,</span> <span class="pre">occa::memory</span> <span class="pre">o_FS)</span></code>.
 Based on the example shown in
-<a class="reference internal" href="detailed_usage.html#custom-sources"><span class="std std-ref">Setting Custom Source Terms</span></a>, for illustration purposes we will
+<span class="xref std std-ref">Setting Custom Source Terms</span>, for illustration purposes we will
 name this function <code class="docutils literal notranslate"><span class="pre">user_q</span></code>:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_Setup</span><span class="p">(</span><span class="n">nrs_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">)</span>
 <span class="p">{</span>
@@ -279,7 +267,7 @@ function:</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">scalarScaledAddKernel</span></code> is an <a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a> kernel that scales an input by
+<p>The <code class="docutils literal notranslate"><span class="pre">scalarScaledAddKernel</span></code> is an <span class="xref std std-term">OCCA</span> kernel that scales an input by
 a scalar and then adds a constant scalar to the multiplication. That is, this kernel
 computes</p>
 <div class="math notranslate nohighlight">
@@ -299,7 +287,7 @@ the temperature passive scalar equation to be</p>
 <div class="math notranslate nohighlight">
 \[\frac{1}{Pe}+\frac{\mu_T^\dagger}{Pr_T}\]</div>
 <p>where <span class="math notranslate nohighlight">\(Pe\)</span> is the Peclet number. Note that this particular example applies to
-a non-dimensional case. As described at length in <a class="reference internal" href="theory.html#ktau"><span class="std std-ref">The k-tau Model</span></a>,
+a non-dimensional case. As described at length in <span class="xref std std-ref">The k-tau Model</span>,
 a dimensional formulation of the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model would instead compute
 the diffusion coefficient in the temperature passive scalar equation as</p>
 <div class="math notranslate nohighlight">
@@ -307,7 +295,7 @@ the diffusion coefficient in the temperature passive scalar equation as</p>
 </section>
 <section id="initialize-the-rans-solve">
 <h3>Initialize the RANS Solve<a class="headerlink" href="#initialize-the-rans-solve" title="Link to this heading"></a></h3>
-<p>Finally, the last step to initialize the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> solve is to call the
+<p>Finally, the last step to initialize the <span class="xref std std-term">RANS</span> solve is to call the
 <code class="docutils literal notranslate"><span class="pre">RANSktau::setup</span></code> function. This function has signature
 <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">setup(nrs_t</span> <span class="pre">*</span> <span class="pre">nrs,</span> <span class="pre">dfloat</span> <span class="pre">mu,</span> <span class="pre">dfloat</span> <span class="pre">rho,</span> <span class="pre">int</span> <span class="pre">ifld)</span></code> - <code class="docutils literal notranslate"><span class="pre">nrs</span></code> is the
 flow simulation object, <code class="docutils literal notranslate"><span class="pre">mu</span></code> is the <em>constant</em> laminar viscosity, <code class="docutils literal notranslate"><span class="pre">rho</span></code> is
@@ -362,10 +350,7 @@ scalar. Be sure to order the scalars in the input file to respect this assumptio
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="detailed_usage.html" class="btn btn-neutral float-left" title="FAQs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="just_in_time_compilation.html" class="btn btn-neutral float-right" title="Just-in-time Compilation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

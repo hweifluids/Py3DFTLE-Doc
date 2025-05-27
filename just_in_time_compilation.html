@@ -18,9 +18,7 @@
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Doxygen" href="doxygen.html" />
-    <link rel="prev" title="Plugins" href="plugins.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,21 +40,11 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
-<li class="toctree-l1"><a class="reference internal" href="input_files.html">The nekRS Input Files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="commonly_used_variables.html">Commonly-Used Variables in nekRS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="compiling.html">Compiling nekRS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="detailed_usage.html">FAQs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Just-in-time Compilation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="doxygen.html">Doxygen</a></li>
-<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Just-in-time Compilation</a></li>
 </ul>
-
+</div>
         </div>
       </div>
     </nav>
@@ -106,13 +94,13 @@ directory and trying again. It is not uncommon for the precompilation process to
 the need to build new versions of object files if you are making frequent changes to
 the nekRS source. This is also sometimes encountered if you are using multiple nekRS
 versions in different projects (such as standalone nekRS or nekRS wrapped within
-a multiphysics coupling application such as <a class="reference internal" href="glossary.html#term-ENRICO"><span class="xref std std-term">ENRICO</span></a>), but don’t have your
+a multiphysics coupling application such as <span class="xref std std-term">ENRICO</span>), but don’t have your
 environment completely self-consistent.</p>
 </div>
 <p>The precompilation process usually takes on the order of one minute. Depending on
 the use case, it may be advantageous to force the precompilation separately from the run itself.
 To precompile the case, use the <code class="docutils literal notranslate"><span class="pre">nrspre</span></code> script. See the
-<a class="reference internal" href="detailed_usage.html#nekrs-scripts"><span class="std std-ref">Scripts That Ship with nekRS</span></a> section for where to find this script.</p>
+<span class="xref std std-ref">Scripts That Ship with nekRS</span> section for where to find this script.</p>
 <p>As an example, to precompile a case with name <code class="docutils literal notranslate"><span class="pre">my_case</span></code> for a later run with less than
 or equal to 4 GPUs, the <code class="docutils literal notranslate"><span class="pre">nrspre</span></code> script would be used as follows. After the precompilation,
 run as normal with the <code class="docutils literal notranslate"><span class="pre">nrsmpi</span></code> script, which then skips the precompilation step since
@@ -126,10 +114,7 @@ user$ nrsmpi my_case 32
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="plugins.html" class="btn btn-neutral float-left" title="Plugins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="doxygen.html" class="btn btn-neutral float-right" title="Doxygen" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 
