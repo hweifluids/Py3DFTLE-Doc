@@ -44,6 +44,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Requirements and Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hardware-and-hardware-requirements">Hardware and Hardware Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#basic-environment">Basic Environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#add-on-libs">Add-on Libs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#quickstart">Quickstart</a></li>
@@ -86,6 +87,21 @@
              
   <section id="requirements-and-quickstart">
 <span id="requirements"></span><h1>Requirements and Quickstart<a class="headerlink" href="#requirements-and-quickstart" title="Link to this heading"></a></h1>
+<section id="hardware-and-hardware-requirements">
+<h2>Hardware and Hardware Requirements<a class="headerlink" href="#hardware-and-hardware-requirements" title="Link to this heading"></a></h2>
+<p>The minimiums are listed as follows:</p>
+<ul class="simple">
+<li><p>Minimium 4GB RAM and 10GB free disk.</p></li>
+<li><p>Not sensitive to platform. Windows 11 and Ubuntu 22.04 are fully tested.</p></li>
+</ul>
+<p>GPU acceleration is suggested for large dataset computation. Therefore, the requirements for GPU acceleration is listed as follows:</p>
+<ul class="simple">
+<li><p>NVIDIA GPUs, with a minimum <a class="reference external" href="https://developer.nvidia.com/cuda-gpus">compute capability</a> of 5.0, i.e., later than GTX 750.</p></li>
+<li><p>It is suggested that, make <code class="docutils literal notranslate"><span class="pre">Nx</span></code> × <code class="docutils literal notranslate"><span class="pre">Ny</span></code> × <code class="docutils literal notranslate"><span class="pre">Nz</span></code> × <code class="docutils literal notranslate"><span class="pre">Nt</span></code> less than 200,000,000 Lagrangian particles on each Gigabyte of GPU memory for double-side computation under default numerical methods for one still. Generally half it under high-order computations.</p></li>
+</ul>
+<p>For example, you can execute on a 600×300×300 mesh for c.a. 80 time steps for a still.
+* The GPU requirements for dynamic LCS are undergoing experiments by the author.</p>
+</section>
 <section id="basic-environment">
 <h2>Basic Environment<a class="headerlink" href="#basic-environment" title="Link to this heading"></a></h2>
 <p>This page summarizes the system requirements and dependencies of <code class="docutils literal notranslate"><span class="pre">PyFTLE3D</span></code>.</p>

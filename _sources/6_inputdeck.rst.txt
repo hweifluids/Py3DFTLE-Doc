@@ -3,6 +3,12 @@
 Input Deck for Solver Parameters
 ================================
 
+This section details the solver parameters in the structured input deck (``.par`` file), which is finally read by the main solver.
+In GUI mode, it is also the only purpose for the preprocessor to write out, and serves as the mid-file format for GUI resolve.
+It includes the path pointing to data, indicates the path to save results, and determines the modes and numerical methods for the solver.
+In other words, if the data is placed properly, this ``.par`` it the only input file by the solver.
+
+
 Input and Range Control
 ---------------------------------
 
@@ -95,7 +101,7 @@ Dynamic LCS Window
 +===================+======================================================+=========================+=========================================================================================================+
 | ``dyn_mode``      | Dynamic LCS mode selector                            | (``0``)                 | Treat this input as a steady whole, generating still results. See :ref:`steady`.                        |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
-|                   |                                                      | ``1``                   | Dynamic LCS computation based on sliding window. See :ref:`unsteady`.                                   |
+|                   |                                                      | ``1``                   | Dynamic LCS computation based on sliding window method. See :ref:`unsteady`.                            |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
 | ``win_size``      | Window size for dynamic LCS                          | ``<float>``             | The window size in frames for each batch of computation. Available under ``dyn_mode=1``.                |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
