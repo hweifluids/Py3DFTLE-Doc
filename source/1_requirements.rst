@@ -53,4 +53,4 @@ Quickstart
 -----------------
 
 An computation example coming with a set of our in-house downscaled Direct Navier-Stokes Simulation (DNS) data is provided, including :math:
-The dataset can be downloaded from `here <https://noting.noting>__`, and the case descriptions can be referred to paper [1]_.
+The dataset can be downloaded from `here <https://noting.noting>`__, and the case descriptions can be referred to paper [1]_.
