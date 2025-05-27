@@ -36,9 +36,15 @@ Table of Contents
 .. toctree::
    :maxdepth: 2
 
-   requirements
-   theory
-   
+   1_requirements
+   2_theory
+   3_numerical
+   4_input
+   5_gui
+   6_inputdeck
+   7_command
+   8_references
+
 
 .. Indices and tables
 .. ==================
