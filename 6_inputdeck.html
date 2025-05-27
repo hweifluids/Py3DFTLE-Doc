@@ -191,22 +191,22 @@
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">wall_treatment</span></code></p></td>
 <td><p>Wall-treatment strategy</p></td>
 <td><p>(<code class="docutils literal notranslate"><span class="pre">clamp</span></code>)</p></td>
-<td></td>
+<td><p>Out-of-bounds points take nearest velocity. Applicable to subdomains from larger ones.</p></td>
 </tr>
 <tr class="row-odd"><td></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">dirichlet</span></code></p></td>
-<td></td>
+<td><p>Simple and fast BC treatment, zeroing the boundary values. Introduces artifical shear.</p></td>
 </tr>
 <tr class="row-even"><td></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">reflect</span></code></p></td>
-<td></td>
+<td><p>Reflect the particles back to the computational domain. Likely a non-shear wall BC.</p></td>
 </tr>
 <tr class="row-odd"><td></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">periodic</span></code></p></td>
-<td></td>
+<td><p>Wrap around to the opposite side. Applicable to fully-developed subdomains and periodic flows.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">advc_method</span></code></p></td>
 <td><p>Lagrangian advection scheme</p></td>
@@ -236,7 +236,7 @@
 <tr class="row-odd"><td></td>
 <td></td>
 <td><p>(<code class="docutils literal notranslate"><span class="pre">tricubic</span></code>)</p></td>
-<td><p>Catmull–Rom 3D convolution kernel.</p></td>
+<td><p>Catmull–Rom 3D convolution kernel for tricubic interpolation.</p></td>
 </tr>
 <tr class="row-even"><td></td>
 <td></td>
@@ -286,8 +286,8 @@
 </tbody>
 </table>
 <p>As for your reference, and configured as defaults, the <em>Berkeley LCS Tutorials</em> used <code class="docutils literal notranslate"><span class="pre">RK4</span></code> for advection.
-The velocity fields were interpolated by <code class="docutils literal notranslate"><span class="pre">tricubic-FL</span></code>, originating from <span id="id2">[Lekien2005]</span>, which has higher performance from
-Although non detailed, <code class="docutils literal notranslate"><span class="pre">grad_order=2</span></code> was employed by them from the equation, supposing the mesh is sufficiently refined.
+The velocity fields were interpolated by <code class="docutils literal notranslate"><span class="pre">tricubic-FL</span></code>, originating from <span id="id2">[Lekien2005]</span>, which has higher performance by solving a 64*64 linear system using the function values, gradients, and mixed partial derivatives at its eight corners, which is in future plan for <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code> with high priority.
+Although not detailed, <code class="docutils literal notranslate"><span class="pre">grad_order=2</span></code> was employed by them from the equation, supposing the mesh is sufficiently refined.
 Please always notice that, although providing much better numerical precision and looks cool in papers, high-order methods could be resource-consuming, even hundreds of times.</p>
 </section>
 <section id="dynamic-lcs-window">
