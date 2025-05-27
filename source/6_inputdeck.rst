@@ -65,11 +65,13 @@ Numerical Methods
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
 | ``interp_method`` | Interpolation method for velocity fields             | ``trilinear``           | Simple and fast triliear interpolation method. Very fast on GPUs.                                       |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
-|                   |                                                      | (``tricubic``)          |                                                                                                         |
+|                   |                                                      | (``tricubic``)          | Catmull–Rom 3D convolution kernel.                                                                      |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
 |                   |                                                      | ``hermite``             |                                                                                                         |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
 |                   |                                                      | ``WENO``                | Weighted Essentially Non-Oscillatory (WENO) scheme with shockwave capture capability.                   |
++-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
+|                   |                                                      | (``tricubic-FL``)       | ``I.P.`` The high-performance 3D tricubic interpolation method by [Lekien2005]_.                        |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
 | ``grad_order``    | The method (order) of gradient discretization        | (``2``)                 | 2nd-order central difference.                                                                           |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
@@ -79,12 +81,14 @@ Numerical Methods
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
 |                   |                                                      | ``100``                 | ``I.P.`` Global Fast Fourier Transform (FFT) with finite order. Compute extremely intensive!            |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
-| ``Eigen_method``  | Solver for max eigenvalue of Cauchy–Green tensor     | ``eigmax_sym3``         | Closed-form cubic eigenvalue solver for symmetric 3×3 matrices (noniterative solver).                   |
+| ``eigen_method``  | Solver for max eigenvalue of Cauchy–Green tensor     | ``eigmax_sym3``         | Closed-form cubic eigenvalue solver for symmetric 3×3 matrices (noniterative solver).                   |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
 |                   |                                                      | ``jacobi``              | ``I.P.`` Jacobi eigenvalue algorithm (iterative).                                                       |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
 
-As for your reference, and configured as defaults, the *Berkeley LCS Tutorials* used ``RK4`` for advection, interpolated by ``tricubic``. Although non detailed, ``grad_order=2`` was employed by them from the equation, supposing the mesh is sufficiently refined.
+As for your reference, and configured as defaults, the *Berkeley LCS Tutorials* used ``RK4`` for advection.
+The velocity fields were interpolated by ``tricubic-FL``, originating from [Lekien2005]_, which has higher performance from 
+Although non detailed, ``grad_order=2`` was employed by them from the equation, supposing the mesh is sufficiently refined.
 Please always notice that, although providing much better numerical precision and looks cool in papers, high-order methods could be resource-consuming, even hundreds of times.
 
 Dynamic LCS Window
