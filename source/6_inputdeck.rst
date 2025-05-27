@@ -47,13 +47,13 @@ Numerical Methods
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
 |                   |                                                      | (``1``)                 | Compute in both side (both repelling and attracting structures).                                        |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
-| ``wall_treatment``| Wall-treatment strategy                              | (``clamp``)             |                                                                                                         |
+| ``wall_treatment``| Wall-treatment strategy                              | (``clamp``)             | Out-of-bounds points take nearest velocity. Applicable to subdomains from larger ones.                  |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
-|                   |                                                      | ``dirichlet``           |                                                                                                         |
+|                   |                                                      | ``dirichlet``           | Simple and fast BC treatment, zeroing the boundary values. Introduces artifical shear.                  |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
-|                   |                                                      | ``reflect``             |                                                                                                         |
+|                   |                                                      | ``reflect``             | Reflect the particles back to the computational domain. Likely a non-shear wall BC.                     |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
-|                   |                                                      | ``periodic``            |                                                                                                         |
+|                   |                                                      | ``periodic``            | Wrap around to the opposite side. Applicable to fully-developed subdomains and periodic flows.          |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
 | ``advc_method``   | Lagrangian advection scheme                          | (``Euler``)             | Simple and fast Euler stepping with :math:`O(h^1)` error.                                               |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
@@ -65,7 +65,7 @@ Numerical Methods
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
 | ``interp_method`` | Interpolation method for velocity fields             | ``trilinear``           | Simple and fast triliear interpolation method. Very fast on GPUs.                                       |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
-|                   |                                                      | (``tricubic``)          | Catmull–Rom 3D convolution kernel.                                                                      |
+|                   |                                                      | (``tricubic``)          | Catmull–Rom 3D convolution kernel for tricubic interpolation.                                           |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
 |                   |                                                      | ``hermite``             |                                                                                                         |
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
@@ -87,8 +87,8 @@ Numerical Methods
 +-------------------+------------------------------------------------------+-------------------------+---------------------------------------------------------------------------------------------------------+
 
 As for your reference, and configured as defaults, the *Berkeley LCS Tutorials* used ``RK4`` for advection.
-The velocity fields were interpolated by ``tricubic-FL``, originating from [Lekien2005]_, which has higher performance from 
-Although non detailed, ``grad_order=2`` was employed by them from the equation, supposing the mesh is sufficiently refined.
+The velocity fields were interpolated by ``tricubic-FL``, originating from [Lekien2005]_, which has higher performance by solving a 64*64 linear system using the function values, gradients, and mixed partial derivatives at its eight corners, which is in future plan for ``Py3DFTLE`` with high priority.
+Although not detailed, ``grad_order=2`` was employed by them from the equation, supposing the mesh is sufficiently refined.
 Please always notice that, although providing much better numerical precision and looks cool in papers, high-order methods could be resource-consuming, even hundreds of times.
 
 Dynamic LCS Window
