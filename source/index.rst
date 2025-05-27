@@ -38,16 +38,7 @@ Table of Contents
 
    requirements
    theory
-   input_files
-   commonly_used_variables
-   compiling
-   tutorials
-   detailed_usage
-   plugins
-   just_in_time_compilation
-   doxygen
-   glossary
-   references
+   
 
 .. Indices and tables
 .. ==================

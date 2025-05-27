@@ -1,0 +1,4 @@
+.. _numerical:
+
+Numerical Methods
+==================
