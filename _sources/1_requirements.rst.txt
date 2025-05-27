@@ -51,4 +51,4 @@ For already-installed ParaView, set environment variable ``PARAVIEW_PATH`` point
 Quickstart
 -----------------
 An computation example coming with a set of our in-house downscaled Direct Navier-Stokes Simulation (DNS) data is provided, including :math:
-The dataset can be downloaded from `here <https://noting.noting>__`, and the case descriptions can be referred to paper [1].
+The dataset can be downloaded from `here <https://noting.noting>__`, and the case descriptions can be referred to paper [1]_.
