@@ -5,7 +5,7 @@ References
 
 .. .. rubric:: References
 
-.. [Basse] Basse, N.T. "Turbulence Intensity and the Friction Factor for Smooth- and Rough-Wall Pipe Flows,"
+.. [1] Basse, N.T. "Turbulence Intensity and the Friction Factor for Smooth- and Rough-Wall Pipe Flows,"
     *Fluids* **2** (2017)
 
 .. [Kalitzin] Kalitzin, G., Gould, A.R.B, and Benton, J.J.
