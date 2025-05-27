@@ -233,7 +233,7 @@ In other words, if the data is placed properly, this <code class="docutils liter
 <td><p>Runge–Kutta 6 with <span class="math notranslate nohighlight">\(O(h^6)\)</span> error.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">interp_method</span></code></p></td>
-<td><p>Interpolation method for velocity fields</p></td>
+<td><p>Interpolation method for velocity</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">trilinear</span></code></p></td>
 <td><p>Simple and fast triliear interpolation method. Very fast on GPUs.</p></td>
 </tr>
@@ -258,7 +258,7 @@ In other words, if the data is placed properly, this <code class="docutils liter
 <td><p><code class="docutils literal notranslate"><span class="pre">I.P.</span></code> The high-performance 3D tricubic interpolation method by <a class="reference internal" href="9_references.html#lekien2005" id="id1"><span>[Lekien2005]</span></a>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">grad_order</span></code></p></td>
-<td><p>The method (order) of gradient discretization</p></td>
+<td><p>Method of gradient discretization</p></td>
 <td><p>(<code class="docutils literal notranslate"><span class="pre">2</span></code>)</p></td>
 <td><p>2nd-order central difference.</p></td>
 </tr>
@@ -278,7 +278,7 @@ In other words, if the data is placed properly, this <code class="docutils liter
 <td><p><code class="docutils literal notranslate"><span class="pre">I.P.</span></code> Global Fast Fourier Transform (FFT) with finite order. Compute extremely intensive!</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">eigen_method</span></code></p></td>
-<td><p>Solver for max eigenvalue of Cauchy–Green tensor</p></td>
+<td><p>Max eigenvalue of C-G tensor</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">eigmax_sym3</span></code></p></td>
 <td><p>Closed-form cubic eigenvalue solver for symmetric 3×3 matrices (noniterative solver).</p></td>
 </tr>
