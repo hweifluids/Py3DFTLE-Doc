@@ -63,7 +63,20 @@ Variable Name      Size                         Device?            Meaning
 ``y``              ``Nelements * Np``           :math:`\checkmark` :math:`y`-coordinates of quadrature points
 ``z``              ``Nelements * Np``           :math:`\checkmark` :math:`z`-coordinates of quadrature points
 ================== ============================ ================== =================================================
+n :numref:`fig-walls`.
+Additionally *Nek5000* can handle conjugate heat transfer problems.
 
+.. _fig-walls:
+
+.. figure:: figs/walls.png
+    :align: center
+    :figclass: align-center
+    :alt: domains
+
+    Computational domain showing respective fluid and solid subdomains, :math:`\Omega_f` and
+    :math:`\Omega_s`.  The shared boundaries are denoted :math:`\partial\Omega_f=\partial\Omega_s`
+    and the solid boundary which is not shared by fluid is :math:`\overline{\partial\Omega_s}`,
+    while the fluid boundary not shared by solid :math:`\overline{\partial\Omega_f}`.
 .. _flow_vars:
 
 Flow Solution Fields and Simulation Settings
