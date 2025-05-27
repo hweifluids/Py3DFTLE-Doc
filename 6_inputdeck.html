@@ -54,6 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#input-and-range-control">Input and Range Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#numerical-methods">Numerical Methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dynamic-lcs-window">Dynamic LCS Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utilizations">Utilizations</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="7_command.html">Command-Line Mode (Commands)</a></li>
@@ -158,6 +159,11 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">&lt;float&gt;</span></code></p></td>
 <td></td>
 </tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">physical_dt</span></code></p></td>
+<td><p>Physical time step between two input frames</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;float&gt;</span></code></p></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -205,12 +211,12 @@
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">advc_method</span></code></p></td>
 <td><p>Lagrangian advection scheme</p></td>
 <td><p>(<code class="docutils literal notranslate"><span class="pre">Euler</span></code>)</p></td>
-<td><p>Simple and fast Euler stepping with</p></td>
+<td><p>Simple and fast Euler stepping with <span class="math notranslate nohighlight">\(O(h^1)\)</span> error.</p></td>
 </tr>
 <tr class="row-odd"><td></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">RK2</span></code></p></td>
-<td><p>Runge–Kutta 2 with <span class="math notranslate nohighlight">\(O(h^3)\)</span> error.</p></td>
+<td><p>Runge–Kutta 2 with <span class="math notranslate nohighlight">\(O(h^2)\)</span> error.</p></td>
 </tr>
 <tr class="row-even"><td></td>
 <td></td>
@@ -223,13 +229,13 @@
 <td><p>Runge–Kutta 6 with <span class="math notranslate nohighlight">\(O(h^6)\)</span> error.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">interp_method</span></code></p></td>
-<td><p>Interpolation method</p></td>
+<td><p>Interpolation method for velocity fields</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">trilinear</span></code></p></td>
-<td><p>NA</p></td>
+<td><p>Simple and fast triliear interpolation method. Very fast on GPUs.</p></td>
 </tr>
 <tr class="row-odd"><td></td>
 <td></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">tricubic</span></code></p></td>
+<td><p>(<code class="docutils literal notranslate"><span class="pre">tricubic</span></code>)</p></td>
 <td></td>
 </tr>
 <tr class="row-even"><td></td>
@@ -239,41 +245,43 @@
 </tr>
 <tr class="row-odd"><td></td>
 <td></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">reflect</span></code></p></td>
-<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">WENO</span></code></p></td>
+<td><p>Weighted Essentially Non-Oscillatory (WENO) scheme with shockwave capture capability.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">grad_order</span></code></p></td>
 <td><p>The method (order) of gradient discretization</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<td><p>(<code class="docutils literal notranslate"><span class="pre">2</span></code>)</p></td>
 <td><p>2nd-order central difference.</p></td>
 </tr>
 <tr class="row-odd"><td></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">4</span></code></p></td>
-<td><p>4th-order central difference.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">I.P.</span></code> 4th-order central difference.</p></td>
 </tr>
 <tr class="row-even"><td></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">6</span></code></p></td>
-<td><p>6th-order central difference.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">I.P.</span></code> 6th-order central difference.</p></td>
 </tr>
 <tr class="row-odd"><td></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">100</span></code></p></td>
-<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">I.P.</span></code> Global Fast Fourier Transform (FFT) with finite order. Compute extremely intensive!</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Eigen_method</span></code></p></td>
-<td><p>Eigenvalue computation method</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code></p></td>
-<td><p>NA</p></td>
+<td><p>Solver for max eigenvalue of Cauchy–Green tensor</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">eigmax_sym3</span></code></p></td>
+<td><p>Closed-form cubic eigenvalue solver for symmetric 3×3 matrices (noniterative solver).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">if_visual</span></code></p></td>
-<td><p>Glace visualization enabler</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
-<td><p>Take a pop-up glance on the results after computation for check with a rudimentary appearance.</p></td>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">jacobi</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">I.P.</span></code> Jacobi eigenvalue algorithm (iterative).</p></td>
 </tr>
 </tbody>
 </table>
+<p>As for your reference, and configured as defaults, the <em>Berkeley LCS Tutorials</em> used <code class="docutils literal notranslate"><span class="pre">RK4</span></code> for advection, interpolated by <code class="docutils literal notranslate"><span class="pre">tricubic</span></code>. Although non detailed, <code class="docutils literal notranslate"><span class="pre">grad_order=2</span></code> was employed by them from the equation, supposing the mesh is sufficiently refined.
+Please always notice that, although providing much better numerical precision and looks cool in papers, high-order methods could be resource-consuming, even hundreds of times.</p>
 </section>
 <section id="dynamic-lcs-window">
 <h2>Dynamic LCS Window<a class="headerlink" href="#dynamic-lcs-window" title="Link to this heading"></a></h2>
@@ -305,6 +313,25 @@
 <td><p>Window step for dynamic LCS</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&lt;float&gt;</span></code></p></td>
 <td><p>Stepping in frames. Better smaller than <code class="docutils literal notranslate"><span class="pre">win_size/2</span></code> for capturing dynamic patterns.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="utilizations">
+<h2>Utilizations<a class="headerlink" href="#utilizations" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Value(s)</p></th>
+<th class="head"><p>Explaination</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">if_visual</span></code></p></td>
+<td><p>Glace visualization enabler</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Take a pop-up glance on the results after computation for check with a rudimentary appearance.</p></td>
 </tr>
 </tbody>
 </table>
