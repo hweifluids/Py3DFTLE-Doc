@@ -47,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="1_requirements.html">Requirements and Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2_theory.html">Theory of FTLE and LCS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3_numerical.html">Numerical Methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_numerical.html#computational-density-and-comparison">Computational Density and Comparison</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4_input.html">Input Data Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="5_gui.html">Graphical User Interface (GUI)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Input Deck for Solver Parameters</a><ul>
@@ -214,22 +215,52 @@
 <tr class="row-even"><td></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">RK4</span></code></p></td>
-<td><p>Runge–Kutta 4 with <span class="math notranslate nohighlight">\(O(h^4)\)</span> error</p></td>
+<td><p>Runge–Kutta 4 with <span class="math notranslate nohighlight">\(O(h^4)\)</span> error.</p></td>
 </tr>
 <tr class="row-odd"><td></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">RK6</span></code></p></td>
-<td></td>
+<td><p>Runge–Kutta 6 with <span class="math notranslate nohighlight">\(O(h^6)\)</span> error.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">interp_method</span></code></p></td>
 <td><p>Interpolation method</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">trilinear</span></code></p></td>
 <td><p>NA</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">grad_order</span></code></p></td>
-<td><p>Gradient approximation scheme</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">&lt;int&gt;</span></code></p></td>
-<td><p>NA</p></td>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tricubic</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">hermite</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">reflect</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">grad_order</span></code></p></td>
+<td><p>The method (order) of gradient discretization</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<td><p>2nd-order central difference.</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">4</span></code></p></td>
+<td><p>4th-order central difference.</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">6</span></code></p></td>
+<td><p>6th-order central difference.</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">100</span></code></p></td>
+<td></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Eigen_method</span></code></p></td>
 <td><p>Eigenvalue computation method</p></td>
@@ -258,12 +289,12 @@
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dyn_mode</span></code></p></td>
 <td><p>Dynamic LCS mode selector</p></td>
 <td><p>(<code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
-<td><p>Treat this input as a steady whole. See <a class="reference internal" href="2_theory.html#steady"><span class="std std-ref">Steady LCS</span></a>.</p></td>
+<td><p>Treat this input as a steady whole, generating still results. See <a class="reference internal" href="2_theory.html#steady"><span class="std std-ref">Steady LCS</span></a>.</p></td>
 </tr>
 <tr class="row-odd"><td></td>
 <td></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
-<td><p>Dynamic LCS computation. See <a class="reference internal" href="2_theory.html#unsteady"><span class="std std-ref">Unsteady LCS</span></a>.</p></td>
+<td><p>Dynamic LCS computation based on sliding window. See <a class="reference internal" href="2_theory.html#unsteady"><span class="std std-ref">Unsteady LCS</span></a>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">win_size</span></code></p></td>
 <td><p>Window size for dynamic LCS</p></td>
