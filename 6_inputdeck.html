@@ -285,10 +285,6 @@
 </tr>
 </tbody>
 </table>
-<p>As for your reference, and configured as defaults, the <em>Berkeley LCS Tutorials</em> used <code class="docutils literal notranslate"><span class="pre">RK4</span></code> for advection.
-The velocity fields were interpolated with <code class="docutils literal notranslate"><span class="pre">tricubic-FL</span></code> by them, originating from <span id="id2">[Lekien2005]</span>, which has higher performance by solving a 64*64 linear system using the function values, gradients, and mixed partial derivatives at its eight corners, which is in future development plan for <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code> with high priority.
-Although not detailed, <code class="docutils literal notranslate"><span class="pre">grad_order=2</span></code> was employed by them from the equation, supposing the mesh is sufficiently refined.</p>
-<p>Please always notice that, although providing much better numerical precision and looks cool in papers, high-order methods could be resource-consuming, even several hundred times.</p>
 </section>
 <section id="dynamic-lcs-window">
 <h2>Dynamic LCS Window<a class="headerlink" href="#dynamic-lcs-window" title="Link to this heading"></a></h2>
@@ -342,7 +338,6 @@ Although not detailed, <code class="docutils literal notranslate"><span class="p
 </tr>
 </tbody>
 </table>
-<p id="flow-vars">Flow So</p>
 </section>
 </section>
 
