@@ -87,7 +87,18 @@
 <span id="requirements"></span><h1>Requirements and Quickstart<a class="headerlink" href="#requirements-and-quickstart" title="Link to this heading"></a></h1>
 <section id="basic-environment">
 <h2>Basic Environment<a class="headerlink" href="#basic-environment" title="Link to this heading"></a></h2>
-<p>This page summarizes the system requirements and dependencies of NekRS.</p>
+<p>This page summarizes the system requirements and dependencies of PyFTLE3D.</p>
+<p>Firstly, the following packages are supposed to be installed on your computer manually in advance.</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://www.python.org/">Python</a> version 3.13. Later version than 3.8 till 3.13 should work properly, but was not fully tested. The official download could be found at <cite>here &lt;https://www.python.org/downloads/release/python-3130/?featured_on=pythonbytes&gt;</cite>. Please select Python installer according to your system framework.</p></li>
+<li><p><a class="reference external" href="https://developer.nvidia.com/cuda-toolkit">CUDA Toolkit</a> version 12.9 (<cite>Download &lt;https://developer.nvidia.com/cuda-toolkit-archive&gt;</cite>). All versions crossing 12.x.x should theoretically work, but only 12.9 was fully tested. Ealier versions could work as well, but it requires a different version of <cite>cupy</cite>, and could cause unexpected performance decay and errors. See <cite>cupy</cite> documentation for more information.</p></li>
+</ol>
+<p>3. <a class="reference external" href="https://pypi.org/project/pip/">pip</a> newest version, which is used for installing further dependencies. It can be installed by:
+.. code-block:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">ensurepip</span> <span class="o">--</span><span class="n">upgrade</span>
+</pre></div>
+</div>
+<p>Generally, the following dependencies can be installed via <code class="docutils literal notranslate"><span class="pre">pip</span></code>, the Python package manager.</p>
 <ol class="arabic simple">
 <li><p><a class="reference external" href="https://numpy.org">numpy</a> version 1.21 or later</p></li>
 <li><p><a class="reference external" href="https://matplotlib.org">matplotlib</a> version 3.4 or later</p></li>
@@ -100,6 +111,12 @@
 <li><p><a class="reference external" href="https://github.com/pyvista/pyvistaqt">pyvistaqt</a> version 0.11.2 or later</p></li>
 <li><p><a class="reference external" href="https://riverbankcomputing.com/software/pyqt/intro">PyQt5</a> version 5.15.11 or later</p></li>
 </ol>
+<p>You can install them after installing <code class="docutils literal notranslate"><span class="pre">pip</span></code> by:
+.. code-block:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="o">./</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>When it does not work, consider if your current dir is incorrect. It should be run from the project root of <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code> when undergoing configurations and under <span class="xref std std-ref">command-line &lt;commands&gt;`</span> mode. Please feel free about such thing under GUI mode.</p>
 </section>
 <section id="add-on-libs">
 <h2>Add-on Libs<a class="headerlink" href="#add-on-libs" title="Link to this heading"></a></h2>
