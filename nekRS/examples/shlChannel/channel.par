@@ -1,0 +1,22 @@
+[GENERAL]
+polynomialOrder = 7
+stopAt = numSteps
+numSteps = 100
+dt = 1e-03
+timeStepper = tombo2
+subcyclingSteps = 2
+
+writeControl = steps
+writeInterval = 100
+
+[PRESSURE]
+residualTol = 1e-08
+
+[VELOCITY]
+boundaryTypeMap = shl, sym
+residualTol = 1e-12
+density = 1.0
+viscosity = -100.0
+
+[CASEDATA]
+P_ROT = 0.5
