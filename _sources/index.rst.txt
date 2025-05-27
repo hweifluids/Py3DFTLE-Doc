@@ -1,19 +1,17 @@
 PyFTLE3D: Research Toolkit for 3D Lagrangian coherent structures with GUI
 ===================================================
 
-**Notice: The toolkit is undergoing an internal testing, and currently not publicly released. Who would like to use it in advance to release for non-profit use as early birds, please feel free contact me. The planned release time is 2025.06 - 2025.07 with high-freedom opensource license type, while the author still holds the right to change the release time. - Huanxia with Regards**
+**Notice: The toolkit is undergoing an internal testing, and currently not publicly released. Who would like to use it in advance to release for non-profit use as early birds, please feel free contact me. The planned release time is 2025.06 - 2025.07 with high-freedom opensource license type, while the author still holds the right to change the release time. - Huanxia with Regards.**
 
-PyFTLE3D is a Python-based research toolkit for computing and visualizing
-Lagrangian coherent structures (LCS) in three-dimensional fluid flows and other complex systems by computing Finite Time Lyapunov Exponent.
-Coming with GUI and integrated runtime, it is designed to be user-friendly and accessible, allowing peers to easily analyze and visualize LCS in their data
-with multiple OOTB numerical methods, with various computation density, accuracy, and focus preferences,
-with no need for researchers to have any programming knowledge.
+PyFTLE3D is a Python-based research toolkit for computing and visualizing Lagrangian coherent structures (LCS) in three-dimensional fluid flows and other complex systems by computing Finite Time Lyapunov Exponent (FTLE) field.
+Coming with GUI and integrated runtime, it is designed to be user-friendly and accessible, allowing peers to easily analyze and visualize LCS in their data, with no need for researchers to have any programming knowledge, just like using postprocessing software such as ParaView or Tecplot.
+It provides multiple OOTB numerical methods, with various computation density, accuracy, and focus preferences.
 Certainly, it is also suitable for those with programming experience who want to customize their analysis.
 
 The computation is accelerated by CUDA (Python Numba implement), achieving over 30x speedup compared to the CPU version.
 The author currently lacks the capability to develop with OpenCL, so for now only NVIDIA GPUs are supported for acceleration.
-As most of computers have larger RAM than GPU memory, the toolkit also supports CPU mode for large datasets on CPU systems.
-Although, the new features would firstly be added to the GPU version, and the CPU version would be updated with month-scale delay.
+As most computers have larger RAM than GPU memory, the toolkit also supports CPU mode for large datasets on CPU systems.
+Although, the new features would firstly be added to the GPU version, and the CPU version would be updated with a month-scale delay.
 
 
 
