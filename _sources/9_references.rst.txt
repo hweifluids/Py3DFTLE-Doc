@@ -27,3 +27,14 @@ References
     *Flow Measurement and Instrumentation* **52** 101-114 (2016)
 
 .. [Wilcox] Wilcox, D.C. "Turbulence Modeling for CFD," *DCW Industries* (2006)
+
+
+Papers Who Uses ``Py3DFTLE``
+-----------------------------
+
+Currently NO. ``QwQ``
+
+Related Papers Who Cited ``Py3DFTLE``
+----------------------------------------
+
+Currently NO. ``QwQ``
