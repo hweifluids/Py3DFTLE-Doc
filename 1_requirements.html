@@ -90,8 +90,8 @@
 <p>This page summarizes the system requirements and dependencies of PyFTLE3D.</p>
 <p>Firstly, the following packages are supposed to be installed on your computer manually in advance.</p>
 <ol class="arabic simple">
-<li><p><a class="reference external" href="https://www.python.org/">Python</a> version 3.13. Later version than 3.8 till 3.13 should work properly, but was not fully tested. The official download could be found at <cite>here &lt;https://www.python.org/downloads/release/python-3130/?featured_on=pythonbytes&gt;</cite>. Please select Python installer according to your system framework.</p></li>
-<li><p><a class="reference external" href="https://developer.nvidia.com/cuda-toolkit">CUDA Toolkit</a> version 12.9 (<cite>Download &lt;https://developer.nvidia.com/cuda-toolkit-archive&gt;</cite>). All versions crossing 12.x.x should theoretically work, but only 12.9 was fully tested. Ealier versions could work as well, but it requires a different version of <cite>cupy</cite>, and could cause unexpected performance decay and errors. See <cite>cupy</cite> documentation for more information.</p></li>
+<li><p><a class="reference external" href="https://www.python.org/">Python</a> version 3.13. Later version than 3.8 till 3.13 should work properly, but was not fully tested. The official download could be found at <a class="reference external" href="https://www.python.org/downloads/release/python-3130/?featured_on=pythonbytes">here</a>. Please select Python installer according to your system framework.</p></li>
+<li><p><a class="reference external" href="https://developer.nvidia.com/cuda-toolkit">CUDA Toolkit</a> version 12.9 (<a class="reference external" href="https://developer.nvidia.com/cuda-toolkit-archive">Download</a>). All versions crossing 12.x.x should theoretically work, but only 12.9 was fully tested. Ealier versions could work as well, but it requires a different version of <cite>cupy</cite>, and could cause unexpected performance decay and errors. See <cite>cupy</cite> documentation for more information.</p></li>
 <li><p><a class="reference external" href="https://pypi.org/project/pip/">pip</a> newest version, which is used for installing further dependencies. It can be installed by:</p></li>
 </ol>
 <p>Generally, the following dependencies can be installed via <code class="docutils literal notranslate"><span class="pre">pip</span></code>, the Python package manager.</p>
@@ -103,7 +103,7 @@
 <li><p><a class="reference external" href="https://github.com/paulo-herrera/PyEVTK">pyevtk</a> version 1.4 or later</p></li>
 <li><p><a class="reference external" href="https://numba.pydata.org">numba</a> version 0.54 or later</p></li>
 <li><p><a class="reference external" href="https://tqdm.github.io">tqdm</a> version 4.62 or later</p></li>
-<li><p><a class="reference external" href="https://cupy.dev">cupy-cuda12x</a></p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/cupy-cuda12x/">cupy-cuda12x</a> version 13.4.1 or later</p></li>
 <li><p><a class="reference external" href="https://github.com/pyvista/pyvistaqt">pyvistaqt</a> version 0.11.2 or later</p></li>
 <li><p><a class="reference external" href="https://riverbankcomputing.com/software/pyqt/intro">PyQt5</a> version 5.15.11 or later</p></li>
 </ol>
@@ -115,12 +115,13 @@
 <ol class="arabic simple">
 <li><p><strong>ParaView</strong></p></li>
 </ol>
-<p>ParaView is a powerful beloved open-source visualization platform based on vtk that can be used to visualize the results of 3D FTLE computations. We also integrated the ParaView entrance into our GUI, so you can directly open ParaView from it. The ParaView installation-free package (v6.0) can be downloaded from <a class="reference external" href="https://www.paraview.org/paraview-downloads/download.php?submit=Download&amp;version=v6.0&amp;type=binary&amp;os=Windows&amp;downloadFile=ParaView-6.0.0-RC1-MPI-Windows-Python3.12-msvc2017-AMD64.zip">official</a>.</p>
+<p>ParaView is a powerful beloved open-source visualization platform based on vtk that can be used to visualize the results of 3D FTLE computations. We also integrated the ParaView entrance into our GUI, so you can directly open ParaView from it. The ParaView installation-free package (v6.0) can be downloaded from <a class="reference external" href="https://www.paraview.org/paraview-downloads/download.php?submit=Download&amp;version=v6.0&amp;type=binary&amp;os=Windows&amp;downloadFile=ParaView-6.0.0-RC1-MPI-Windows-Python3.12-msvc2017-AMD64.zip">official</a>.
+For already-installed ParaView, set environment variable <code class="docutils literal notranslate"><span class="pre">PARAVIEW_PATH</span></code> pointing to the root dir of ParaView to enable integration from GUI of <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code>.</p>
 </section>
 <section id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h2>
 <p>An computation example coming with a set of our in-house downscaled Direct Navier-Stokes Simulation (DNS) data is provided, including :math:
-The dataset can be downloaded from <cite>here &lt;https://noting.noting&gt;</cite>, and the case descriptions can be referred to paper <a href="#id2"><span class="problematic" id="id1">[1]_</span></a>.</p>
+The dataset can be downloaded from <cite>here &lt;https://noting.noting&gt;</cite>, and the case descriptions can be referred to paper [1].</p>
 </section>
 </section>
 
