@@ -1,0 +1,393 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plugins &mdash; PyFTLE3D 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=2709fde1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Just-in-time Compilation" href="just_in_time_compilation.html" />
+    <link rel="prev" title="FAQs" href="detailed_usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyFTLE3D
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_files.html">The nekRS Input Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commonly_used_variables.html">Commonly-Used Variables in nekRS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiling.html">Compiling nekRS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="detailed_usage.html">FAQs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rans-k-tau-plugin">RANS <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> Plugin</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#add-the-physics-kernels">Add the Physics Kernels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-the-closure-properties-calculation">Add the Closure Properties Calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-the-source-terms-calculation">Add the Source Terms Calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-the-turbulent-prandtl-number">Add the Turbulent Prandtl Number</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialize-the-rans-solve">Initialize the RANS Solve</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#low-mach-plugin">Low-Mach Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#turbulence-statistics-plugin">Turbulence Statistics Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#velocity-recycling-plugin">Velocity Recycling Plugin</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="just_in_time_compilation.html">Just-in-time Compilation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doxygen.html">Doxygen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyFTLE3D</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Plugins</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/plugins.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="plugins">
+<h1>Plugins<a class="headerlink" href="#plugins" title="Link to this heading"></a></h1>
+<p>nekRS contains several “plugins” that provide both physics models and postprocessing
+capabilities. nekRS’s <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> and low-Mach models, for instance, are provided as
+plugins. While significant attention is not provided to most of the inner source code structure of nekRS,
+these plugins require more in-depth explanation because their usage requires non-trivial
+modifications to the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> files. Before reading this page, first consult
+<a class="reference internal" href="input_files.html#udf-functions"><span class="std std-ref">User-Defined Host Functions (.udf)</span></a> so that you have the necessary
+background on each of the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> functions that will be discussed.</p>
+<section id="rans-k-tau-plugin">
+<span id="rans-plugin"></span><h2>RANS <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> Plugin<a class="headerlink" href="#rans-k-tau-plugin" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> plugin is available in the <code class="docutils literal notranslate"><span class="pre">src/plugins/RANSktau.hpp</span></code>
+header file. In order to add the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model to your case, you need
+to include this file in your <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file and manually add all the requisite parts of
+the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> methodology. Unless otherwise noted, all code snippets in
+this section are placed in the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file.</p>
+<p>First, add the necessary include file at the top
+of your <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;udf.hpp&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;plugins/RANSktau.hpp&quot;</span>
+</pre></div>
+</div>
+<p>This is required in order to access the methods in the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> plugin. The
+following sections then each describe a step in the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> model setup using the plugin.</p>
+<section id="add-the-physics-kernels">
+<span id="kernels"></span><h3>Add the Physics Kernels<a class="headerlink" href="#add-the-physics-kernels" title="Link to this heading"></a></h3>
+<p>The calculations performed to add contributions to the residuals occur within
+<a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a> kernels. In order to add the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> equations, the corresponding
+physics kernels must first be included. The <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> kernels are added to by
+calling the <code class="docutils literal notranslate"><span class="pre">RANSktau::buildKernel</span></code> function within <code class="docutils literal notranslate"><span class="pre">UDF_LoadKernels</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_LoadKernels</span><span class="p">(</span><span class="n">nrs_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">RANSktau</span><span class="o">::</span><span class="n">buildKernel</span><span class="p">(</span><span class="n">nrs</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">RANSKtau::buildKernel</span></code> function performs two main actions -</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Propagate the constants in the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model in <a class="reference internal" href="theory.html#rans-coeffs"><span class="std std-ref">RANS Coefficients</span></a>
+to become available in <a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a> kernels with the approach as described in
+<a class="reference internal" href="detailed_usage.html#defining-variables-for-device"><span class="std std-ref">Defining Variables to Access in Device Kernels</span></a>.</p></li>
+<li><p>Add the <a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a> kernels that will perform the calculations needed to apply
+the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model.</p></li>
+</ol>
+</div></blockquote>
+</section>
+<section id="add-the-closure-properties-calculation">
+<span id="rans-props"></span><h3>Add the Closure Properties Calculation<a class="headerlink" href="#add-the-closure-properties-calculation" title="Link to this heading"></a></h3>
+<p>Next, add the function that will update the properties used in the governing equations.
+An example is shown in <a class="reference internal" href="detailed_usage.html#custom-properties"><span class="std std-ref">Setting Custom Properties</span></a> for setting
+custom user-defined properties for a laminar flow scenario. The necessary steps to add
+the material properties for the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> model is much simpler, however, but consists of the
+same essential steps:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">udf.properties</span></code> function pointer to a function
+local to the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file that actually computes the properties</p></li>
+<li><p>Add that property function to the <code class="docutils literal notranslate"><span class="pre">.udf</span></code></p></li>
+</ol>
+</div></blockquote>
+<p>For the first step, assign the <code class="docutils literal notranslate"><span class="pre">udf.properties</span></code> function pointer to a function in the
+<code class="docutils literal notranslate"><span class="pre">.udf</span></code> with signature <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(nrs_t*</span> <span class="pre">nrs,</span> <span class="pre">dfloat</span> <span class="pre">time,</span> <span class="pre">occa::memory</span> <span class="pre">o_U,</span> <span class="pre">occa::memory</span> <span class="pre">o_S,</span>
+<span class="pre">occa::memory</span> <span class="pre">o_UProp,</span> <span class="pre">occa::memory</span> <span class="pre">o_SProp)</span></code>. Based on the example shown in
+<a class="reference internal" href="detailed_usage.html#custom-properties"><span class="std std-ref">Setting Custom Properties</span></a>, for illustration purposes we will
+name this function <code class="docutils literal notranslate"><span class="pre">material_properties</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_Setup</span><span class="p">(</span><span class="n">nrs_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// other stuff unrelated to properties</span>
+
+<span class="w">  </span><span class="n">udf</span><span class="p">.</span><span class="n">properties</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">material_properties</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then, for the second step, we need to add the following <code class="docutils literal notranslate"><span class="pre">material_properties</span></code> function
+in the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">material_props</span><span class="p">(</span><span class="n">nrs_t</span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_U</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_S</span><span class="p">,</span>
+<span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_UProp</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_SProp</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">RANSktau</span><span class="o">::</span><span class="n">updateProperties</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>nekRS’s <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> implementation currently requires that
+the laminar dynamic viscosity and the density are constant. Therefore, you
+should not have any other material properties being set in this function
+like there were in <a class="reference internal" href="detailed_usage.html#custom-properties"><span class="std std-ref">Setting Custom Properties</span></a>.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">RANSktau::updateProperties</span></code> function performs two main actions:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Apply a limiter to <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> as described in
+<a class="reference internal" href="theory.html#rans-models"><span class="std std-ref">RANS Models</span></a>.</p></li>
+<li><p>Compute the turbulent viscosity as <span class="math notranslate nohighlight">\(\mu_T\equiv\rho k\tau\)</span>
+and then set the diffusion coefficients in the momentum, <span class="math notranslate nohighlight">\(k\)</span>,
+and <span class="math notranslate nohighlight">\(\tau\)</span> equations to be <span class="math notranslate nohighlight">\(\mu+\mu_T\)</span>,
+<span class="math notranslate nohighlight">\(\mu+\mu_T/\sigma_k\)</span>, and <span class="math notranslate nohighlight">\(\mu+\mu_T/\sigma_\tau\)</span>, respectively.</p></li>
+</ol>
+</div></blockquote>
+</section>
+<section id="add-the-source-terms-calculation">
+<h3>Add the Source Terms Calculation<a class="headerlink" href="#add-the-source-terms-calculation" title="Link to this heading"></a></h3>
+<p>The same passive scalar infrastructure that is used to solve the energy conservation
+equation is used to solve the <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> passive scalar equations.
+However, these equations clearly have different forms - therefore, we need to explicitly
+add these unique source terms to the <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> equations. While we
+loaded the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> kernels in <a class="reference internal" href="#kernels"><span class="std std-ref">Add Physics Kernels</span></a>, we still
+need to add those kernels to the governing equations. An example was provided in
+<a class="reference internal" href="detailed_usage.html#custom-sources"><span class="std std-ref">Setting Custom Source Terms</span></a>, but the necessary steps to
+add the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> source terms is much simpler, but consists of the
+same essential steps:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">udf.sEqnSource</span></code> function pointer to a function
+local to the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file that actually computes the source terms</p></li>
+<li><p>Add that source term function to the <code class="docutils literal notranslate"><span class="pre">.udf</span></code></p></li>
+</ol>
+</div></blockquote>
+<p>For the first step, assign the <code class="docutils literal notranslate"><span class="pre">udf.sEqnSource</span></code> function pointer to a function in the
+<code class="docutils literal notranslate"><span class="pre">.udf</span></code> with signature <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">(nrs_t</span> <span class="pre">*nrs,</span> <span class="pre">dfloat</span> <span class="pre">time,</span> <span class="pre">occa::memory</span> <span class="pre">o_S,</span> <span class="pre">occa::memory</span> <span class="pre">o_FS)</span></code>.
+Based on the example shown in
+<a class="reference internal" href="detailed_usage.html#custom-sources"><span class="std std-ref">Setting Custom Source Terms</span></a>, for illustration purposes we will
+name this function <code class="docutils literal notranslate"><span class="pre">user_q</span></code>:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_Setup</span><span class="p">(</span><span class="n">nrs_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// other stuff unrelated to the source terms</span>
+
+<span class="w">  </span><span class="n">udf</span><span class="p">.</span><span class="n">sEqnSource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">user_q</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then, for the second step, we need to add the following <code class="docutils literal notranslate"><span class="pre">material_properties</span></code> function
+in the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">user_q</span><span class="p">(</span><span class="n">nrs_t</span><span class="w"> </span><span class="o">*</span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_S</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_FS</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">RANSktau</span><span class="o">::</span><span class="n">updateSourceTerms</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="add-the-turbulent-prandtl-number">
+<h3>Add the Turbulent Prandtl Number<a class="headerlink" href="#add-the-turbulent-prandtl-number" title="Link to this heading"></a></h3>
+<p>For cases with passive scalar equations, you must manually
+add the additional component to the diffusivity, <span class="math notranslate nohighlight">\(\mu_T/Pr_T\)</span>. This is done
+in the function pointer to be the <code class="docutils literal notranslate"><span class="pre">udf.properties</span></code> function pointer <em>after</em>
+updating the the closure properties for the momentum equation as described in
+<a class="reference internal" href="#rans-props"><span class="std std-ref">Add the Closure Properties Calculation</span></a>. Building on the
+closure property example, this section shows an example for applying the
+additional turbulent contribution to the diffusivity for a case with one
+passive scalar that represents temperature.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Manual adjustment to the conductivity is only required for the passive
+scalar equations that represent mean flow properties - that is, you do
+not need to manually adjust the conductivity for other passive scalars that
+represent turbulence quantities, such as <span class="math notranslate nohighlight">\(k\)</span> or <span class="math notranslate nohighlight">\(\tau\)</span>. But if
+your case has both temperature and chemical concentration passive scalars,
+for instance, you will need to perform similar adjustments to the diffusivity
+in the chemical concentration equation as to the adjustments shown in this
+example for the temperature passive scalar equation.</p>
+</div>
+<p>The following adjustment to the energy equation
+diffusion coefficient should be performed in our <code class="docutils literal notranslate"><span class="pre">material_properties</span></code>
+function:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">material_props</span><span class="p">(</span><span class="n">nrs_t</span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_U</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_S</span><span class="p">,</span>
+<span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_UProp</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_SProp</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// update the momentum equation properties, as described earlier</span>
+<span class="w">  </span><span class="n">RANSktau</span><span class="o">::</span><span class="n">updateProperties</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// fetch the laminar thermal conductivity</span>
+<span class="w">  </span><span class="n">dfloat</span><span class="w"> </span><span class="n">k_laminar</span><span class="p">;</span>
+<span class="w">  </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">options</span><span class="p">.</span><span class="n">getArgs</span><span class="p">(</span><span class="s">&quot;SCALAR00 DIFFUSIVITY&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">k_laminar</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// manually update the energy equation diffusivity</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">Pr_T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.9</span><span class="p">;</span>
+<span class="w">  </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_mu_T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RANSktau</span><span class="o">::</span><span class="n">o_mue_t</span><span class="p">();</span>
+<span class="w">  </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_mu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">cds</span><span class="o">-&gt;</span><span class="n">o_diff</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">cds</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">dfloat</span><span class="p">);</span>
+<span class="w">  </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">scalarScaledAddKernel</span><span class="p">(</span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">Nlocal</span><span class="p">,</span><span class="w"> </span><span class="n">k_laminar</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">Pr_T</span><span class="p">,</span><span class="w"> </span><span class="n">o_mu_T</span><span class="p">,</span><span class="w"> </span><span class="n">o_mu</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">scalarScaledAddKernel</span></code> is an <a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a> kernel that scales an input by
+a scalar and then adds a constant scalar to the multiplication. That is, this kernel
+computes</p>
+<div class="math notranslate nohighlight">
+\[y = a + bx\]</div>
+<p>where <span class="math notranslate nohighlight">\(a\)</span> is the kernel’s second input parameter, <span class="math notranslate nohighlight">\(b\)</span> the third input
+parameter, and <span class="math notranslate nohighlight">\(x\)</span> the fourth input parameter. First, we fetch the laminar
+thermal conductivity that was set in the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file and save it locally in
+<code class="docutils literal notranslate"><span class="pre">k_laminar</span></code>. Then, we define the turbulent Prandtl number - for this case, we set
+it to <code class="docutils literal notranslate"><span class="pre">0.9</span></code>. Next, we grab the turbulent viscosity just computed in
+<code class="docutils literal notranslate"><span class="pre">RANSktau::updateProperties()</span></code> by calling <code class="docutils literal notranslate"><span class="pre">RANSktau::o_mue_t()</span></code>, which simply
+returns the turbulent viscosity. We will save the turbulent conductivity in the
+first passive scalar “slot” (because we are adjusted the conductivity for the
+temperature equation, i.e. the first passive scalar) in <code class="docutils literal notranslate"><span class="pre">cds-&gt;o_diff</span></code>, which stores the conductivity
+(laminar plus turbulent) for all passive scalars. To summarize, the
+<code class="docutils literal notranslate"><span class="pre">scalarScaledAddKernel</span></code> kernel is adjusting the diffusion coefficient in
+the temperature passive scalar equation to be</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{Pe}+\frac{\mu_T^\dagger}{Pr_T}\]</div>
+<p>where <span class="math notranslate nohighlight">\(Pe\)</span> is the Peclet number. Note that this particular example applies to
+a non-dimensional case. As described at length in <a class="reference internal" href="theory.html#ktau"><span class="std std-ref">The k-tau Model</span></a>,
+a dimensional formulation of the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model would instead compute
+the diffusion coefficient in the temperature passive scalar equation as</p>
+<div class="math notranslate nohighlight">
+\[k+\frac{\mu_T}{Pr_T}C_p\]</div>
+</section>
+<section id="initialize-the-rans-solve">
+<h3>Initialize the RANS Solve<a class="headerlink" href="#initialize-the-rans-solve" title="Link to this heading"></a></h3>
+<p>Finally, the last step to initialize the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> solve is to call the
+<code class="docutils literal notranslate"><span class="pre">RANSktau::setup</span></code> function. This function has signature
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">setup(nrs_t</span> <span class="pre">*</span> <span class="pre">nrs,</span> <span class="pre">dfloat</span> <span class="pre">mu,</span> <span class="pre">dfloat</span> <span class="pre">rho,</span> <span class="pre">int</span> <span class="pre">ifld)</span></code> - <code class="docutils literal notranslate"><span class="pre">nrs</span></code> is the
+flow simulation object, <code class="docutils literal notranslate"><span class="pre">mu</span></code> is the <em>constant</em> laminar viscosity, <code class="docutils literal notranslate"><span class="pre">rho</span></code> is
+the <em>constant</em> density, and <code class="docutils literal notranslate"><span class="pre">ifld</span></code> is the integer corresponding to the
+<span class="math notranslate nohighlight">\(k\)</span> scalar. This function should be called in <code class="docutils literal notranslate"><span class="pre">UDF_Setup</span></code> as follows:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_Setup</span><span class="p">(</span><span class="n">nrs_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// other stuff unrelated to calling RANSktau::setup</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">scalarFieldStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="n">dfloat</span><span class="w"> </span><span class="n">mu_laminar</span><span class="p">,</span><span class="w"> </span><span class="n">rho</span><span class="p">;</span>
+<span class="w">  </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">options</span><span class="p">.</span><span class="n">getArgs</span><span class="p">(</span><span class="s">&quot;VISCOSITY&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">mu_laminar</span><span class="p">);</span>
+<span class="w">  </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">options</span><span class="p">.</span><span class="n">getArgs</span><span class="p">(</span><span class="s">&quot;DENSITY&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">rho</span><span class="p">);</span>
+<span class="w">  </span><span class="n">RANSktau</span><span class="o">::</span><span class="n">setup</span><span class="p">(</span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="n">mu_laminar</span><span class="p">,</span><span class="w"> </span><span class="n">rho</span><span class="p">,</span><span class="w"> </span><span class="n">scalarFieldStart</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>As mentioned previously, nekRS’s <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model
+is currently restricted to constant laminar dynamic viscosity and constant density,
+and the values passed into this <code class="docutils literal notranslate"><span class="pre">setup</span></code> function define those properties.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For consistency, be sure that the viscosity and density passed in to
+<code class="docutils literal notranslate"><span class="pre">RANSktau::setup</span></code> are the same as the properties used in the mean flow equations.
+In the example above, this is ensured by grabbing the <code class="docutils literal notranslate"><span class="pre">VISCOSITY</span></code> and
+<code class="docutils literal notranslate"><span class="pre">DENSITY</span></code> input parameters from the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file.</p>
+</div>
+<p>Finally, <code class="docutils literal notranslate"><span class="pre">ifld</span></code> simply indicates where in the sequence of passive scalars the
+<span class="math notranslate nohighlight">\(k\)</span> scalar is positioned. For instance, if your problem has a temperature
+passive scalar (scalar 0 by definition) and a chemical concentration passive
+scalar (which you have indicated as <code class="docutils literal notranslate"><span class="pre">SCALAR01</span></code> in the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file),
+then the <span class="math notranslate nohighlight">\(k\)</span> scalar should be positioned as the second scalar, and <code class="docutils literal notranslate"><span class="pre">ifld</span> <span class="pre">=</span> <span class="pre">2</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is assumed that in the passive scalar list that <code class="docutils literal notranslate"><span class="pre">ifld</span></code> corresponds to the
+<span class="math notranslate nohighlight">\(k\)</span> passive scalar and <code class="docutils literal notranslate"><span class="pre">ifld</span> <span class="pre">+</span> <span class="pre">1</span></code> corresponds to the <span class="math notranslate nohighlight">\(\tau\)</span> passive
+scalar. Be sure to order the scalars in the input file to respect this assumption.</p>
+</div>
+</section>
+</section>
+<section id="low-mach-plugin">
+<h2>Low-Mach Plugin<a class="headerlink" href="#low-mach-plugin" title="Link to this heading"></a></h2>
+</section>
+<section id="turbulence-statistics-plugin">
+<h2>Turbulence Statistics Plugin<a class="headerlink" href="#turbulence-statistics-plugin" title="Link to this heading"></a></h2>
+</section>
+<section id="velocity-recycling-plugin">
+<h2>Velocity Recycling Plugin<a class="headerlink" href="#velocity-recycling-plugin" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="detailed_usage.html" class="btn btn-neutral float-left" title="FAQs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="just_in_time_compilation.html" class="btn btn-neutral float-right" title="Just-in-time Compilation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Huanxia Wei.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

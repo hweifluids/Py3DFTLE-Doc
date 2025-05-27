@@ -1,0 +1,647 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Theory &mdash; PyFTLE3D 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=2709fde1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The nekRS Input Files" href="input_files.html" />
+    <link rel="prev" title="Requirements" href="requirements.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyFTLE3D
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#incompressible-flow-model">Incompressible Flow Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#non-dimensional-formulation">Non-Dimensional Formulation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#low-mach-partially-compressible-model">Low-Mach Partially-Compressible Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stokes-equations">Stokes Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rans-models">RANS Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#boussinesq-approximation">Boussinesq Approximation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#turbulent-prandtl-number">Turbulent Prandtl Number</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-k-tau-model">The <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> Model</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="input_files.html">The nekRS Input Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commonly_used_variables.html">Commonly-Used Variables in nekRS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiling.html">Compiling nekRS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="detailed_usage.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="just_in_time_compilation.html">Just-in-time Compilation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doxygen.html">Doxygen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyFTLE3D</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Theory</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/theory.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="theory">
+<span id="id1"></span><h1>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h1>
+<p>This page introduces the governing equations and the numerical discretization
+at a high level. nekRS includes models for incompressible flow, a partially
+compressible low-Mach formulation, the Stokes equations, and the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span>
+<a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> equations.</p>
+<section id="incompressible-flow-model">
+<span id="ins-model"></span><h2>Incompressible Flow Model<a class="headerlink" href="#incompressible-flow-model" title="Link to this heading"></a></h2>
+<p>The governing equations for conservation of mass, momentum, and energy for
+an incompressible fluid are</p>
+<div class="math notranslate nohighlight">
+\[\nabla\cdot\mathbf u=0\]</div>
+<div class="math notranslate nohighlight">
+\[\rho\left(\frac{\partial\mathbf u}{\partial t}+\mathbf u\cdot\nabla\mathbf u\right)=-\nabla P+\nabla\cdot\tau+\rho\ \mathbf f\]</div>
+<div class="math notranslate nohighlight">
+\[\rho C_p\left(\frac{\partial T}{\partial t}+\mathbf u\cdot\nabla T\right)=\nabla\cdot\left(k\nabla T\right)+\dot{q}\]</div>
+<p>In these equations, <span class="math notranslate nohighlight">\(t\)</span> is time,
+<span class="math notranslate nohighlight">\(\mathbf u\)</span> is the velocity vector, <span class="math notranslate nohighlight">\(\rho\)</span> is the density, <span class="math notranslate nohighlight">\(P\)</span> is the pressure,
+<span class="math notranslate nohighlight">\(\tau\)</span> is the viscous stress tensor, <span class="math notranslate nohighlight">\(\mathbf f\)</span> is a force vector, <span class="math notranslate nohighlight">\(C_p\)</span> is the
+isobaric specific heat capacity, <span class="math notranslate nohighlight">\(T\)</span> is the temperature, <span class="math notranslate nohighlight">\(k\)</span> is the thermal conductivity,
+and <span class="math notranslate nohighlight">\(\dot{q}\)</span> is a volumetric heat source. If the viscosity is constant, the viscous stress tensor
+can be contracted to give</p>
+<div class="math notranslate nohighlight">
+\[\nabla\cdot\tau=\nabla^2\mathbf u\]</div>
+<p>This is referred to as the “no-stress” formulation. In the general case for non-constant viscosity,
+the viscous stress tensor is given by the Navier-Stokes closure as</p>
+<div class="math notranslate nohighlight">
+\[\nabla\cdot\tau=\nabla\cdot\left\lbrack\mu\left(\nabla\mathbf u+\nabla\mathbf u^T\right)\right\rbrack\]</div>
+<section id="non-dimensional-formulation">
+<span id="nondimensional-eqs"></span><h3>Non-Dimensional Formulation<a class="headerlink" href="#non-dimensional-formulation" title="Link to this heading"></a></h3>
+<p>It is often advantageous to solve these equations in non-dimensional form. Here, we introduce
+the non-dimensional form in as general a manner as possible, assuming the use of variable
+material properties for density, viscosity, specific heat capacity, and thermal conductivity
+that are functions of temperature, <span class="math notranslate nohighlight">\(\rho=\rho(T)\)</span>, <span class="math notranslate nohighlight">\(\mu=\mu(T)\)</span>,
+<span class="math notranslate nohighlight">\(C_p=C_p(T)\)</span>, and <span class="math notranslate nohighlight">\(k=k(T)\)</span>. For simplicity, the functional notation is
+omitted throughout.</p>
+<p>Introduce
+the non-dimensional variables <span class="math notranslate nohighlight">\(\mathbf x^\dagger=\frac{\mathbf x}{L}\)</span>,
+<span class="math notranslate nohighlight">\(\mathbf u^\dagger=\frac{\mathbf u}{U}\)</span>, <span class="math notranslate nohighlight">\(t^\dagger=\frac{tU}{L}\)</span>,
+and <span class="math notranslate nohighlight">\(\mathbf f^\dagger=\frac{\mathbf f L}{U^2}\)</span>. For the material properties,
+we non-dimensionalize based on some reference temperature <span class="math notranslate nohighlight">\(T_0\)</span>, such that
+<span class="math notranslate nohighlight">\(\rho^\dagger=\frac{\rho}{\rho_0}\)</span>, <span class="math notranslate nohighlight">\(\mu^\dagger=\frac{\mu}{\mu_0}\)</span>,
+<span class="math notranslate nohighlight">\(k^\dagger=\frac{k}{k_0}\)</span>, and <span class="math notranslate nohighlight">\(C_p^\dagger=\frac{C_p}{C_{p,0}}\)</span>. Here,
+a subscript of <span class="math notranslate nohighlight">\(0\)</span> is shorthand notation that indicates that the property
+is evaluated at <span class="math notranslate nohighlight">\(T_0\)</span>, such that <span class="math notranslate nohighlight">\(k_0\equiv k(T_0)\)</span>.
+Finally, for convection-dominated flows,
+the pressure is non-dimensionalized in terms of the dynamic pressure as
+<span class="math notranslate nohighlight">\(P^\dagger=\frac{P}{\rho_0 U^2}\)</span>.</p>
+<p>Inserting these non-dimensional variables
+into the conservation of mass and momentum equations gives</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial u_i^\dagger}{\partial x_i^\dagger}=0\]</div>
+<div class="math notranslate nohighlight">
+\[\rho^\dagger\left(\frac{\partial u_i^\dagger}{\partial t^\dagger}+u_j^\dagger\frac{\partial u_i^\dagger}{\partial x_j^\dagger}\right)=-\frac{\partial P^\dagger}{\partial x_i^\dagger}+\frac{1}{Re}\frac{\partial \tau_{ij}^\dagger}{\partial x_j^\dagger}+\rho^\dagger f_i^\dagger\]</div>
+<p>In these equations, the <span class="math notranslate nohighlight">\(\nabla\)</span> are expanded to explicitly show that all derivatives
+are taken with respect to the nondimensional space variable <span class="math notranslate nohighlight">\(\mathbf x^\dagger\)</span>. <span class="math notranslate nohighlight">\(Re\)</span>
+is the Reynolds number</p>
+<div class="math notranslate nohighlight">
+\[Re\equiv\frac{\rho_0 UL}{\mu_0}\]</div>
+<p>To non-dimensionalize the energy conservation equation, use the previous non-dimensional
+variables in addition to a non-dimensional temperature, <span class="math notranslate nohighlight">\(T^\dagger=\frac{T-T_0}{\Delta T}\)</span>,
+where <span class="math notranslate nohighlight">\(\Delta T\)</span> is a reference temperature rise relative to a baseline temperature
+<span class="math notranslate nohighlight">\(T_0\)</span>. The heat source is non-dimensionalized as <span class="math notranslate nohighlight">\(\dot{q}^\dagger=\frac{\dot{q}}{\rho_0 C_{p,0} U\Delta T/L}\)</span>,
+which arises naturally from the simple formulation of bulk energy conservation of
+<span class="math notranslate nohighlight">\(Q=\dot{m}C_p\Delta T\)</span>, where <span class="math notranslate nohighlight">\(Q\)</span> is a heat source (units of Watts) and
+<span class="math notranslate nohighlight">\(\dot{m}\)</span> is a mass flowrate.</p>
+<p>Inserting these non-dimensional variables into the energy conservation equation gives</p>
+<div class="math notranslate nohighlight">
+\[\rho^\dagger C_p^\dagger\left(\frac{\partial T^\dagger}{\partial t^\dagger}+u_i^\dagger\frac{\partial T^\dagger}{\partial x_i^\dagger}\right)=\frac{1}{Pe}\frac{\partial}{\partial x_i^\dagger}\left(k^\dagger\frac{\partial T^\dagger}{\partial x_i^\dagger}\right)+\dot{q}^\dagger\]</div>
+<p>where <span class="math notranslate nohighlight">\(Pe\)</span> is the Peclet number,</p>
+<div class="math notranslate nohighlight">
+\[Pe\equiv\frac{LU}{\alpha}\]</div>
+<p>and <span class="math notranslate nohighlight">\(\alpha\)</span> is the thermal diffusivity,</p>
+<div class="math notranslate nohighlight">
+\[\alpha\equiv\frac{k_0}{\rho_0 C_{p,0}}\]</div>
+</section>
+</section>
+<section id="low-mach-partially-compressible-model">
+<h2>Low-Mach Partially-Compressible Model<a class="headerlink" href="#low-mach-partially-compressible-model" title="Link to this heading"></a></h2>
+</section>
+<section id="stokes-equations">
+<h2>Stokes Equations<a class="headerlink" href="#stokes-equations" title="Link to this heading"></a></h2>
+</section>
+<section id="rans-models">
+<span id="id2"></span><h2>RANS Models<a class="headerlink" href="#rans-models" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> equations are derived from the conservation of mass, momentum, and energy
+equations by expressing each term in the equation as the sum of a mean and a fluctuation.
+Because nekRS is based on the incompressible flow model, all such averages (even for the
+energy equation) are based on the notion of <em>Reynolds averaging</em>, where
+each field <span class="math notranslate nohighlight">\(f\)</span> is expressed as the sum of a time mean <span class="math notranslate nohighlight">\(\overline{f}\)</span> and a time fluctuation,
+<span class="math notranslate nohighlight">\(f'\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[f(\mathbf x, t)=\overline{f}(\mathbf x)+f'(\mathbf x,t)\]</div>
+<p>where the time averaged is defined as</p>
+<div class="math notranslate nohighlight">
+\[\overline{f}=\lim_{S\rightarrow\infty}\frac{1}{S}\int_{t}^{t+S}f(\mathbf x,t)dt\]</div>
+<p>For compressible flows in which energy conservation affects density, the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a>
+equations are instead derived with <em>Favre averaging</em>, where each field <span class="math notranslate nohighlight">\(f_i\)</span>
+is expressed as the sum of a density-weighted time average <span class="math notranslate nohighlight">\(\tilde{f}_i\)</span>
+and a fluctuation <span class="math notranslate nohighlight">\(f_i^{''}\)</span>. It is therefore an important distinction here that
+we only consider <em>Reynolds averaging</em>, which leads to a simpler formulation of
+the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> energy conservation equation that the compressible flow case.</p>
+<p>Inserting the above “Reynolds decomposition” for <span class="math notranslate nohighlight">\(\mathbf u\)</span>, <span class="math notranslate nohighlight">\(P\)</span>, and <span class="math notranslate nohighlight">\(T\)</span>
+into the governing equations and averaging in time
+then gives the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> equations. For
+the incompressible flow equations in <a class="reference internal" href="#ins-model"><span class="std std-ref">Incompressible Flow Model</span></a>,
+the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> mass, momentum, and energy equations are</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\overline{u_i}}{\partial x_i} = 0\]</div>
+<div class="math notranslate nohighlight">
+\[\rho\left(\frac{\partial\overline{u_i}}{\partial t}+\overline{u_j}\frac{\partial\overline{u_i}}{\partial x_j}+\frac{\partial}{\partial x_j}\overline{u_i'u_j'}\right)=-\frac{\partial \overline{P}}{\partial x_i}+\frac{\partial}{\partial x_j}\left(2\mu \overline{S_{ij}}\right)+\rho\overline{\mathbf f}\]</div>
+<div class="math notranslate nohighlight">
+\[\rho C_p\left(\frac{\partial\overline{T}}{\partial t}+\overline{u_i}\frac{\partial\overline{T}}{\partial x_i}+\frac{\partial\overline{u_i'T'}}{\partial x_i}\right)=\frac{\partial}{\partial x_i}\left(k\frac{\partial\overline{T}}{\partial x_i}\right)+\overline{\dot{q}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\overline{S_{ij}}\)</span> is the mean strain rate tensor,</p>
+<div class="math notranslate nohighlight">
+\[\overline{S_{ij}}=\frac{1}{2}\left(\frac{\partial \overline{u_i}}{\partial x_j}+\frac{\partial\overline{u_j}}{\partial x_i}\right)\]</div>
+<p>The mass, momentum, and energy conservation equations have the same form as the instantaneous flow
+equations in <a class="reference internal" href="#ins-model"><span class="std std-ref">Incompressible Flow Model</span></a> except for the addition of another
+stress tensor to the momentum equation - <span class="math notranslate nohighlight">\(\rho \overline{u_i'u_j'}\)</span>, and the addition
+of another heat flux vector to the energy equation - <span class="math notranslate nohighlight">\(\rho C_p\overline{u_i'T'}\)</span>.
+The stress term in the momentum equation
+is referred to as the Reynolds stress tensor;
+<span class="math notranslate nohighlight">\(\rho\ \partial(\overline{u_i'u_j'})/\partial x_j\)</span> represents the time-averaged rate
+of momentum transfer due to turbulence. The heat flux term in the energy equation is
+referred to as the turbulent heat flux; <span class="math notranslate nohighlight">\(\rho C_p\partial\overline{u_i'T'}/\partial x_i\)</span>
+represents the time-averaged rate of energy addition due to turbulence.
+The objective of <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> models is to provide
+closures for the Reynolds stress tensor and turbulent heat flux vector in terms of the mean
+properties such that the time-averaged
+equations can be solved for the mean flow.</p>
+<section id="boussinesq-approximation">
+<h3>Boussinesq Approximation<a class="headerlink" href="#boussinesq-approximation" title="Link to this heading"></a></h3>
+<p>The <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> models in nekRS are based on the Boussinesq eddy viscosity approximation,
+which assumes that the momentum flux that induces the Reynolds stresses shares the same
+functional form as the momentum flux that induces the molecular stresses. In other words,
+the Navier-Stokes closure that was used to relate the deviatoric stress tensor
+<span class="math notranslate nohighlight">\(\tau_{ij}\)</span> to the strain rate tensor,</p>
+<div class="math notranslate nohighlight">
+\[\tau_{ij}=\mu\left(\frac{\partial u_i}{\partial x_j}+\frac{\partial u_j}{\partial x_i}\right)-\underbrace{\frac{2}{3}\mu\frac{\partial u_i}{\partial x_i}\delta_{ij}}_\text{$=\ 0$ if incompressible}\]</div>
+<p>is assumed applicable to the Reynolds stress tensor, but with instantaneous velocities replaced by
+mean velocities and the molecular viscosity replaced by the turbulent eddy viscosity
+<span class="math notranslate nohighlight">\(\mu_T\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\rho\overline{u_i'u_j'}=\mu_T\left(\frac{\partial\overline{u_i}}{\partial x_j}+\frac{\partial\overline{u_j}}{\partial x_i}\right)-\underbrace{\frac{2}{3}\mu\frac{\partial \overline{u_i}}{\partial x_i}\delta_{ij}}_\text{$=\ 0$ if incompressible}-\frac{2}{3}\rho k\delta_{ij}\]</div>
+<p>Here, <span class="math notranslate nohighlight">\(k\)</span> is the turbulent kinetic energy,</p>
+<div class="math notranslate nohighlight">
+\[k\equiv\frac{1}{2}\left(\overline{u_1'u_1'}+\overline{u_2'u_2'}+\overline{u_3'u_3'}\right)\]</div>
+<p>The final term in the Boussinesq approximation for the Reynolds stress tensor simply ensures that
+the trace of the Reynolds stress tensor equals <span class="math notranslate nohighlight">\(2k\)</span>, because otherwise, for incompressible flows,
+the trace of the Reynolds stress tensor would be zero. Inserting the Boussinesq eddy viscosity
+model for the Reynolds stress tensor into the incompressible flow mean momentum equation then gives</p>
+<div class="math notranslate nohighlight">
+\[\rho\left(\frac{\partial\overline{u_i}}{\partial t}+\overline{u_j}\frac{\partial\overline{u_i}}{\partial x_j}\right)=-\frac{\partial \overline{P}}{\partial x_i}+\frac{\partial}{\partial x_j}\left\lbrack 2\left(\mu+\mu_T\right) \overline{S_{ij}}-\frac{2}{3}\rho k\delta_{ij}\right\rbrack+\rho\overline{\mathbf f}\]</div>
+<p>In nekRS, as well as many other <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> codes, it is commonplace to combine
+the gradient of <span class="math notranslate nohighlight">\(P+\frac{2}{3}\rho k\)</span> terms together into a single reduced pressure,</p>
+<div class="math notranslate nohighlight">
+\[P_r\equiv\overline{P}+\frac{2}{3}\rho k\]</div>
+<p>such that the term proportional to <span class="math notranslate nohighlight">\(\rho k\)</span> can be bundled into a single pressure gradient kernel,</p>
+<div class="math notranslate nohighlight">
+\[-\frac{\partial\overline{P}}{\partial x_i}-\frac{\partial}{\partial x_j}\left(-\frac{2}{3}\rho k\delta_{ij}\right)\rightarrow-\frac{\partial P_r}{\partial x_i}\]</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The pressure solution, available on the <code class="docutils literal notranslate"><span class="pre">nrs-&gt;P</span></code> object and written to output under
+the name “pressure,” represents this <em>reduced</em> pressure. To obtain <span class="math notranslate nohighlight">\(\overline{P}\)</span>,
+you should subtract <span class="math notranslate nohighlight">\(\frac{2}{3}\rho k\)</span> from <code class="docutils literal notranslate"><span class="pre">nrs-&gt;P</span></code>.</p>
+</div>
+</section>
+<section id="turbulent-prandtl-number">
+<h3>Turbulent Prandtl Number<a class="headerlink" href="#turbulent-prandtl-number" title="Link to this heading"></a></h3>
+<p>Closure for the turbulent heat flux is typically motivated from considerations
+of the analogy between momentum and energy transfer; while the Boussinesq approximation
+was used to introduce a relationship between the Reynolds stress tensor <span class="math notranslate nohighlight">\(\rho\overline{u_i'u_j'}\)</span>
+in terms of the mean strain rate, the turbulent heat flux is assumed proportional to
+the mean temperature gradient via a gradient diffusion approximation,</p>
+<div class="math notranslate nohighlight">
+\[\rho C_p\overline{u_i'T'}=k_T\frac{\partial \overline{T}}{\partial x_i}\]</div>
+<p>where <span class="math notranslate nohighlight">\(k_T\)</span> is the turbulent conductivity. <span class="math notranslate nohighlight">\(k_T\)</span> is related
+to <span class="math notranslate nohighlight">\(\mu_T\)</span>, the turbulent momentum diffusivity, by the turbulent Prandtl number
+<span class="math notranslate nohighlight">\(Pr_T\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[Pr_T\equiv\frac{\nu_T}{\alpha_T}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\nu_T\equiv\mu_T/rho\)</span> and <span class="math notranslate nohighlight">\(\alpha_T\)</span> is the turbulent thermal diffusivity,</p>
+<div class="math notranslate nohighlight">
+\[\alpha_T\equiv\frac{k_T}{\rho C_p}\]</div>
+<p>Inserting this gradient diffusion approximation into the incompressible flow
+mean energy equation then gives</p>
+<div class="math notranslate nohighlight">
+\[\rho C_p\left(\frac{\partial\overline{T}}{\partial t}+\overline{u_i}\frac{\partial\overline{T}}{\partial x_i}\right)=\frac{\partial}{\partial x_i}\left\lbrack\left(k+\frac{\mu_T}{Pr_T}C_p\right)\frac{\partial\overline{T}}{\partial x_i}\right\rbrack+\overline{\dot{q}}\]</div>
+</section>
+<section id="the-k-tau-model">
+<span id="ktau"></span><h3>The <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> Model<a class="headerlink" href="#the-k-tau-model" title="Link to this heading"></a></h3>
+<p>nekRS uses the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> turbulence model to close the mean flow equations <a class="reference internal" href="references.html#kalitzin" id="id3"><span>[Kalitzin]</span></a>.
+Because the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\epsilon\)</span>, <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\omega\)</span>, and <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\omega\)</span>
+<a class="reference internal" href="glossary.html#term-SST"><span class="xref std std-term">SST</span></a> models tend to dominate the <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> space, extra discussion is devoted here
+to motivating the use of this particular model. Because <span class="math notranslate nohighlight">\(Pr_T\)</span> is typically taken as a
+constant, often 0.90 <a class="reference internal" href="references.html#wilcox" id="id4"><span>[Wilcox]</span></a>, the objective of incompressible flow <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> models is to compute
+the eddy viscosity and <span class="math notranslate nohighlight">\(k\)</span> needed to close the
+mean momentum and energy equations.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Take care not to confuse the inverse of the specific dissipation rate, <span class="math notranslate nohighlight">\(\tau\)</span>, with
+the deviatoric molecular stress tensor, which is also represented here as <span class="math notranslate nohighlight">\(\tau\)</span> due to convention.</p>
+</div>
+<p>The <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model is a modification of the standard <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\omega\)</span>
+turbulence model that bases the second transport equation on the <em>inverse</em> of the specific
+dissipation rate <span class="math notranslate nohighlight">\(\omega\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\tau\equiv\frac{1}{\omega}\]</div>
+<p>rather than the on <span class="math notranslate nohighlight">\(\omega\)</span>.
+The <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model attempts to retain two important
+features of the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\omega\)</span> model -</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Good predictions for flows with adverse pressure gradients and separation, and</p></li>
+<li><p>Reasonable prediction of boundary layers and near-wall behavior without wall functions
+or special low-<span class="math notranslate nohighlight">\(Re_t\)</span> treatments.</p></li>
+</ol>
+</div></blockquote>
+<p>These two aspects contribute to better predictions of complex flows with reduced
+numerical complexity associated with wall functions or
+damping functions that can cause stiff behavior <a class="reference internal" href="references.html#kok" id="id5"><span>[Kok]</span></a> and inaccurate flow predictions. By introducing the
+definition of <span class="math notranslate nohighlight">\(\tau\equiv 1/\omega\)</span>, the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model attemps to improve upon
+the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\omega\)</span> model in two main ways -</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Simplify wall boundary conditions for the second transport equation, and</p></li>
+<li><p>Bound the source terms in the second transport equation in near-wall regions.</p></li>
+</ol>
+</div></blockquote>
+<p>As <span class="math notranslate nohighlight">\(y\rightarrow 0\)</span>, <span class="math notranslate nohighlight">\(\omega\rightarrow y^{-2}\)</span>, while
+<span class="math notranslate nohighlight">\(k\rightarrow 0\)</span> <a class="reference internal" href="references.html#kok" id="id6"><span>[Kok]</span></a>. Therefore, while <span class="math notranslate nohighlight">\(\omega\)</span> is infinite
+at walls, <span class="math notranslate nohighlight">\(\tau\)</span> is zero. Traditionally, this singular behavior in <span class="math notranslate nohighlight">\(\omega\)</span>
+was treated by applying “rough wall” boundary conditions to <span class="math notranslate nohighlight">\(\omega\)</span>
+with the wall roughness set to a “small enough” value to simulate a hydraulically
+smooth wall <a class="reference internal" href="references.html#kok" id="id7"><span>[Kok]</span></a>. However, this ad hoc approach retains a strong dependence
+on the near-wall mesh resolution, often requiring prohibitively fine elements to
+accurately predict boundary layer properties <a class="reference internal" href="references.html#kalitzin" id="id8"><span>[Kalitzin]</span></a>. And,
+such an approach retains near-singular behavior in the first and second derivatives of
+<span class="math notranslate nohighlight">\(\omega\)</span>. Applying a zero boundary condition to <span class="math notranslate nohighlight">\(\tau\)</span>
+on solid walls is comparatively trivial.</p>
+<p>With regards to the second point, the <span class="math notranslate nohighlight">\(\omega\)</span> transport equation contains a source term
+propotional to <span class="math notranslate nohighlight">\(\omega^2\)</span>; because <span class="math notranslate nohighlight">\(\omega\rightarrow y^{-2}\)</span> as <span class="math notranslate nohighlight">\(y\rightarrow 0\)</span>,
+this source term displays singular behavior as <span class="math notranslate nohighlight">\(y\rightarrow 0\)</span>. Singular behavior
+of the source terms can result in large numerical errors and stiffness that negatively
+affects the convergence of the computational solution. Conversely, all source terms in
+the <span class="math notranslate nohighlight">\(\tau\)</span> equation are bounded near walls <a class="reference internal" href="references.html#kok" id="id9"><span>[Kok]</span></a>.</p>
+<p>With this motivation, the <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> equations are described next.
+A slightly lengthier description is provided for each in order to give greater context
+to the genesis of this model.</p>
+<p><strong>The</strong> <span class="math notranslate nohighlight">\(k\)</span> <strong>Equation</strong></p>
+<p>The <span class="math notranslate nohighlight">\(k\)</span>
+equation is a <em>model</em> version of the <em>true</em> <span class="math notranslate nohighlight">\(k\)</span> equation. The <em>true</em> <span class="math notranslate nohighlight">\(k\)</span>
+equation is derived by taking the trace of the Reynolds stress equation, a process that
+is itself motivated by recognition that the trace of the Reynolds stress tensor is equal
+to <span class="math notranslate nohighlight">\(2k\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\overline{u_i'u_i'}=2k\]</div>
+<p>The <em>true</em> <span class="math notranslate nohighlight">\(k\)</span> equation contains terms that depend on the mean flow velocity,
+the turbulent kinetic energy, and the dissipation, in addition to more exotic terms such as
+<span class="math notranslate nohighlight">\(\overline{u_i'u_i'u_j'}\)</span> and <span class="math notranslate nohighlight">\(\overline{P'u_j'}\)</span>. These additional fluctuating
+terms do not bring the <em>true</em> <span class="math notranslate nohighlight">\(k\)</span> equation any closer to a tractable solution,
+so Prandtl introduced a <span class="math notranslate nohighlight">\(\partial k/\partial x_j\)</span>
+gradient diffusion approximation for the turbulent transport and
+pressure diffusion terms (<span class="math notranslate nohighlight">\(\frac{1}{2}\rho\overline{u_i'u_i'u_j'}+\overline{P'u_j'}\)</span>)
+with a diffusion coefficient of <span class="math notranslate nohighlight">\(\mu_T/\sigma_k\)</span>, where <span class="math notranslate nohighlight">\(\sigma_k\)</span>
+is a constant <a class="reference internal" href="references.html#wilcox" id="id10"><span>[Wilcox]</span></a>. With this gradient diffusion model, the <em>true</em>
+<span class="math notranslate nohighlight">\(k\)</span> equation is simplified to a tractable <em>model</em> <span class="math notranslate nohighlight">\(k\)</span> equation <a class="reference internal" href="references.html#launder" id="id11"><span>[Launder]</span></a>,</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial(\rho k )}{\partial t}+\nabla\cdot\left(\rho k\overline{\mathbf u}\right)=\nabla\cdot\left\lbrack\left(\mu+\frac{\mu_T}{\sigma_k}\right)\nabla k\right\rbrack+\mathscr{P}-\rho\epsilon\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathscr{P}\)</span> is the production of turbulent kinetic energy by velocity shear,</p>
+<div class="math notranslate nohighlight">
+\[\mathscr{P}\equiv\rho\overline{u_i'u_j'}\frac{\partial\overline{u_i}}{\partial x_j}\]</div>
+<p>and <span class="math notranslate nohighlight">\(\epsilon\)</span> is the dissipation per unit mass,</p>
+<div class="math notranslate nohighlight">
+\[\epsilon\equiv\nu\overline{\frac{\partial u_i'}{\partial x_j}\frac{\partial u_i'}{\partial x_j}}\]</div>
+<p>The production term represents the rate at which energy is transferred from the mean
+flow to the turbulent flow, while the dissipation term represents the rate at which
+turbulent kinetic energy is converted to heat. Note that the only difference between this
+<em>model</em> <span class="math notranslate nohighlight">\(k\)</span> equation and the <em>true</em> <span class="math notranslate nohighlight">\(k\)</span> equation is the introduction of the
+gradient diffusion approximation for the turbulent transport and pressure diffusion terms.</p>
+<p>The <span class="math notranslate nohighlight">\(k\)</span> equation used in the
+<span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model is then
+obtained as a simple transformation of
+the standard <span class="math notranslate nohighlight">\(k\)</span> equation by the following
+relationship <a class="reference internal" href="references.html#kok" id="id12"><span>[Kok]</span></a>,</p>
+<div class="math notranslate nohighlight">
+\[\omega\equiv\frac{\epsilon}{\beta^*k}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\beta^*\)</span> is a constant. Inserting <span class="math notranslate nohighlight">\(\omega\beta^*k\)</span>
+for <span class="math notranslate nohighlight">\(\epsilon\)</span> in the dissipation term <span class="math notranslate nohighlight">\(\rho\epsilon\)</span> gives
+the <span class="math notranslate nohighlight">\(k\)</span> equation used in nekRS,</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial(\rho k )}{\partial t}+\nabla\cdot\left(\rho k\overline{\mathbf u}\right)=\nabla\cdot\left\lbrack\left(\mu+\frac{\mu_T}{\sigma_k}\right)\nabla k\right\rbrack+\mathscr{P}-\rho\beta^*\frac{k}{\tau}\]</div>
+<p><strong>The</strong> <span class="math notranslate nohighlight">\(\tau\)</span> <strong>Equation</strong></p>
+<p>In two-equation <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> turbulence modeling, the greatest source of uncertainty is
+the proper choice of the second transport variable. While a <em>true</em> <span class="math notranslate nohighlight">\(k\)</span> equation
+is often used as the starting point for developing the <em>model</em> <span class="math notranslate nohighlight">\(k\)</span> equation,
+it is commonplace to start immediately from an ad hoc, “fabricated,” model equation
+for the second turbulence variable. Of course, “exact” equations can always be
+derived for the second turbulence variable through various operations on the mean Navier-Stokes
+equation or the Reynolds stress equation, but the exact equations for <span class="math notranslate nohighlight">\(\epsilon\)</span>,
+<span class="math notranslate nohighlight">\(\omega\)</span>, or other turbulence quantities tend to be far more complex than
+the exact equation for <span class="math notranslate nohighlight">\(k\)</span> shown earlier.</p>
+<p>In 1942, Kolmogorov was the first to
+propose the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\omega\)</span> model <a class="reference internal" href="references.html#wilcox" id="id13"><span>[Wilcox]</span></a>. His formulation was
+very heuristic - from the Boussinesq approximation, it is likely that
+<span class="math notranslate nohighlight">\(\nu_T\propto k\)</span>, which requires another variable with dimensions inverse time.
+Based on the work of Kolmogorov and many subsequent researchers of the
+<span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\omega\)</span> model, inserting <span class="math notranslate nohighlight">\(\tau\equiv 1/\omega\)</span> into the
+<span class="math notranslate nohighlight">\(\omega\)</span> equation gives the <span class="math notranslate nohighlight">\(\tau\)</span> equation - this approach is very similar
+to that used to obtained the <span class="math notranslate nohighlight">\(k\)</span> equation.
+The <span class="math notranslate nohighlight">\(\tau\)</span> equation used in nekRS is <a class="reference internal" href="references.html#kok" id="id14"><span>[Kok]</span></a></p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial(\rho\tau)}{\partial t}+\nabla\cdot\left(\rho\tau\overline{\mathbf u}\right)=\nabla\cdot\left\lbrack\left(\mu+\frac{\mu_T}{\sigma_\tau}\right)\nabla \tau\right\rbrack-\alpha\frac{\tau}{k}\mathscr{P}+\rho\beta-2\frac{\mu}{\tau}\nabla\tau\cdot\nabla\tau\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma_\tau\)</span>, <span class="math notranslate nohighlight">\(\alpha\)</span>, and <span class="math notranslate nohighlight">\(\beta\)</span> are constants. The
+last term on the right-hand side of the <span class="math notranslate nohighlight">\(\tau\)</span> equation is in practice
+implemented in the form</p>
+<div class="math notranslate nohighlight">
+\[\frac{2}{\tau}\nabla\tau\cdot\nabla\tau\rightarrow 8\nabla\sqrt{\tau}\cdot\nabla\sqrt{\tau}\]</div>
+<p>in order to reduce the discretization error associated with the computation
+of gradients of a term that scales as <span class="math notranslate nohighlight">\(y^2\)</span> as <span class="math notranslate nohighlight">\(y\rightarrow 0\)</span> <a class="reference internal" href="references.html#kok" id="id15"><span>[Kok]</span></a>.</p>
+<p><strong>The Eddy Viscosity</strong></p>
+<p>The objective of <a class="reference internal" href="glossary.html#term-RANS"><span class="xref std std-term">RANS</span></a> models is to estimate the eddy viscosity <span class="math notranslate nohighlight">\(\mu_T\)</span>
+that appears in the Boussinesq approximation. The particular form for <span class="math notranslate nohighlight">\(\mu_T\)</span>
+can be understood here in terms of the standard <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\epsilon\)</span>
+model <a class="reference internal" href="references.html#launder" id="id16"><span>[Launder]</span></a>, for which <span class="math notranslate nohighlight">\(\mu_T\)</span> is given as</p>
+<div class="math notranslate nohighlight">
+\[\mu_T=C_\mu\rho\frac{k^2}{\epsilon}\]</div>
+<p>where <span class="math notranslate nohighlight">\(C_\mu\)</span> is a constant. Inserting <span class="math notranslate nohighlight">\(\tau\equiv 1/\omega\)</span> and
+<span class="math notranslate nohighlight">\(\epsilon=\beta^*\omega k\)</span> gives</p>
+<div class="math notranslate nohighlight">
+\[\mu_T=\rho k\tau\]</div>
+<p>which presumes that <span class="math notranslate nohighlight">\(C_\mu\)</span> and <span class="math notranslate nohighlight">\(\beta^*\)</span> are really the same constant,
+but with different notation developed separately by the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\epsilon\)</span>
+researchers and the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> researchers <a class="reference internal" href="references.html#kok" id="id17"><span>[Kok]</span></a>.</p>
+<p><strong>Closure Coefficients and Other Details</strong></p>
+<p>Table <a class="reference internal" href="#rans-coeffs"><span class="std std-ref">RANS Coefficients</span></a> shows the values for the various
+constants used in nekRS’s <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model.</p>
+<span id="rans-coeffs"></span><table class="docutils align-default" id="id24">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">RANS Coefficients</span><a class="headerlink" href="#id24" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Coefficient</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Source</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\sigma_k\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(5/3\)</span></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\sigma_\tau\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(2.0\)</span></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(Pr_T\)</span></p></td>
+<td><p>user-selected</p></td>
+<td><p>—</p></td>
+</tr>
+</tbody>
+</table>
+<p>A limiter is applied to both <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> to prevent negative values
+of either <span class="math notranslate nohighlight">\(k\)</span> or <span class="math notranslate nohighlight">\(\tau\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[k = \max{\left(k, 0.01|k|\right)}\]</div>
+<div class="math notranslate nohighlight">
+\[\tau = \max{\left(\tau, 0.01|\tau|\right)}\]</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>nekRS’s <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> implementation currently requires that
+the laminar dynamic viscosity and the density are constant, because the setup
+routines can only accept constant values. See <a class="reference internal" href="plugins.html#rans-plugin"><span class="std std-ref">RANS Plugin</span></a>
+for more information.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Even if the molecular viscosity is constant, you must set <code class="docutils literal notranslate"><span class="pre">stressFormulation</span> <span class="pre">=</span> <span class="pre">true</span></code> in
+the input file because the total viscosity (molecular plus turbulent) will not be constant.</p>
+</div>
+<p><strong>Boundary Conditions</strong></p>
+<p>On walls, because the asymptotic behavior of <span class="math notranslate nohighlight">\(\omega\)</span> is <span class="math notranslate nohighlight">\(\omega\propto y^{-2}\)</span>
+as <span class="math notranslate nohighlight">\(y\rightarrow0\)</span>, and because the instantaneous velocity
+<span class="math notranslate nohighlight">\(u_i\equiv \overline{u_i}+u_i'\)</span> must be zero due to the no-slip condition, both
+<span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> should be set to zero on no-slip boundaries.</p>
+<p>On turbulent inlets, however, both <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> are generally nonzero, and
+estimates for <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> must be provided. Turbulent inflow conditions are
+usually unknown unless the modeler is fortunate enough to have experimental data - therefore,
+the specification of inlet conditions on <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> tends to be fairly ad hoc.
+An inlet condition for <span class="math notranslate nohighlight">\(k\)</span> can be estimated by prescribing the turbulent intensity at
+the inlet. The turbulent intensity <span class="math notranslate nohighlight">\(I\)</span> is defined as the root mean square
+fluctuating velocity normalized by the magnitude of the mean velocity, or</p>
+<div class="math notranslate nohighlight">
+\[I\equiv\frac{\sqrt{\frac{1}{3}\left(u_i'u_i'\right)}}{\sqrt{\overline{u_j}\ \overline{u_j}}}\]</div>
+<p>which can equivalently be written in terms of the turbulent kinetic energy as</p>
+<div class="math notranslate nohighlight">
+\[I\equiv\frac{\sqrt{\frac{2}{3}k}}{\sqrt{\overline{u_j}\ \overline{u_j}}}\]</div>
+<p>Therefore, if an inlet turbulent intensity can be prescribed, the inlet
+turbulent kinetic energy is</p>
+<div class="math notranslate nohighlight">
+\[k\equiv\frac{3}{2}I^2\overline{u_j}\ \overline{u_j}\]</div>
+<p>For instance, it is common to assume a uniform turbulent intensity over an inlet of
+between 1 and 5% for pipe flows <a class="reference internal" href="references.html#russo" id="id18"><span>[Russo]</span></a>. Experiments have also quantified the scaling
+of turbulent intensity with Reynolds number.
+From simulations and experiments of both incompressible
+and compressible flows, the turbulent intensities
+on the axis of a smooth circular pipe are <a class="reference internal" href="references.html#russo" id="id19"><span>[Russo]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}I_\text{axis}=\begin{cases}0.0853Re^{-0.0727} &amp; \text{incompressible}\\
+0.0550Re^{-0.0407} &amp; \text{compressible}\end{cases}\end{split}\]</div>
+<p>With a slightly different definition based on the turbulent intensity averaged over
+the cross-sectional area of a circular pipe, the turbulent intensity instead
+scales as <a class="reference internal" href="references.html#russo" id="id20"><span>[Russo]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}I_\text{area}=\begin{cases}0.140Re^{-0.0790} &amp; \text{incompressible}\\
+0.227Re^{-0.1} &amp; \text{compressible}\end{cases}\end{split}\]</div>
+<p>Similar correlations have also been developed for rough pipes <a class="reference internal" href="references.html#basse" id="id21"><span>[Basse]</span></a>. It is
+also commonplace to apply conditions on <span class="math notranslate nohighlight">\(k\)</span> in terms of the friction
+velocity <span class="math notranslate nohighlight">\(u_\tau\)</span>, defined as</p>
+<div class="math notranslate nohighlight">
+\[u_\tau\equiv\sqrt{\frac{\tau_w}{\rho}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tau_w\)</span> is the wall shear stress. The wall shear stress can then be
+estimated using a friction factor correlation for <span class="math notranslate nohighlight">\(f_D\)</span>, the Darcy friction factor,
+which is defined as</p>
+<div class="math notranslate nohighlight">
+\[\frac{\Delta P}{l}\equiv f_D\frac{1}{D}\frac{\rho \overline{u_j}\overline{u_j}}{2}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\Delta P/l\)</span> is a pressure gradient and <span class="math notranslate nohighlight">\(D\)</span> is a hydraulic diameter.
+For circular pipes, the friction factor is related to <span class="math notranslate nohighlight">\(\tau_w\)</span> as</p>
+<div class="math notranslate nohighlight">
+\[f_D=8\frac{\tau_w}{\rho\overline{u_j}\overline{u_j}}\]</div>
+<p>Typically, a simple friction factor correlation such as the Blasius model for pipes,
+is selected</p>
+<div class="math notranslate nohighlight">
+\[f_D=0.316Re^{-0.25}\]</div>
+<p>Combining <span class="math notranslate nohighlight">\(u_\tau\)</span>, <span class="math notranslate nohighlight">\(f_D\)</span>, and one of the previous estimates for <span class="math notranslate nohighlight">\(I_\text{area}\)</span>,
+such as <span class="math notranslate nohighlight">\(I_\text{area}=0.317Re^{-0.11}\)</span> <a class="reference internal" href="references.html#basse" id="id22"><span>[Basse]</span></a> gives the following relationship between
+<span class="math notranslate nohighlight">\(I_\text{area}\)</span> and <span class="math notranslate nohighlight">\(f_D\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[I_\text{area}=0.526f_D^{0.44}\]</div>
+<p>Then, inserting the relationship between <span class="math notranslate nohighlight">\(u_\tau\)</span> and <span class="math notranslate nohighlight">\(f_D\)</span> gives,
+after some manipulation,</p>
+<div class="math notranslate nohighlight">
+\[k=2.56 u_\tau^2\left(\overline{u_j}\ \overline{u_j}\right)^{0.24}\]</div>
+<p>While this algebraic exercise hasn’t actually introduced any new information or closures
+beyond what has already been discussed, it is information to see <span class="math notranslate nohighlight">\(k\)</span> expressed
+in terms of the friction velocity, because some nekRS inputs set <span class="math notranslate nohighlight">\(k\)</span> on inlets
+by first computing the <span class="math notranslate nohighlight">\(u_\tau\)</span> from a friction correlation and then using an
+expression similar to above.</p>
+<p>In any case, one of these correlations for turbulent intensity,
+or simply a fixed turbulent intensity of, say, 5%,
+can be used to prescribe a uniform value of <span class="math notranslate nohighlight">\(k\)</span> on an inlet. However, including
+some spatial variation in <span class="math notranslate nohighlight">\(k\)</span> on the inlet may reduce Gibbs phenomena if
+the inlet turbulent intensity enforces the physical zero wall value. Spatial fits,
+such as those developed for circular pipes <a class="reference internal" href="references.html#russo" id="id23"><span>[Russo]</span></a>, may improve the numerical stability
+and accuracy of your simulation.</p>
+<p>Finally, on outlets, “free-stream” boundary conditions are usually applied to
+<span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
+<p><strong>Non-Dimensional Formulation</strong></p>
+<p>Now that the <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model has been presented in its full form,
+the non-dimensional formulation is provided. Because nekRS’s <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model
+is currently limited to constant densities and laminar viscosities, the non-dimensional
+formulation is slightly simpler than the more general case shown in
+<a class="reference internal" href="#nondimensional-eqs"><span class="std std-ref">Non-Dimensional Formulation</span></a> that derived the non-dimensional
+form of the instantaneous Navier-Stokes equations.</p>
+<p>Introduce
+the non-dimensional variables <span class="math notranslate nohighlight">\(\mathbf x^\dagger=\frac{\mathbf x}{L}\)</span>,
+<span class="math notranslate nohighlight">\(\overline{\mathbf u}^\dagger=\frac{\overline{\mathbf u}}{U}\)</span>, <span class="math notranslate nohighlight">\(t^\dagger=\frac{tU}{L}\)</span>,
+and <span class="math notranslate nohighlight">\(\overline{\mathbf f}^\dagger=\frac{\overline{\mathbf f} L}{U^2}\)</span>.
+For convection-dominated flows,
+the pressure is non-dimensionalized in terms of the dynamic pressure as
+<span class="math notranslate nohighlight">\(P^\dagger=\frac{P}{\rho U^2}\)</span>. Finally, the turbulent kinetic energy
+and inverse dissipation rate are non-dimensionalized as
+<span class="math notranslate nohighlight">\(k^\dagger=\frac{k}{U^2}\)</span> and <span class="math notranslate nohighlight">\(\tau^\dagger=\frac{\tau U}{L}\)</span>.</p>
+<p>Inserting these non-dimensional variables
+into the mean flow mass and momentum conservation equations gives</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \overline{u_i}^\dagger}{\partial x_i^\dagger}=0\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \overline{u_i}^\dagger}{\partial t^\dagger}+\overline{u_j}^\dagger\frac{\partial \overline{u_i}^\dagger}{\partial x_j^\dagger}=-\frac{\partial \overline{P}^\dagger}{\partial x_i^\dagger}+\frac{1}{Re}\left(1+\frac{\mu_T}{\mu}\right)\frac{\partial\overline{\tau_{ij}}^\dagger}{\partial x_j^\dagger}-\frac{\partial}{\partial x_j^\dagger}\left(\frac{2}{3}k^\dagger\delta_{ij}\right)+f_i^\dagger\]</div>
+<p>To non-dimensionalize the energy conservation equation, use the previous non-dimensional
+variables in addition to a non-dimensional temperature, <span class="math notranslate nohighlight">\(T^\dagger=\frac{T-T_0}{\Delta T}\)</span>,
+where <span class="math notranslate nohighlight">\(\Delta T\)</span> is a reference temperature rise relative to a baseline temperature
+<span class="math notranslate nohighlight">\(T_0\)</span>. The heat source is non-dimensionalized as <span class="math notranslate nohighlight">\(\dot{q}^\dagger=\frac{\dot{q}}{\rho C_{p} U\Delta T/L}\)</span>,
+which arises naturally from the simple formulation of bulk energy conservation of
+<span class="math notranslate nohighlight">\(Q=\dot{m}C_p\Delta T\)</span>, where <span class="math notranslate nohighlight">\(Q\)</span> is a heat source (units of Watts) and
+<span class="math notranslate nohighlight">\(\dot{m}\)</span> is a mass flowrate.
+Inserting these non-dimensional variables into the energy conservation equation gives</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial \overline{T}^\dagger}{\partial t^\dagger}+\overline{u_i}^\dagger\frac{\partial \overline{T}^\dagger}{\partial x_i^\dagger}=\frac{1}{Pe}\left(1+\frac{\mu_T/Pr_T}{k}C_p\right)\frac{\partial}{\partial x_i^\dagger}\frac{\partial \overline{T}^\dagger}{\partial x_i^\dagger}+\dot{q}^\dagger\]</div>
+<p>To non-dimensionalize the <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> equations,
+define <span class="math notranslate nohighlight">\(\mathscr{P}^\dagger=\frac{\mathscr{P}}{\rho U^3/L}\)</span>
+and <span class="math notranslate nohighlight">\(\epsilon^\dagger=\frac{\epsilon}{U^3/L}\)</span>.
+With previous non-dimensional variables already defined, the non-dimensional <span class="math notranslate nohighlight">\(k\)</span>
+and <span class="math notranslate nohighlight">\(\tau\)</span> equations become</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial k^\dagger}{\partial t^\dagger}+\overline{u_i}^\dagger\frac{\partial k^\dagger}{\partial x_i^\dagger}=\frac{1}{Re}\left(1+\frac{\mu_T/\sigma_k}{\mu}\right)\frac{\partial}{\partial x_i^\dagger}\frac{\partial k^\dagger}{\partial x_i^\dagger}+\mathscr{P}^\dagger-\beta^*\frac{k^\dagger}{\tau^\dagger}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial\tau^\dagger}{\partial t^\dagger}+\overline{u_i}^\dagger\frac{\partial\tau^\dagger}{\partial x_i^\dagger}=\frac{1}{Re}\left(1+\frac{\mu_T/\sigma_\tau}{\mu}\right)\frac{\partial}{\partial x_i^\dagger}\frac{\partial\tau^\dagger}{\partial x_i^\dagger}-\alpha\frac{\tau^\dagger}{k^\dagger}\mathscr{P}^\dagger+\beta-\frac{2}{Re}\frac{1}{\tau^\dagger}\frac{\partial\tau^\dagger}{\partial x_i^\dagger}\frac{\partial\tau^\dagger}{\partial x_i^\dagger}\]</div>
+<p>Finally, the eddy viscosity is computed as</p>
+<div class="math notranslate nohighlight">
+\[\mu_T=\rho k\tau\]</div>
+<p>which after inserting the non-dimensional variables becomes</p>
+<div class="math notranslate nohighlight">
+\[\mu_T=\rho ULk^\dagger\tau^\dagger\]</div>
+<p>such that the non-dimensional eddy viscosity can be written as <span class="math notranslate nohighlight">\(\mu_T^\dagger=k^\dagger\tau^\dagger\)</span>.
+Therefore, the overall diffusion coefficients in the mean momentum equation,
+mean energy equation, <span class="math notranslate nohighlight">\(k\)</span> equation, and <span class="math notranslate nohighlight">\(\tau\)</span> equation are, respectively</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{Re}\left(1+\frac{\mu_T}{\mu}\right)\rightarrow\frac{1}{Re}+\mu_T^\dagger\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{1}{Pe}\left(1+\frac{\mu_T/Pr_T}{k}C_p\right)\rightarrow\frac{1}{Pe}+\frac{\mu_T^\dagger}{Pr_T}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{1}{Re}\left(1+\frac{\mu_T/\sigma_k}{\mu}\right)\rightarrow\frac{1}{Re}+\frac{\mu_T^\dagger}{\sigma_k}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{1}{Re}\left(1+\frac{\mu_T/\sigma_\tau}{\mu}\right)\rightarrow\frac{1}{Re}+\frac{\mu_T^\dagger}{\sigma_\tau}\]</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="requirements.html" class="btn btn-neutral float-left" title="Requirements" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="input_files.html" class="btn btn-neutral float-right" title="The nekRS Input Files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Huanxia Wei.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

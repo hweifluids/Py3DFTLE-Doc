@@ -1,0 +1,1200 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQs &mdash; PyFTLE3D 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=2709fde1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Plugins" href="plugins.html" />
+    <link rel="prev" title="Tutorials" href="tutorials.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PyFTLE3D
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_files.html">The nekRS Input Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commonly_used_variables.html">Commonly-Used Variables in nekRS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiling.html">Compiling nekRS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">FAQs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-nek5000-tool-scripts">Building the Nek5000 Tool Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scripts-that-ship-with-nekrs">Scripts That Ship with nekRS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#converting-a-mesh-to-re2-format">Converting a Mesh to .re2 Format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#converting-an-exodus-mesh">Converting an Exodus mesh</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#converting-a-gmsh-mesh">Converting a Gmsh mesh</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-mesh-for-conjugate-heat-transfer">Creating a Mesh for Conjugate Heat Transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-initial-conditions-with-udf-setup">Setting Initial Conditions with <code class="docutils literal notranslate"><span class="pre">UDF_Setup</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#grabbing-user-par-settings">Grabbing User .par Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#defining-variables-to-access-in-device-kernels">Defining Variables to Access in Device Kernels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-boundary-conditions-with-device-kernels">Setting Boundary Conditions with Device Kernels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-custom-properties">Setting Custom Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-custom-source-terms">Setting Custom Source Terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#solving-in-non-dimensional-form">Solving in Non-Dimensional Form</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#constant-properties">Constant Properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variable-properties">Variable Properties</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#copying-from-device-to-host">Copying From Device to Host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#writing-an-output-file">Writing an Output File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visualizing-output-files">Visualizing Output Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#calculating-the-distance-to-a-wall">Calculating the Distance to a Wall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#periodic-boundary-conditions">Periodic Boundary Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stamping-initial-conditions">Stamping Initial Conditions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="just_in_time_compilation.html">Just-in-time Compilation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doxygen.html">Doxygen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyFTLE3D</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">FAQs</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/detailed_usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="faqs">
+<span id="detailed"></span><h1>FAQs<a class="headerlink" href="#faqs" title="Link to this heading"></a></h1>
+<p>This page describes how to perform a wide variety of user interactions with nekRS
+for setting boundary conditions, converting between mesh formats, defining and
+running device kernels, writing output files, and much more. Please first consult
+the <a class="reference internal" href="input_files.html#input"><span class="std std-ref">Input File Syntax</span></a> page for an overview of the purpose of each
+nekRS input file to provide context on where the following instructions fit into
+the overall code structure. Throughout this section, variables and data structures
+in the nekRS source code are referenced - a list defining these variables and structures
+is available on the <a class="reference internal" href="commonly_used_variables.html#commonly-used-variables"><span class="std std-ref">Commonly Used Variables</span></a> page
+for reference.</p>
+<section id="building-the-nek5000-tool-scripts">
+<span id="scripts"></span><h2>Building the Nek5000 Tool Scripts<a class="headerlink" href="#building-the-nek5000-tool-scripts" title="Link to this heading"></a></h2>
+<p>Some user actions in nekRS require the use of scripts available with <a class="reference internal" href="glossary.html#term-Nek5000"><span class="xref std std-term">Nek5000</span></a>.
+To build these scripts, you will need to separately clone Nek5000, and then
+navigate to the <code class="docutils literal notranslate"><span class="pre">tools</span></code> directory and run the makefile to compile all the scripts.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user$ git clone https://github.com/Nek5000/Nek5000.git
+user$ cd Nek5000/tools
+user$ ./maketools all
+</pre></div>
+</div>
+<p>This should create binary executables in the <code class="docutils literal notranslate"><span class="pre">Nek5000/bin</span></code>
+directory. You may want to add this to your path in order to quickly access those scripts.</p>
+</section>
+<section id="scripts-that-ship-with-nekrs">
+<span id="nekrs-scripts"></span><h2>Scripts That Ship with nekRS<a class="headerlink" href="#scripts-that-ship-with-nekrs" title="Link to this heading"></a></h2>
+<p>In addition to the scripts that ship with Nek5000 described in
+<a class="reference internal" href="#scripts"><span class="std std-ref">Building the Nek5000 Tool Scripts</span></a>, a number of scripts ship with nekRS itself.
+These scripts are located in the <code class="docutils literal notranslate"><span class="pre">$NEKRS_HOME/bin</span></code> directory, where <code class="docutils literal notranslate"><span class="pre">NEKRS_HOME</span></code> is an
+environment variable set as part of the build process. A brief summary of these scripts and
+their usage is as follows.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nrsmpi</span> <span class="pre">&lt;casename&gt;</span> <span class="pre">&lt;processes&gt;</span></code>: run nekRS in parallel with <code class="docutils literal notranslate"><span class="pre">&lt;processes&gt;</span></code> parallel
+processes for the case files that are prefixed with <code class="docutils literal notranslate"><span class="pre">casename</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nrsbmpi</span> <span class="pre">&lt;casename&gt;</span> <span class="pre">&lt;processes&gt;</span></code>: same as <code class="docutils literal notranslate"><span class="pre">nrsmpi</span></code>, except that nekRS runs
+in the background</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nrspre</span> <span class="pre">&lt;casename&gt;</span> <span class="pre">&lt;target</span> <span class="pre">GPUs&gt;</span></code>: precompile nekRS case (see
+<a class="reference internal" href="just_in_time_compilation.html#just-in-time-compilation"><span class="std std-ref">Just-in-time Compilation</span></a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nrsqsub_lassen</span> <span class="pre">&lt;casename&gt;</span> <span class="pre">&lt;nodes&gt;</span> <span class="pre">&lt;wall</span> <span class="pre">time&gt;</span></code>: submission script for
+<a class="reference external" href="Lassenhttps://computing.llnl.gov/computers/lassen">Lassenhttps://computing.llnl.gov/computers/lassen</a>, a supercomputer
+at Lawrence Livermore National Laboratory. A number of other settings are specified
+within the script itself.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nrsqsub_summit</span> <span class="pre">&lt;casename&gt;</span> <span class="pre">&lt;nodes&gt;</span> <span class="pre">&lt;wall</span> <span class="pre">time&gt;</span></code>: submission script for
+<a class="reference external" href="Summithttps://www.olcf.ornl.gov/summit/">Summithttps://www.olcf.ornl.gov/summit/</a>, a supercomputer
+at Oak Ridge National Laboratory. A number of other settings are specified within the
+script itself.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nrsvis</span> <span class="pre">&lt;casename&gt;</span></code>: postprocess <code class="docutils literal notranslate"><span class="pre">fld</span></code>-type nekRS output files into a form
+readable by Paraview or Visit.</p></li>
+</ul>
+</section>
+<section id="converting-a-mesh-to-re2-format">
+<span id="converting-mesh"></span><h2>Converting a Mesh to .re2 Format<a class="headerlink" href="#converting-a-mesh-to-re2-format" title="Link to this heading"></a></h2>
+<p>The most general and flexible approach for creating a mesh is to use commercial meshing software
+such as Cubit or Gmsh. After creating the mesh, it must be converted to the <code class="docutils literal notranslate"><span class="pre">.re2</span></code> binary format.
+The following two sections describe how to convert Exodus and Gmsh meshes into <code class="docutils literal notranslate"><span class="pre">.re2</span></code> binary format
+with scripts that ship with the Nek5000 dependency. First build these scripts following
+the instructions in the <a class="reference internal" href="#scripts"><span class="std std-ref">Building the Nek5000 Tool Scripts</span></a> section.</p>
+<section id="converting-an-exodus-mesh">
+<h3>Converting an Exodus mesh<a class="headerlink" href="#converting-an-exodus-mesh" title="Link to this heading"></a></h3>
+<p>To convert from an Exodus format mesh
+(for this case, named <code class="docutils literal notranslate"><span class="pre">my_mesh.exo</span></code>) to the <code class="docutils literal notranslate"><span class="pre">.re2</span></code> format, use the <code class="docutils literal notranslate"><span class="pre">exo2nek</span></code> script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user$ exo2nek
+</pre></div>
+</div>
+<p>Then, follow the on-screen prompts associated with the <code class="docutils literal notranslate"><span class="pre">exo2nek</span></code> script.
+<code class="docutils literal notranslate"><span class="pre">exo2nek</span></code> will convert all elements in the Exodus mesh (TET6, WEDGE6, HEX8, HEX20) to HEX20 elements and dump into <code class="docutils literal notranslate"><span class="pre">.re2</span></code> format.</p>
+</section>
+<section id="converting-a-gmsh-mesh">
+<h3>Converting a Gmsh mesh<a class="headerlink" href="#converting-a-gmsh-mesh" title="Link to this heading"></a></h3>
+<p>To convert from a Gmsh format mesh (for this case, named <code class="docutils literal notranslate"><span class="pre">my_mesh.msh</span></code>) to the
+<code class="docutils literal notranslate"><span class="pre">.re2</span></code> format, use the <code class="docutils literal notranslate"><span class="pre">gmsh2nek</span></code> script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user$ gmsh2nek
+
+Enter mesh dimension: 3
+Input (.msh) file name: my_mesh
+</pre></div>
+</div>
+<p>All your mesh should be hexahedral elements. Before exporting from Gmsh, you will need to set the mesh order to 2.
+The Gmsh mesh format must also be version 2, ASCII/binary format. If your Gmsh version
+shows a pop-up box when exporting the mesh, do <em>not</em> click “Save all elements”
+or “Save parametric elements”.</p>
+</section>
+</section>
+<section id="creating-a-mesh-for-conjugate-heat-transfer">
+<span id="cht-mesh"></span><h2>Creating a Mesh for Conjugate Heat Transfer<a class="headerlink" href="#creating-a-mesh-for-conjugate-heat-transfer" title="Link to this heading"></a></h2>
+<p>Mesh generation for conjugate heat transfer requires an additional pre-processing
+step before performing other steps of the mesh generation process such as those
+described in the <a class="reference internal" href="#converting-mesh"><span class="std std-ref">Converting a Mesh to .re2 Format</span></a> section.
+The nekRS approach for conjugate heat transfer is still dependent on legacy limitations
+from Nek5000. Unfortunately, you cannot
+simply use a standard commercial meshing tool and define fluid and solid
+regions according to block IDs - you must individually create the mesh for the fluid and
+the solid, and then merge them with the <code class="docutils literal notranslate"><span class="pre">pretex</span></code> script.</p>
+</section>
+<section id="setting-initial-conditions-with-udf-setup">
+<span id="setting-ics"></span><h2>Setting Initial Conditions with <code class="docutils literal notranslate"><span class="pre">UDF_Setup</span></code><a class="headerlink" href="#setting-initial-conditions-with-udf-setup" title="Link to this heading"></a></h2>
+<p>This section provides an example for setting initial conditions with the
+<code class="docutils literal notranslate"><span class="pre">UDF_Setup</span></code> user-defined function that was introduced on the <a class="reference internal" href="input_files.html#input"><span class="std std-ref">Input Files</span></a> page.
+The following code snippet sets initial conditions for all three components of
+velocity, the pressure, and two passive scalars. You may not necessarily have all of these
+variables in your model - this example is just intended to cover all possibilities.</p>
+<p>For this example, the initial conditions are
+<span class="math notranslate nohighlight">\(V_x=sin(x)cos(y)cos(z)\)</span>, <span class="math notranslate nohighlight">\(V_y=-cos(x)sin(y)cos(z)\)</span>, and <span class="math notranslate nohighlight">\(V_z=0\)</span>
+for the three components of velocity;
+<span class="math notranslate nohighlight">\(P=101325\)</span> for the pressure; and <span class="math notranslate nohighlight">\(\phi_0=573\)</span> and <span class="math notranslate nohighlight">\(\phi_1=100+z\)</span> for the
+two passive scalars indicated generically as <span class="math notranslate nohighlight">\(\phi_0\)</span> and <span class="math notranslate nohighlight">\(\phi_1\)</span>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If present, the temperature variable is represented internally in nekRS as a passive
+scalar, since the form of the equation is the same as those solver for other passive
+scalars such as chemical concentration.</p>
+</div>
+<p>Because these initial conditions will
+be a function of space, we must first obtain the mesh information, for which we
+use the <code class="docutils literal notranslate"><span class="pre">nrs-&gt;mesh</span></code> pointer. All solution fields are stored in nekRS in terms of the
+quadrature points (also referred to as the <a class="reference internal" href="glossary.html#term-GLL"><span class="xref std std-term">GLL</span></a> points). So, we will apply
+the initial conditions by looping over all of these quadrature points, which for
+the current <a class="reference internal" href="glossary.html#term-MPI"><span class="xref std std-term">MPI</span></a> process is equal to <code class="docutils literal notranslate"><span class="pre">mesh-&gt;Np</span></code>, or the number of quadrature
+points per element, and <code class="docutils literal notranslate"><span class="pre">mesh-&gt;Nelements</span></code>, the number of elements on this process.</p>
+<p>Next, we can get the <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(y\)</span>, and <span class="math notranslate nohighlight">\(z\)</span> coordinates for the current
+quadrature point with the <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, and <code class="docutils literal notranslate"><span class="pre">z</span></code> pointers on the <code class="docutils literal notranslate"><span class="pre">mesh</span></code> object.
+Finally, we programmatically set initial conditions for the solution fields. <code class="docutils literal notranslate"><span class="pre">nrs-&gt;U</span></code>
+is a single array that holds all three components of velocity; the <code class="docutils literal notranslate"><span class="pre">nrs-&gt;fieldOffset</span></code>
+variable is used to shift between components in this array. <code class="docutils literal notranslate"><span class="pre">nrs-&gt;P</span></code> represents the
+pressure. Finally, <code class="docutils literal notranslate"><span class="pre">nrs-&gt;S</span></code> is a single array that holds all of the passive scalars.
+Similar to the offset performed to index into the velocity array, the
+<code class="docutils literal notranslate"><span class="pre">nrs-&gt;cds-&gt;fieldOffset</span></code> variable is used to shift between components in the <code class="docutils literal notranslate"><span class="pre">nrs-&gt;S</span></code>
+array.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_Setup</span><span class="p">(</span><span class="n">nrs_t</span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w"> </span><span class="n">mesh_t</span><span class="o">*</span><span class="w"> </span><span class="n">mesh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">mesh</span><span class="p">;</span>
+<span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">num_quadrature_points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">Np</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">Nelements</span><span class="p">;</span>
+
+<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">num_quadrature_points</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kt">float</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">x</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+<span class="w">   </span><span class="kt">float</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">y</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+<span class="w">   </span><span class="kt">float</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">z</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+
+<span class="w">   </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">U</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">);</span>
+<span class="w">   </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">U</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sin</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">cos</span><span class="p">(</span><span class="n">z</span><span class="p">);</span>
+<span class="w">   </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">U</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">   </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">P</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">101325.0</span><span class="p">;</span>
+
+<span class="w">   </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">S</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">cds</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">573.0</span><span class="p">;</span>
+<span class="w">   </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">S</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">cds</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">100.0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="p">;</span>
+<span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="grabbing-user-par-settings">
+<span id="grabbing-user"></span><h2>Grabbing User .par Settings<a class="headerlink" href="#grabbing-user-par-settings" title="Link to this heading"></a></h2>
+<p>nekRS conveniently allows the user to define their own parameters in the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file
+that can then be accessed in the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> functions. This is useful for programmatically
+setting boundary conditions, forcing terms, and many other simulation settings. For instance,
+suppose that the initial condition for velocity will vary from run to run and is possibly used in several
+places in the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> functions. Rather than continually edit the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file (which
+will require repeated just-in-time compilation), these settings can be set with user-defined
+parameters in the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file.</p>
+<p>As an example, we will define a parameter named <code class="docutils literal notranslate"><span class="pre">initialVelocity</span></code> in the <code class="docutils literal notranslate"><span class="pre">VELOCITY</span></code> block.</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span>[VELOCITY]
+<span class="w">  </span>residualTol<span class="w"> </span>=<span class="w"> </span>1e-6
+<span class="w">  </span>density<span class="w"> </span>=<span class="w"> </span>1.5
+<span class="w">  </span>viscosity<span class="w"> </span>=<span class="w"> </span>2.4e-4
+<span class="w">  </span>boundaryTypeMap<span class="w"> </span>=<span class="w"> </span>inlet,<span class="w"> </span>wall,<span class="w"> </span>wall,<span class="w"> </span>wall,<span class="w"> </span>wall,<span class="w"> </span>outlet
+<span class="w">  </span>initialVelocity<span class="w"> </span>=<span class="w"> </span>1.5
+</pre></div>
+</div>
+<p>To access this value in the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> functions, call the <code class="docutils literal notranslate"><span class="pre">extract(String</span> <span class="pre">key,</span> <span class="pre">String</span> <span class="pre">value,</span> <span class="pre">T</span> <span class="pre">&amp;</span> <span class="pre">destination)</span></code>
+function on <code class="docutils literal notranslate"><span class="pre">nrs-&gt;par</span></code> as follows.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_Setup</span><span class="p">(</span><span class="n">nrs_t</span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">initial_Vz</span><span class="p">;</span>
+<span class="w">  </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">par</span><span class="o">-&gt;</span><span class="n">extract</span><span class="p">(</span><span class="s">&quot;velocity&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;initialvelocity&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">initial_Vz</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">mesh_t</span><span class="o">*</span><span class="w"> </span><span class="n">mesh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">mesh</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">num_quadrature_points</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">Np</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">Nelements</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">num_quadrature_points</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">U</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">U</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">U</span><span class="p">[</span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">initial_Vz</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The extracted user parameter can then be used throughout the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> functions, as well
+as propagated to the device kernels as described in Section
+<a class="reference internal" href="#defining-variables-for-device"><span class="std std-ref">Defining Variables to Access in Device Kernels</span></a>.</p>
+</section>
+<section id="defining-variables-to-access-in-device-kernels">
+<span id="defining-variables-for-device"></span><h2>Defining Variables to Access in Device Kernels<a class="headerlink" href="#defining-variables-to-access-in-device-kernels" title="Link to this heading"></a></h2>
+<p>The customization of a nekRS problem to a specific case is one with both the host-side
+user functions in the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file, as well as device-side user functions in the <code class="docutils literal notranslate"><span class="pre">.oudf</span></code>
+file. For convenience purposes, nekRS supports setting non-pointer-type variables in the
+<code class="docutils literal notranslate"><span class="pre">.udf</span></code> file that are accessible in the device kernels in the <code class="docutils literal notranslate"><span class="pre">.oudf</span></code> file. This section
+shows an example of this usage.</p>
+<p>Suppose that a device kernel requires a parameter representing a pressure gradient, which
+is then used to determine a forcing kernel. One option would be to pass that pressure gradient
+to the device kernel through its function parameters. The kernel in the <code class="docutils literal notranslate"><span class="pre">.oudf</span></code> file
+would look something like the following.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@kernel</span> <span class="n">void</span> <span class="n">myForcingKernel</span><span class="p">(</span><span class="n">const</span> <span class="n">dfloat</span> <span class="n">dp_dx</span><span class="p">,</span> <span class="o">/*</span> <span class="n">more</span> <span class="n">parameters</span> <span class="o">*/</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="n">foo</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dp_dx</span><span class="p">;</span>
+
+  <span class="o">//</span> <span class="n">do</span> <span class="n">something</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Alternatively, we can define a variable, <code class="docutils literal notranslate"><span class="pre">p_dp_dx</span></code>, that we set from the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file.
+While this variable propagation can be done in any of the user-defined functions that
+has <code class="docutils literal notranslate"><span class="pre">nrs</span></code> as an input parameter, for consistency purposes we will use the <code class="docutils literal notranslate"><span class="pre">UDF_LoadKernels</span></code>
+function for this purpose.</p>
+<p>To set <code class="docutils literal notranslate"><span class="pre">p_dp_dx</span></code> to 5.5 from the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file, write to the <code class="docutils literal notranslate"><span class="pre">kernelInfo</span></code> object
+on the <code class="docutils literal notranslate"><span class="pre">nrs</span></code> object. The <code class="docutils literal notranslate"><span class="pre">defines/&lt;p_name&gt;</span></code> syntax indicates that a variable on
+the device is being declared with a name <code class="docutils literal notranslate"><span class="pre">p_name</span></code> that will be accessible simply as
+<code class="docutils literal notranslate"><span class="pre">p_name</span></code> in the device kernels.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">UDF_LoadKernels</span><span class="p">(</span><span class="n">nrs_t</span> <span class="o">*</span> <span class="n">nrs</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">occa</span><span class="p">::</span><span class="n">properties</span> <span class="o">&amp;</span> <span class="n">kernelInfo</span> <span class="o">=</span> <span class="o">*</span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">kernelInfo</span><span class="p">;</span>
+
+  <span class="n">kernelInfo</span><span class="p">[</span><span class="s2">&quot;defines/p_dp_dx&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.5</span><span class="p">;</span>
+
+  <span class="o">//</span> <span class="n">other</span> <span class="n">stuff</span> <span class="n">related</span> <span class="n">to</span> <span class="n">loading</span> <span class="n">the</span> <span class="n">kernels</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then, the kernel would be simplified to the following. You will note that nothing needs
+to be passed through the kernel function arguments - <code class="docutils literal notranslate"><span class="pre">p_dp_dx</span></code> is simply available as
+if it were a local variable to the function.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="err">@</span><span class="n">kernel</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">myForcingKernel</span><span class="p">(</span><span class="cm">/* more parameters */</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">foo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_dp_dx</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// do something</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If you grep for <code class="docutils literal notranslate"><span class="pre">kernelInfo[&quot;defines</span></code> in the nekRS source code, you will see that
+this variable propagation features is also used extensively throughout a normal problem
+setup. For instance, the number of velocity fields to solve for is propagated to the device
+in the <code class="docutils literal notranslate"><span class="pre">nrsSetup</span></code> function.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">nrs_t</span><span class="o">*</span><span class="w"> </span><span class="nf">nrsSetup</span><span class="p">(</span><span class="n">MPI_Comm</span><span class="w"> </span><span class="n">comm</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">device</span><span class="w"> </span><span class="n">device</span><span class="p">,</span><span class="w"> </span><span class="n">setupAide</span><span class="w"> </span><span class="o">&amp;</span><span class="n">options</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">buildOnly</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// ...</span>
+
+<span class="w">  </span><span class="n">kernelInfo</span><span class="p">[</span><span class="s">&quot;defines/p_NVfields&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">NVfields</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Again, the convention is to precede all such propagated variables with the <code class="docutils literal notranslate"><span class="pre">p_</span></code> prefix.
+No list of all such variables propagated automatically within a nekRS simulation is
+maintained, so always check if the information you’d like to propagate is perhaps
+already automatically propagated.</p>
+</section>
+<section id="setting-boundary-conditions-with-device-kernels">
+<span id="boundary-conditions"></span><h2>Setting Boundary Conditions with Device Kernels<a class="headerlink" href="#setting-boundary-conditions-with-device-kernels" title="Link to this heading"></a></h2>
+<p>Because all nekRS solves are performed on the device, boundary conditions on the
+solution (which may change from time step to time step and be arbitrary functions
+of the solution itself) are also applied on the device. The types of boundary conditions
+on each solution field are specified in the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file with the <code class="docutils literal notranslate"><span class="pre">boundaryTypeMap</span></code>
+key.</p>
+</section>
+<section id="setting-custom-properties">
+<span id="custom-properties"></span><h2>Setting Custom Properties<a class="headerlink" href="#setting-custom-properties" title="Link to this heading"></a></h2>
+<p>Custom material properties can be set for the flow and passive scalar equations
+by assigning the <code class="docutils literal notranslate"><span class="pre">udf.properties</span></code> function pointer to a function with a signature
+that takes the <code class="docutils literal notranslate"><span class="pre">nrs</span></code> pointer to the nekRS solution object, the simulation time
+<code class="docutils literal notranslate"><span class="pre">time</span></code>, the velocity solution on the device <code class="docutils literal notranslate"><span class="pre">o_U</span></code>, the passive scalar solution
+on the device <code class="docutils literal notranslate"><span class="pre">o_S</span></code>, the flow material properties on the device <code class="docutils literal notranslate"><span class="pre">o_UProp</span></code>,
+and the passive scalar material properties on the device <code class="docutils literal notranslate"><span class="pre">o_SProp</span></code>.</p>
+<p>This section provides an example of setting <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\rho\)</span> for the flow
+equations and <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\rho C_p\)</span> for two passive scalars. Suppose our problem
+contains velocity, pressure, temperature, and two passive scalars. The <code class="docutils literal notranslate"><span class="pre">[VELOCITY]</span></code>,
+<code class="docutils literal notranslate"><span class="pre">[PRESSURE]</span></code>, <code class="docutils literal notranslate"><span class="pre">[TEMPERATURE]</span></code>, <code class="docutils literal notranslate"><span class="pre">[SCALAR01]</span></code>, and <code class="docutils literal notranslate"><span class="pre">[SCALAR02]</span></code> sections of the
+<code class="docutils literal notranslate"><span class="pre">.par</span></code> file would be as follows. Because we will be setting custom properties for
+the pressure, velocity, and first two passive scalars (temperature and <code class="docutils literal notranslate"><span class="pre">SCALAR01</span></code>),
+we can let nekRS assign the default values of unity to all properties for those
+governing equations until we override them in our custom property function. We still
+need to define the material properties for <code class="docutils literal notranslate"><span class="pre">SCALAR02</span></code>, however, because we will not
+be overriding those properties in our function.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">PRESSURE</span><span class="p">]</span>
+<span class="n">residualTol</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+<span class="p">[</span><span class="n">VELOCITY</span><span class="p">]</span>
+<span class="n">boundaryTypeMap</span> <span class="o">=</span> <span class="n">v</span><span class="p">,</span> <span class="n">O</span><span class="p">,</span> <span class="n">W</span>
+<span class="n">residualTol</span> <span class="o">=</span> <span class="mf">1e-8</span>
+
+<span class="p">[</span><span class="n">TEMPERATURE</span><span class="p">]</span>
+<span class="n">boundaryTypeMap</span> <span class="o">=</span> <span class="n">t</span><span class="p">,</span> <span class="n">O</span><span class="p">,</span> <span class="n">I</span>
+<span class="n">residualTol</span> <span class="o">=</span> <span class="mf">1e-8</span>
+
+<span class="p">[</span><span class="n">SCALAR01</span><span class="p">]</span>
+<span class="n">boundaryTypeMap</span> <span class="o">=</span> <span class="n">t</span><span class="p">,</span> <span class="n">O</span><span class="p">,</span> <span class="n">I</span>
+<span class="n">residualTol</span> <span class="o">=</span> <span class="mf">1e-8</span>
+
+<span class="p">[</span><span class="n">SCALAR02</span><span class="p">]</span>
+<span class="n">boundaryTypeMap</span> <span class="o">=</span> <span class="n">t</span><span class="p">,</span> <span class="n">O</span><span class="p">,</span> <span class="n">t</span>
+<span class="n">residualTol</span> <span class="o">=</span> <span class="mf">1e-7</span>
+<span class="n">conductivity</span> <span class="o">=</span> <span class="mf">3.5</span>
+<span class="n">rhoCp</span> <span class="o">=</span> <span class="mf">2e5</span>
+</pre></div>
+</div>
+<p>Also suppose that our problem contains conjugate heat transfer, such that some of
+the mesh is fluid while some of the mesh is solid.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">UDF_Setup</span></code>, we next need to assign an address to the <code class="docutils literal notranslate"><span class="pre">udf.properties</span></code> function
+pointer to a function with the correct signature where we eventually assign our custom
+properties. Our <code class="docutils literal notranslate"><span class="pre">UDF_Setup</span></code> function would be as follows.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_Setup</span><span class="p">(</span><span class="n">nrs_t</span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">udf</span><span class="p">.</span><span class="n">properties</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">material_props</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">material_props</span></code> is our name for a function in the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file that sets the
+material properties. Its name is arbitrary, but it must have the following signature.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">material_props</span><span class="p">(</span><span class="n">nrs_t</span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_U</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_S</span><span class="p">,</span>
+<span class="w">  </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_UProp</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_SProp</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// set the material properties</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This function is called <em>after</em> the solve has been performed on each time step, so the
+material properties are lagged by one time step with respect to the simulation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You must place the <code class="docutils literal notranslate"><span class="pre">material_props</span></code> function <em>before</em> <code class="docutils literal notranslate"><span class="pre">UDF_Setup</span></code> (and before any other
+function that uses <code class="docutils literal notranslate"><span class="pre">material_props</span></code>) in the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file in order for the just-in-time
+compilation to succeed.</p>
+</div>
+<p>Suppose we would like to set <span class="math notranslate nohighlight">\(\rho=1000.0\)</span> and <span class="math notranslate nohighlight">\(\mu=2.1e-5 e^{-\phi_0/500}(1+z)\)</span> for
+the flow equations; because only the fluid domain has flow, we do not need to set
+these properties on the solid part of the domain. For the first passive scalar
+<span class="math notranslate nohighlight">\(\phi_0\)</span>, we would
+like to set <span class="math notranslate nohighlight">\((\rho C_p)_f=2e3(1000+PV_x)\)</span> and <span class="math notranslate nohighlight">\(k_f=2.5\)</span> in the fluid
+domain, and <span class="math notranslate nohighlight">\((\rho C_p)_s=2e3(1000+PV_x)\)</span> and <span class="math notranslate nohighlight">\(k_s=3.5\)</span> in the solid domain.
+Here, <span class="math notranslate nohighlight">\(P\)</span> is the thermodynamic pressure and <span class="math notranslate nohighlight">\(V_x\)</span> is the <span class="math notranslate nohighlight">\(x\)</span>-component velocity.
+For the second passive scalar <span class="math notranslate nohighlight">\(\phi_1\)</span>, we would like to set
+<span class="math notranslate nohighlight">\(\rho C_p=0\)</span> and <span class="math notranslate nohighlight">\(k=5+\phi_0\)</span> in both the fluid and solid domains.
+Our material property function would be as follows. Note that these boundary conditions
+are selected just to be comprehensive and show all possible options for setting
+constant and non-constant properties with dependencies on properties - they do not
+necessarily represent any realistic physical case.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// declare all the kernels we will be writing</span>
+<span class="k">static</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">kernel</span><span class="w"> </span><span class="n">viscosityKernel</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">kernel</span><span class="w"> </span><span class="n">constantFillKernel</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">kernel</span><span class="w"> </span><span class="n">heatCapacityKernel</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">kernel</span><span class="w"> </span><span class="n">conductivityKernel</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">material_props</span><span class="p">(</span><span class="n">nrs_t</span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_U</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_S</span><span class="p">,</span>
+<span class="w">  </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_UProp</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_SProp</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">mesh_t</span><span class="o">*</span><span class="w"> </span><span class="n">mesh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">mesh</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// viscosity and density for the flow equations</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_mue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">o_UProp</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">dfloat</span><span class="p">));</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">first_scalar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">o_S</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">cds</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">dfloat</span><span class="p">));</span>
+<span class="w">  </span><span class="n">viscosityKernel</span><span class="p">(</span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">Nelements</span><span class="p">,</span><span class="w"> </span><span class="n">first_scalar</span><span class="p">,</span><span class="w"> </span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">o_z</span><span class="p">,</span><span class="w"> </span><span class="n">o_mue</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_rho</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">o_UProp</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">dfloat</span><span class="p">));</span>
+<span class="w">  </span><span class="n">constantFillKernel</span><span class="p">(</span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">Nelements</span><span class="p">,</span><span class="w"> </span><span class="mf">1000.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="cm">/* dummy */</span><span class="p">,</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">o_elementInfo</span><span class="p">,</span><span class="w"> </span><span class="n">o_rho</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// conductivity and rhoCp for the first passive scalar</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">scalar_number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_con</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">o_SProp</span><span class="p">.</span><span class="n">slice</span><span class="p">((</span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">scalar_number</span><span class="p">)</span><span class="w"> </span><span class="o">*</span>
+<span class="w">    </span><span class="n">cds</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">dfloat</span><span class="p">));</span>
+<span class="w">  </span><span class="n">constantFillKernel</span><span class="p">(</span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">Nelements</span><span class="p">,</span><span class="w"> </span><span class="mf">2.5</span><span class="p">,</span><span class="w"> </span><span class="mf">3.5</span><span class="p">,</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">o_elementInfo</span><span class="p">,</span><span class="w"> </span><span class="n">o_con</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_rhocp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">o_SProp</span><span class="p">.</span><span class="n">slice</span><span class="p">((</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">scalar_number</span><span class="p">)</span><span class="w"> </span><span class="o">*</span>
+<span class="w">    </span><span class="n">cds</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">dfloat</span><span class="p">));</span>
+<span class="w">  </span><span class="n">heatCapacityKernel</span><span class="p">(</span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">Nelements</span><span class="p">,</span><span class="w"> </span><span class="n">o_U</span><span class="p">,</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">o_P</span><span class="p">,</span><span class="w"> </span><span class="n">o_rhocp</span><span class="p">);</span>
+
+<span class="w">  </span><span class="c1">// conductivity and rhoCp for the second passive scalar</span>
+<span class="w">  </span><span class="n">scalar_number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_con_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">o_SProp</span><span class="p">.</span><span class="n">slice</span><span class="p">((</span><span class="mi">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">scalar_number</span><span class="p">)</span><span class="w"> </span><span class="o">*</span>
+<span class="w">    </span><span class="n">cds</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">dfloat</span><span class="p">));</span>
+<span class="w">  </span><span class="n">conductivityKernel</span><span class="p">(</span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">Nelements</span><span class="p">,</span><span class="w"> </span><span class="n">first_scalar</span><span class="p">,</span><span class="w"> </span><span class="n">o_con_2</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_rhocp_2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">o_SProp</span><span class="p">.</span><span class="n">slice</span><span class="p">((</span><span class="mi">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">scalar_number</span><span class="p">)</span><span class="w"> </span><span class="o">*</span>
+<span class="w">    </span><span class="n">cds</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">dfloat</span><span class="p">));</span>
+<span class="w">  </span><span class="n">constantFillKernel</span><span class="p">(</span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">Nelements</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">o_elementInfo</span><span class="p">,</span><span class="w"> </span><span class="n">o_rhocp_2</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">o_UProp</span></code> and <code class="docutils literal notranslate"><span class="pre">o_SProp</span></code> arrays hold all material
+property information for the flow equations and passive scalar equations, respectively.
+In this function, you see six “slice” operations performed on <code class="docutils literal notranslate"><span class="pre">o_UProp</span></code> and <code class="docutils literal notranslate"><span class="pre">o_SProp</span></code>
+in order to access the two individual properties (diffusive constant and time derivative constant)
+for the three equations (momentum, scalar 0, and scalar 1). The diffusive constant
+(<span class="math notranslate nohighlight">\(\mu\)</span> for the momentum equations and <span class="math notranslate nohighlight">\(k\)</span> for the passive scalar equations)
+is always listed first in these arrays, while the coefficient on the time derivative
+(<span class="math notranslate nohighlight">\(\rho C_p\)</span> for the momentum equations and <span class="math notranslate nohighlight">\(\rho C_p\)</span> for the passive scalar
+equations) is always listed second in these arrays.</p>
+<p>To further elaborate, <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\rho\)</span> are accessed as slices on <code class="docutils literal notranslate"><span class="pre">o_UProp</span></code>.
+Because viscosity is listed before density, the offset in the <code class="docutils literal notranslate"><span class="pre">o_UProp</span></code> array to get
+the viscosity is zero, while the offset to get the density is <code class="docutils literal notranslate"><span class="pre">nrs-&gt;fieldOffset</span></code>.
+<span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\rho C_p\)</span> are accessed as slices in <code class="docutils literal notranslate"><span class="pre">o_SProp</span></code>. Because the
+passive scalars are listed in order and the conductivity is listed first for each user,
+the offset in the <code class="docutils literal notranslate"><span class="pre">o_SProp</span></code> array to get the conductivity for the first passive scalar
+is zero, while the offset to get the heat capacity for the first passive scalar
+is <code class="docutils literal notranslate"><span class="pre">cds-&gt;fieldOffset</span></code>. Finally, the offset in the <code class="docutils literal notranslate"><span class="pre">o_SProp</span></code> array to get the conductivity
+for the second passive scalar is <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">cds-&gt;fieldOffset</span></code>, while the offset to get the
+heat capacity for the second passive scalar is <code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">*</span> <span class="pre">cds-&gt;fieldOffset</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">viscosityKernel</span></code>, <code class="docutils literal notranslate"><span class="pre">constantFillKernel</span></code>, <code class="docutils literal notranslate"><span class="pre">heatCapacityKernel</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">conductivityKernel</span></code> functions are all user-defined device kernels. These
+functions must be defined in the <code class="docutils literal notranslate"><span class="pre">.oudf</span></code> file, and the names are arbitrary. For each
+of these kernels, we declare them at the top of the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file. In order to link
+against our device kernels, we must instruct nekRS to use its just-in-time compilation
+to build those kernels. We do this in <code class="docutils literal notranslate"><span class="pre">UDF_LoadKernels</span></code> by calling the
+<code class="docutils literal notranslate"><span class="pre">udfBuildKernel</span></code> function for each kernel. The second argument to the <code class="docutils literal notranslate"><span class="pre">udfBuildKernel</span></code>
+function is the name of the kernel, which appears as the actual function name of
+the desired kernel in the <code class="docutils literal notranslate"><span class="pre">.oudf</span></code> file.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_LoadKernels</span><span class="p">(</span><span class="n">nrs_t</span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">viscosityKernel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">udfBuildKernel</span><span class="p">(</span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;viscosity&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">constantFillKernel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">udfBuildKernel</span><span class="p">(</span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;constantFill&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">heatCapacityKernel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">udfBuildKernel</span><span class="p">(</span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;heatCapacity&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="n">conductivityKernel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">udfBuildKernel</span><span class="p">(</span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;conductivity&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In order to write these device kernels, you will need some background in programming
+with <a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a>. Please consult the <a class="reference external" href="https://libocca.org/#/">OCCA documentation</a>
+before proceeding <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p>First, let’s look at the <code class="docutils literal notranslate"><span class="pre">constantFill</span></code> kernel. Here, we want to write a device kernel
+that assigns a constant value to a material property. So that we can have a general
+function, we will write this such that it can be used to set constant (but potentially
+different) properties in the fluid and solid phases for conjugate heat transfer
+applications.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Material properties for the flow equations (i.e. viscosity and density) do not
+<em>need</em> to be specified in the solid phase. If you define flow properties in solid
+regions, they are simply not used.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">constantFill</span></code> kernel is defined in the <code class="docutils literal notranslate"><span class="pre">.oudf</span></code> file as follows <a class="footnote-reference brackets" href="#f2" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>. <a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a>
+kernels operate on the device. As input parameters, they can take non-pointer objects
+on the host (such as <code class="docutils literal notranslate"><span class="pre">Nelements</span></code>, <code class="docutils literal notranslate"><span class="pre">fluid_val</span></code>, and <code class="docutils literal notranslate"><span class="pre">solid_val</span></code> in this example),
+as well as pointers to objects of type <code class="docutils literal notranslate"><span class="pre">occa::memory</span></code>, or device-side memory. The
+device-side objects are indicated with the <code class="docutils literal notranslate"><span class="pre">&#64;restrict</span></code> tag.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Device-side memory in nekRS is by convention preceded with a <code class="docutils literal notranslate"><span class="pre">o_</span></code> prefix in order
+to differentiate from the host-side objects. In the initialization of nekRS, most of
+the simulation data is copied over to the device. All calculations are done on the
+device. The device-side solution is then only copied back onto the host for the
+purpose of writing output files.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Because nekRS by default only copies the device-side solution back to the host for
+the purpose of writing output files, if you touch any host-side objects in your
+user-defined functions, such as in <code class="docutils literal notranslate"><span class="pre">UDF_ExecuteStep</span></code>, you must ensure
+that you only use the host-side objects after they have been copied from device back
+to the host. Otherwise, they would not be “up to date.” You can ensure that the host-
+side objects reflect the real-time nekRS solution by either (a) only touching the
+host-side solution on output writing steps (which can be determined based on the
+<code class="docutils literal notranslate"><span class="pre">nrs-&gt;isOutputStep</span></code> variable), or (b) calling the appropriate routines in nekRS
+to force data to be copied from the device back to the host. For the latter option,
+please refer to the <a class="reference internal" href="#copy-device-to-host"><span class="std std-ref">Copying From Device to Host</span></a> section.</p>
+</div>
+<p>For this example, we
+loop over all the elements. The <code class="docutils literal notranslate"><span class="pre">eInfo</span></code> parameter represents a mask, and takes a value
+of zero for solid elements and a value of unity for fluid elements. Next, we loop over
+all of the <a class="reference internal" href="glossary.html#term-GLL"><span class="xref std std-term">GLL</span></a> points on the element, or <code class="docutils literal notranslate"><span class="pre">p_Np</span></code>. This variable is set within
+nekRS to be the same as <code class="docutils literal notranslate"><span class="pre">mesh-&gt;Np</span></code> using the device variable feature described in
+the <a class="reference internal" href="#defining-variables-for-device"><span class="std std-ref">Defining Variables to Access in Device Kernels</span></a>
+section. This particular variable is always available, and you do not need to pass it
+explicitly into device functions. Finally, we set the value of the <code class="docutils literal notranslate"><span class="pre">property</span></code> to the
+value specified in the function parameters.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="err">@</span><span class="n">kernel</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">constantFill</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">dlong</span><span class="w"> </span><span class="n">Nelements</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">fluid_val</span><span class="p">,</span>
+<span class="w">          </span><span class="k">const</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">solid_val</span><span class="p">,</span><span class="w"> </span><span class="err">@</span><span class="kr">restrict</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">dlong</span><span class="o">*</span><span class="w"> </span><span class="n">eInfo</span><span class="p">,</span><span class="w"> </span><span class="err">@</span><span class="kr">restrict</span><span class="w"> </span><span class="n">dfloat</span><span class="o">*</span><span class="w"> </span><span class="n">property</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">dlong</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Nelements</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">e</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="err">@</span><span class="n">outer</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">is_solid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eInfo</span><span class="p">[</span><span class="n">e</span><span class="p">];</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">p_Np</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">n</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="err">@</span><span class="n">inner</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_Np</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+
+<span class="w">      </span><span class="n">property</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fluid_val</span><span class="p">;</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">is_solid</span><span class="p">)</span>
+<span class="w">        </span><span class="n">property</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">solid_val</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now, let’s look at the slightly more complex <code class="docutils literal notranslate"><span class="pre">conductivity</span></code> kernel. Here, our function
+signature is very different from that of the <code class="docutils literal notranslate"><span class="pre">constantFill</span></code> kernel. While we still
+pass the number of elements, we no longer need to check whether we are in a fluid element
+or a solid element, since the conductivity for the second passive scalar is going to be
+the same in both phases. All that we need to pass in is the coupled scalar <code class="docutils literal notranslate"><span class="pre">scalar</span></code>,
+or <span class="math notranslate nohighlight">\(\phi_0\)</span> in our material property correlation <span class="math notranslate nohighlight">\(k=5+\phi_0\)</span> that we listed
+earlier. The <code class="docutils literal notranslate"><span class="pre">property</span></code> passed in then should represent the conductivity we are setting.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="err">@</span><span class="n">kernel</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">conductivity</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">dlong</span><span class="w"> </span><span class="n">Nelements</span><span class="p">,</span><span class="w"> </span><span class="err">@</span><span class="kr">restrict</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">dfloat</span><span class="o">*</span><span class="w"> </span><span class="n">scalar</span><span class="p">,</span>
+<span class="w">          </span><span class="err">@</span><span class="kr">restrict</span><span class="w"> </span><span class="n">dfloat</span><span class="o">*</span><span class="w"> </span><span class="n">property</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">dlong</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Nelements</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">e</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="err">@</span><span class="n">outer</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">   </span><span class="p">{</span>
+<span class="w">     </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">p_Np</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">n</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="err">@</span><span class="n">inner</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">     </span><span class="p">{</span>
+<span class="w">       </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_Np</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+<span class="w">       </span><span class="k">const</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scalar</span><span class="p">[</span><span class="n">id</span><span class="p">];</span>
+
+<span class="w">       </span><span class="n">property</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">5.0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">scalar</span><span class="p">;</span>
+<span class="w">     </span><span class="p">}</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A key aspect of writing device kernels is that the device kernel can only operate on
+non-pointer objects or pointers to device memory. Whatever the form of your material properties,
+you just need to be sure to pass in all necessary information. Now, let’s look at the even
+more complex <code class="docutils literal notranslate"><span class="pre">viscosity</span></code> kernel. Here, we need to pass in the scalar <span class="math notranslate nohighlight">\(\phi_0\)</span> and the
+<span class="math notranslate nohighlight">\(z\)</span>-coordinate that appear in the viscosity model.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="err">@</span><span class="n">kernel</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">viscosity</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">dlong</span><span class="w"> </span><span class="n">Nelements</span><span class="p">,</span><span class="w"> </span><span class="err">@</span><span class="kr">restrict</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">dfloat</span><span class="o">*</span><span class="w"> </span><span class="n">scalar</span><span class="p">,</span>
+<span class="w">          </span><span class="err">@</span><span class="kr">restrict</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">dfloat</span><span class="o">*</span><span class="w"> </span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="err">@</span><span class="kr">restrict</span><span class="w"> </span><span class="n">dfloat</span><span class="o">*</span><span class="w"> </span><span class="n">property</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">   </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">dlong</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Nelements</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">e</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="err">@</span><span class="n">outer</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">   </span><span class="p">{</span>
+<span class="w">     </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">p_Np</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">n</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="err">@</span><span class="n">inner</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">     </span><span class="p">{</span>
+<span class="w">       </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_Np</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+<span class="w">       </span><span class="k">const</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">scalar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">scalar</span><span class="p">[</span><span class="n">id</span><span class="p">];</span>
+<span class="w">       </span><span class="k">const</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">z</span><span class="p">[</span><span class="n">id</span><span class="p">];</span>
+
+<span class="w">       </span><span class="n">property</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.1E-5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">scalar</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">500.0</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="mf">1.0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">z</span><span class="p">);</span>
+<span class="w">     </span><span class="p">}</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The final kernel that wraps up this example is the <code class="docutils literal notranslate"><span class="pre">heatCapacity</span></code> kernel.</p>
+</section>
+<section id="setting-custom-source-terms">
+<span id="custom-sources"></span><h2>Setting Custom Source Terms<a class="headerlink" href="#setting-custom-source-terms" title="Link to this heading"></a></h2>
+<p>Custom source terms can be added to the momentum conservation equation and/or the
+energy conservation equation by assigning the <code class="docutils literal notranslate"><span class="pre">udf.uEqnSource</span></code> and
+<code class="docutils literal notranslate"><span class="pre">udf.sEqnSource</span></code> function pointers, respectively, to functions with the appropriate signature.
+Each of these cases are described separately next. The process is conceptually very similar
+to the process for declaring custom properties in <a class="reference internal" href="#custom-properties"><span class="std std-ref">Setting Custom Properties</span></a>,
+so you may find it useful to first review that section.</p>
+<p>To set a custom source term for the momentum equation, you must assign the
+<code class="docutils literal notranslate"><span class="pre">udf.uEqnSource</span></code> function pointer to a function with a signature that takes the <code class="docutils literal notranslate"><span class="pre">nrs</span></code> pointer
+to the nekRS solution object, the simulation time <code class="docutils literal notranslate"><span class="pre">time</span></code>, the velocity solution on the device
+<code class="docutils literal notranslate"><span class="pre">o_U</span></code>, and the momentum source term on the device <code class="docutils literal notranslate"><span class="pre">o_FU</span></code>. In <code class="docutils literal notranslate"><span class="pre">UDF_Setup</span></code>,
+we need to assign an address to the <code class="docutils literal notranslate"><span class="pre">udf.uEqnSource</span></code> function pointer to a function
+with the correct signature where we will eventually compute a momentum source. Our
+<code class="docutils literal notranslate"><span class="pre">UDF_Setup</span></code> function would be as follows.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_Setup</span><span class="p">(</span><span class="n">nrs_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">udf</span><span class="p">.</span><span class="n">uEqnSource</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">custom_source</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">custom_source</span></code> is our name for a function in the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file that computes the
+momentum source. Its name is arbitrary, but it must have the following signature.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">custom_source</span><span class="p">(</span><span class="n">nrs_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_U</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_FU</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// compute the momentum source</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You must place the <code class="docutils literal notranslate"><span class="pre">custom_source</span></code> function _before_ <code class="docutils literal notranslate"><span class="pre">UDF_Setup</span></code> (and before any other
+function that uses <code class="docutils literal notranslate"><span class="pre">custom_source</span></code>) in the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file in order for the just-in-time
+compilation to success.</p>
+</div>
+<p>Suppose we would like to add a gravitational force to the <span class="math notranslate nohighlight">\(z\)</span> momentum equation, of form
+<span class="math notranslate nohighlight">\(-\rho_fg\)</span>. For the momentum equation, the source term is defined on a
+per-mass basis; in other words, we must provide the vector <span class="math notranslate nohighlight">\(\vec{f}\)</span> for a source with
+strong form <span class="math notranslate nohighlight">\(\rho\vec{f}\)</span>. Our custom source function would be as follows.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// declare all kernels we will be writing</span>
+<span class="k">static</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">kernel</span><span class="w"> </span><span class="n">constantFillKernel</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">custom_source</span><span class="p">(</span><span class="n">nrs_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_U</span><span class="p">,</span><span class="w"> </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_FU</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">mesh_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">mesh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">mesh</span><span class="p">;</span>
+
+<span class="w">  </span><span class="c1">// what momentum equation we want to add gravity to</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">component</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">constantFillKernel</span><span class="p">(</span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">mesh</span><span class="o">-&gt;</span><span class="n">Nelements</span><span class="p">,</span><span class="w"> </span><span class="mf">-9.81</span><span class="p">,</span><span class="w"> </span><span class="n">component</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">fieldOffset</span><span class="p">,</span><span class="w"> </span><span class="n">o_FU</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">constantFillKernel</span></code> is a user-defined device kernel. This function must now be defined
+in the <code class="docutils literal notranslate"><span class="pre">.oudf</span></code> file; the name is arbitrary. In order to link against our device kernels, we must
+also instruct nekRS to use its just-in-time compilation to build those kernels. We do this in
+<code class="docutils literal notranslate"><span class="pre">UDF_LoadKernels</span></code> by calling the <code class="docutils literal notranslate"><span class="pre">udfBuildKernel</span></code> function for the kernel. The second argument
+to the <code class="docutils literal notranslate"><span class="pre">udfBuildKernel</span></code> function is the name of the kernel, which appears as the actual function
+name of the desired kernel in the <code class="docutils literal notranslate"><span class="pre">.oudf</span></code> file.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_LoadKernels</span><span class="p">(</span><span class="n">nrs_t</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="n">constantFillKernel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">udfBuildKernel</span><span class="p">(</span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;constantFill&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">constantFill</span></code> kernel is now defined in the <code class="docutils literal notranslate"><span class="pre">.oudf</span></code> file as follows.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="err">@</span><span class="n">kernel</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">constantFill</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">dlong</span><span class="w"> </span><span class="n">Nelements</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">value</span><span class="p">,</span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">offset</span><span class="p">,</span><span class="w"> </span><span class="err">@</span><span class="kr">restrict</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">source</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">dlong</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Nelements</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">e</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="err">@</span><span class="n">outer</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">p_Np</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">n</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="err">@</span><span class="n">inner</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p_Np</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">offset</span><span class="p">;</span>
+<span class="w">      </span><span class="n">source</span><span class="p">[</span><span class="n">id</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="solving-in-non-dimensional-form">
+<span id="nondimensional"></span><h2>Solving in Non-Dimensional Form<a class="headerlink" href="#solving-in-non-dimensional-form" title="Link to this heading"></a></h2>
+<p>nekRS can solve its governing equations in either dimensional or non-dimensional form
+with careful attention to the specification of the material properties. To solve in
+<em>dimensional</em> form, the <code class="docutils literal notranslate"><span class="pre">density</span></code>, <code class="docutils literal notranslate"><span class="pre">viscosity</span></code>, <code class="docutils literal notranslate"><span class="pre">rhoCp</span></code>, <code class="docutils literal notranslate"><span class="pre">conductivity</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">diffusivity</span></code> parameters in the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file simply take dimensional forms. Solving
+in <em>non-dimensional</em> form requires only small changes from the dimensional approach.
+For the case of constant properties, the transformation to non-dimensional form is
+trivial, but slightly more care is required to solve in non-dimensional form with
+variable properties. These two approaches are described next with reference to
+the incompressible Navier-Stokes model described in <a class="reference internal" href="theory.html#ins-model"><span class="std std-ref">Incompressible Flow Model</span></a>.</p>
+<section id="constant-properties">
+<span id="constant-p"></span><h3>Constant Properties<a class="headerlink" href="#constant-properties" title="Link to this heading"></a></h3>
+<p>For the case of constant properties for <span class="math notranslate nohighlight">\(\rho\)</span>, <span class="math notranslate nohighlight">\(\mu\)</span>, <span class="math notranslate nohighlight">\(C_p\)</span>,
+and <span class="math notranslate nohighlight">\(k\)</span>, solution in non-dimensional form is achieved by simply specifying
+the non-dimensionalized version of these properties in the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file. To be explicit,
+for the momentum and energy conservation equations, the input parameters should be specified as:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rho</span></code><span class="math notranslate nohighlight">\(\rightarrow\)</span> <span class="math notranslate nohighlight">\(\rho^\dagger\equiv\frac{\rho}{\rho_0}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">viscosity</span></code><span class="math notranslate nohighlight">\(\rightarrow\)</span> <span class="math notranslate nohighlight">\(\frac{1}{Re}\mu^\dagger\equiv\frac{\mu_0}{\rho_0UL}\frac{\mu}{\mu_0}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rhoCp</span></code><span class="math notranslate nohighlight">\(\rightarrow\)</span> <span class="math notranslate nohighlight">\(\rho^\dagger C_p^\dagger\equiv\frac{\rho}{\rho_0}\frac{C_p}{C_{p,0}}\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">conductivity</span></code><span class="math notranslate nohighlight">\(\rightarrow\)</span> <span class="math notranslate nohighlight">\(\frac{1}{Pe}k^\dagger\equiv\frac{k_0}{\rho_0C_{p,0}UL}\frac{k}{k_0}\)</span></p></li>
+</ul>
+</div></blockquote>
+<p>For the <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> equations, if present, the input parameters for
+<em>both</em> the <span class="math notranslate nohighlight">\(k\)</span> equation should be specified as:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rho</span></code><span class="math notranslate nohighlight">\(\rightarrow\)</span><span class="math notranslate nohighlight">\(1.0\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">diffusivity</span></code><span class="math notranslate nohighlight">\(\rightarrow\)</span><span class="math notranslate nohighlight">\(\frac{1}{Re}\)</span></p></li>
+</ul>
+</div></blockquote>
+<p>Notice that these non-dimensional forms for the <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> equations
+are slightly simpler than the forms for the mean momentum and energy equations - this
+occurs because nekRS’s <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> model is restricted to constant-property
+flows, so we do not need to consider <span class="math notranslate nohighlight">\(\rho^\dagger\neq 1\)</span> or
+<span class="math notranslate nohighlight">\(\mu^\dagger\neq 1\)</span>.</p>
+<p>If a volumetric heat source is present, it must also be specified in non-dimensional form
+as</p>
+<div class="math notranslate nohighlight">
+\[\dot{q}^\dagger=\frac{\dot{q}}{\rho_0C_{p,0}U\Delta T/L}\]</div>
+<p>If a source term is present in the momentum conservation equation, that source term
+must also be specified in non-dimensional form as</p>
+<div class="math notranslate nohighlight">
+\[\mathbf s^\dagger=\frac{\mathbf s}{\rho_0U^2/L}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf s\)</span> is the source term in the dimensional equation, with dimensions
+of mass / square length / square time.</p>
+<p>In addition, all boundary conditions must also be non-dimensionalized appropriately.
+Some of the more common boundary conditions and their non-dimensionalizations are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>fixed velocity: <span class="math notranslate nohighlight">\(u_i^\dagger=\frac{u_i}{U}\)</span>, i.e. divide all dimensional
+velocity boundary values by <span class="math notranslate nohighlight">\(U\)</span></p></li>
+<li><p>fixed temperature: <span class="math notranslate nohighlight">\(T^\dagger=\frac{T-T_0}{\Delta T}\)</span>, i.e. from all dimensional temperature
+boundary values, first subtract <span class="math notranslate nohighlight">\(T_0\)</span> and then divide by <span class="math notranslate nohighlight">\(\Delta T\)</span></p></li>
+<li><p>fixed pressure: <span class="math notranslate nohighlight">\(P^\dagger=\frac{P}{\rho_0U^2}\)</span>, i.e. divide all dimensional
+pressure boundary values by <span class="math notranslate nohighlight">\(\rho_0U^2\)</span></p></li>
+<li><p>heat flux: <span class="math notranslate nohighlight">\(q^\dagger=\frac{q}{\rho_0C_{p,0}U\Delta T}\)</span>, i.e. divide all
+dimensional heat flux boundary values by <span class="math notranslate nohighlight">\(\rho_0C_{p,0}U\Delta T\)</span></p></li>
+<li><p>turbulent kinetic energy: <span class="math notranslate nohighlight">\(k^\dagger=\frac{k}{U^2}\)</span>, i.e. divide the dimensional
+turbulent kinetic energy by <span class="math notranslate nohighlight">\(U^2\)</span></p></li>
+<li><p>inverse specific dissipation rate: <span class="math notranslate nohighlight">\(\tau^\dagger=\frac{\tau}{L/U}\)</span>, i.e.
+divide the dimensional inverse specific dissipation rate by <span class="math notranslate nohighlight">\(L/U\)</span></p></li>
+</ul>
+</div></blockquote>
+<p>If the Prandtl number is unity, then because <span class="math notranslate nohighlight">\(Pe\equiv Re\ Pr\)</span>, the coefficient on the
+diffusion kernel in both the momentum and energy conservation equations will be the same
+(for the case of constant properties).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Several of the nekRS input files use syntax inherited from Nek5000 that allows shorthand
+expressions that are often convenient for the Reynolds and Peclet numbers, which appear
+as inverses in the non-dimensional equations. Specifying <code class="docutils literal notranslate"><span class="pre">conductivity</span> <span class="pre">=</span> <span class="pre">-1000</span></code> is
+shorthand for <code class="docutils literal notranslate"><span class="pre">conductivity</span> <span class="pre">=</span> <span class="pre">1/1000</span></code>.</p>
+</div>
+</section>
+<section id="variable-properties">
+<h3>Variable Properties<a class="headerlink" href="#variable-properties" title="Link to this heading"></a></h3>
+<p>For the case of variable properties, the procedure is similar to the case for constant
+properties, except that the properties must be specified in the <code class="docutils literal notranslate"><span class="pre">.oudf</span></code> kernels.
+It is best practice to simply omit the <code class="docutils literal notranslate"><span class="pre">rho</span></code>, <code class="docutils literal notranslate"><span class="pre">viscosity</span></code>, <code class="docutils literal notranslate"><span class="pre">rhoCp</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">conductivity</span></code> fields from the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file entirely. Then, in the <code class="docutils literal notranslate"><span class="pre">.oudf</span></code> kernels,
+you must include kernels that apply the variable properties in the same manner as in
+<a class="reference internal" href="#constant-p"><span class="std std-ref">Constant Properties</span></a>. See
+<a class="reference internal" href="#custom-properties"><span class="std std-ref">Setting Custom Properties</span></a> for more
+information on the kernel setup.</p>
+</section>
+</section>
+<section id="copying-from-device-to-host">
+<span id="copy-device-to-host"></span><h2>Copying From Device to Host<a class="headerlink" href="#copying-from-device-to-host" title="Link to this heading"></a></h2>
+<p>All solutions take place on the host, and data transfer of the solution back to the host
+must be manually performed by the user if you would like to access <code class="docutils literal notranslate"><span class="pre">nrs-&gt;U</span></code>, <code class="docutils literal notranslate"><span class="pre">nrs-&gt;p</span></code>,
+<code class="docutils literal notranslate"><span class="pre">nrs-&gt;cds-&gt;S</span></code>, or other solution objects, in host-side functions. To copy the solution
+from the device to the host, use the <code class="docutils literal notranslate"><span class="pre">nek_ocopyFrom(double</span> <span class="pre">time,</span> <span class="pre">int</span> <span class="pre">tstep)</span></code> routine in the
+<code class="docutils literal notranslate"><span class="pre">nekInterfaceAdapter.cpp</span></code> file. This function performs the following actions:</p>
+<p>1. Copy the nekRS solution from the nekRS device arrays to the nekRS host arrays - that is,
+<code class="docutils literal notranslate"><span class="pre">nrs-&gt;o_U</span></code> is copied to <code class="docutils literal notranslate"><span class="pre">nrs-&gt;U</span></code>, and so on. This
+allows you to access the solution on the host as <code class="docutils literal notranslate"><span class="pre">nrs-&gt;U</span></code>, <code class="docutils literal notranslate"><span class="pre">nrs-&gt;p</span></code>, <code class="docutils literal notranslate"><span class="pre">nrs-&gt;S</span></code>, etc.</p>
+<ol class="arabic simple" start="2">
+<li><p>Copy the nekRS solution from the nekRS host arrays to the Nek5000 backend arrays.</p></li>
+</ol>
+<p>If you only want to access the nekRS host side arays such as <code class="docutils literal notranslate"><span class="pre">nrs-&gt;U</span></code>, you can skip the
+second part by directly using <a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a> memory copy functions like the following, which
+copies from the device array <code class="docutils literal notranslate"><span class="pre">nrs-&gt;o_U</span></code> to the host array <code class="docutils literal notranslate"><span class="pre">nrs-&gt;U</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">o_U</span><span class="o">.</span><span class="n">copyTo</span><span class="p">(</span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">U</span><span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="writing-an-output-file">
+<span id="writing-output"></span><h2>Writing an Output File<a class="headerlink" href="#writing-an-output-file" title="Link to this heading"></a></h2>
+<p>nekRS will automatically write output files according to the <code class="docutils literal notranslate"><span class="pre">writeControl</span></code> criterion
+set in the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file. However, it may be desirable to have finer-grained control of
+output writing, such as if you want the solution at a specific time step, but that
+time step is not an integer multiple of <code class="docutils literal notranslate"><span class="pre">writeInterval</span></code>. In this case, you can force
+the output file writing to occur by calling the <code class="docutils literal notranslate"><span class="pre">outfld(double</span> <span class="pre">time,</span> <span class="pre">double</span> <span class="pre">outputTime)</span></code>
+function in the <code class="docutils literal notranslate"><span class="pre">nekrs</span></code> namespace. This function performs the following actions:</p>
+<ol class="arabic simple">
+<li><p>Copy the nekRS solution from the nekRS device arrays directly to the backend
+Nek5000 arrays.</p></li>
+<li><p>Write an output file.</p></li>
+</ol>
+<p>Note that this function is slightly different from the <code class="docutils literal notranslate"><span class="pre">nek_ocopyFrom</span></code> function described
+in the <a class="reference internal" href="#copy-device-to-host"><span class="std std-ref">Copying Device to Host</span></a> section. This function is
+solely intended for writing output, so no effort is expended in copying the device
+solution into the nekRS host arrays - that step is bypassed, and the device solution is
+copied straight into the Nek5000 backend arrays. The <code class="docutils literal notranslate"><span class="pre">nek_ocopyFrom</span></code> routine should really
+only be used if you require access to the nekRS solution arrays on the host, while the
+<code class="docutils literal notranslate"><span class="pre">outfld</span></code> routine should be used strictly for writing output files.</p>
+<p>By default, nekRS will only write the velocity, pressure, and temperature to an output file.
+However, you may have problem-specific fields that you want to view, such as <span class="math notranslate nohighlight">\(y^+\)</span>.
+To write other fields to files, nekRS re-uses the
+functions that are used to write the velocity, pressure, and temperature
+to write other fields. Note that this imposes limitations on both the dimensionality of fields that
+can be output, as well as how they are named in the output files.
+For example, suppose you would like to write three fields to a file:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">o_yPlus</span></code>, a device array that holds <span class="math notranslate nohighlight">\(y^+\)</span> values, and</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">o_Uavg</span></code>, a device array that holds a time-averaged velocity field, and</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">o_rst</span></code>, a device array that holds the one component of the Reynolds stress tensor.</p></li>
+</ul>
+</div></blockquote>
+<p>To write these three fields to an output file, use the <code class="docutils literal notranslate"><span class="pre">writeFld</span></code> function as follows.
+The <code class="docutils literal notranslate"><span class="pre">writeFld</span></code> function takes eight arguments, and has a signature
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">writeFld(const</span> <span class="pre">char*</span> <span class="pre">suf,</span> <span class="pre">dfloat</span> <span class="pre">t,</span> <span class="pre">int</span> <span class="pre">coords,</span> <span class="pre">int</span> <span class="pre">FP64,</span> <span class="pre">void*</span> <span class="pre">o_u,</span> <span class="pre">void*</span> <span class="pre">o_p,</span> <span class="pre">void*</span> <span class="pre">o_s,</span> <span class="pre">int</span> <span class="pre">NSf)</span></code>.
+In this example, the first parameter, <code class="docutils literal notranslate"><span class="pre">&quot;usr&quot;</span></code>, is a three-character
+prefix that will determine how the new output file is written. While the velocity, pressure,
+and temperatures are written to files named <code class="docutils literal notranslate"><span class="pre">case0.f&lt;time_step&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">case</span></code> is the case
+name and <code class="docutils literal notranslate"><span class="pre">&lt;time_step&gt;</span></code> is a six-digit number indicating the time step, any additional fields
+we will write are written to separate files. So for this example, we will write three fields
+to files named <code class="docutils literal notranslate"><span class="pre">usrcase0.f&lt;time_step&gt;</span></code>. The next three parameters simply indicate the time
+step that is being written, whether coordinates are written, and if the results should be written
+in double precision. Next, the three fields that are to be output are provided. The order is very
+important - the first of these fields must be of length <code class="docutils literal notranslate"><span class="pre">nrs-&gt;fieldOffset</span> <span class="pre">*</span> <span class="pre">nrs-&gt;NVfields</span></code>
+because it represents a component vector field (this is how velocity is written in the usual output
+file). The second of these fields must be of length <code class="docutils literal notranslate"><span class="pre">nrs-&gt;fieldOffset</span></code>, because it represents
+a non-component field (this is how pressure is written in the usual output file). Finally,
+the third of these fields must be of length <code class="docutils literal notranslate"><span class="pre">nrs-&gt;cds-&gt;fieldOffset</span> <span class="pre">*</span> <span class="pre">Nscalar</span></code>, because it
+represents a passive scalar field (this is how the passive scalars are written in the usual
+output file).</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_ExecuteStep</span><span class="p">(</span><span class="n">nrs_t</span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">tstep</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// get o_yPlus, o_Uavg, and o_rst in the scope of this function</span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">coords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">FP64</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">Nscalar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">cds</span><span class="o">-&gt;</span><span class="n">Nscalar</span><span class="p">;</span>
+<span class="w">  </span><span class="n">writeFld</span><span class="p">(</span><span class="s">&quot;usr&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">coords</span><span class="p">,</span><span class="w"> </span><span class="n">FP64</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_Uavg</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_rst</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_yPlus</span><span class="p">,</span><span class="w"> </span><span class="n">Nscalar</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">writeFld</span></code> can only write data of type <code class="docutils literal notranslate"><span class="pre">dfloat</span></code>. So, if you want to write an
+integer field to a field, you must first convert that data to <code class="docutils literal notranslate"><span class="pre">dfloat</span></code>.</p>
+</div>
+<p>nekRS’s output system does not have any means by which to understand <em>what</em> these fields
+represent. Therefore, the names of these fields in the output file will be <code class="docutils literal notranslate"><span class="pre">velocity</span></code>,
+<code class="docutils literal notranslate"><span class="pre">pressure</span></code>, and <code class="docutils literal notranslate"><span class="pre">temperature</span></code>, even if those names have no relationship to what is
+being output. Therefore, for this example, the <code class="docutils literal notranslate"><span class="pre">usrcase0.f&lt;time_step&gt;</span></code> files will
+contain the following:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">o_Uavg</span></code> is written to a field named <code class="docutils literal notranslate"><span class="pre">velocity</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">o_rst</span></code> is written to a field named <code class="docutils literal notranslate"><span class="pre">pressure</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">o_yPlus</span></code> is written to a field named <code class="docutils literal notranslate"><span class="pre">temperature</span></code></p></li>
+</ul>
+<p>nekRS’s output system requires additional maneuvering if you wish to output
+more than one of each of each of these three categories of fields. For instance, suppose
+you want to output three different fields, <code class="docutils literal notranslate"><span class="pre">o_field1</span></code>, <code class="docutils literal notranslate"><span class="pre">o_field2</span></code>, and <code class="docutils literal notranslate"><span class="pre">o_field3</span></code>,
+each of size <code class="docutils literal notranslate"><span class="pre">nrs-&gt;fieldOffset</span></code>. Because only one input argument to <code class="docutils literal notranslate"><span class="pre">writeFld</span></code> can have
+these dimensions, three separate output files need to be written, and in <em>each</em> of these
+files, our field of interest is named <code class="docutils literal notranslate"><span class="pre">pressure</span></code>. To fill the other two field arguments
+of the <code class="docutils literal notranslate"><span class="pre">writeFld</span></code> function, a void pointer is passed in to indicate that neither of
+the other two fields are written.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">UDF_ExecuteStep</span><span class="p">(</span><span class="n">nrs_t</span><span class="o">*</span><span class="w"> </span><span class="n">nrs</span><span class="p">,</span><span class="w"> </span><span class="n">dfloat</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">tstep</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="c1">// get o_field1, o_field2, o_field3 in the scope of this function</span>
+
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">coords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="n">FP64</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">Nscalar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nrs</span><span class="o">-&gt;</span><span class="n">cds</span><span class="o">-&gt;</span><span class="n">Nscalar</span><span class="p">;</span>
+<span class="w">  </span><span class="n">occa</span><span class="o">::</span><span class="n">memory</span><span class="w"> </span><span class="n">o_null</span><span class="p">;</span>
+<span class="w">  </span><span class="n">writeFld</span><span class="p">(</span><span class="s">&quot;fl1&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">coords</span><span class="p">,</span><span class="w"> </span><span class="n">FP64</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_null</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_field1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_null</span><span class="p">,</span><span class="w"> </span><span class="n">Nscalar</span><span class="p">);</span>
+<span class="w">  </span><span class="n">writeFld</span><span class="p">(</span><span class="s">&quot;fl2&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">coords</span><span class="p">,</span><span class="w"> </span><span class="n">FP64</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_null</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_field2</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_null</span><span class="p">,</span><span class="w"> </span><span class="n">Nscalar</span><span class="p">);</span>
+<span class="w">  </span><span class="n">writeFld</span><span class="p">(</span><span class="s">&quot;fl3&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">time</span><span class="p">,</span><span class="w"> </span><span class="n">coords</span><span class="p">,</span><span class="w"> </span><span class="n">FP64</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_null</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_field3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">o_null</span><span class="p">,</span><span class="w"> </span><span class="n">Nscalar</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This will write three output files, which contain the following.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fl1case0.f&lt;time_step&gt;</span></code> contains <code class="docutils literal notranslate"><span class="pre">o_field1</span></code>, but named <code class="docutils literal notranslate"><span class="pre">pressure</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fl2case0.f&lt;time_step&gt;</span></code> contains <code class="docutils literal notranslate"><span class="pre">o_field2</span></code>, but named <code class="docutils literal notranslate"><span class="pre">pressure</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fl3case0.f&lt;time_step&gt;</span></code> contains <code class="docutils literal notranslate"><span class="pre">o_field3</span></code>, but named <code class="docutils literal notranslate"><span class="pre">pressure</span></code></p></li>
+</ul>
+</section>
+<section id="visualizing-output-files">
+<h2>Visualizing Output Files<a class="headerlink" href="#visualizing-output-files" title="Link to this heading"></a></h2>
+<p>nekRS output files all have the form <code class="docutils literal notranslate"><span class="pre">&lt;case0&gt;.fld&lt;n&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;case&gt;</span></code> is the case
+name and <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code> is a five-digit number indicating the number of the output file (each output
+file represents a single time step that is output according to the settings for
+<code class="docutils literal notranslate"><span class="pre">writeControl</span></code> and <code class="docutils literal notranslate"><span class="pre">writeInterval</span></code> in the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file). These output files are in a custom
+binary format that requires an additional postprocessing step in order to visualize in Paraview.
+In the directory where the case files are located, run the <code class="docutils literal notranslate"><span class="pre">visnek</span></code> script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>user$ visnek case
+</pre></div>
+</div>
+<p>which will create a <code class="docutils literal notranslate"><span class="pre">case.nek5000</span></code> file that is viewable in Paraview. See
+<a class="reference internal" href="#scripts"><span class="std std-ref">Building the Nek5000 Tool Scripts</span></a> for instructions on compiling the <code class="docutils literal notranslate"><span class="pre">visnek</span></code> program.</p>
+</section>
+<section id="calculating-the-distance-to-a-wall">
+<h2>Calculating the Distance to a Wall<a class="headerlink" href="#calculating-the-distance-to-a-wall" title="Link to this heading"></a></h2>
+<p>nekRS allows users to access many Nek5000 “backends” through the (optional)
+<code class="docutils literal notranslate"><span class="pre">&lt;case&gt;.usr</span></code> file. A common use case is to calculate the distance from each
+<a class="reference internal" href="glossary.html#term-GLL"><span class="xref std std-term">GLL</span></a> point to a boundary, such as for setting initial conditions for turbulent quantities
+or other closures. The procedure to compute and then use these values is as follows.</p>
+<p>First, in the <code class="docutils literal notranslate"><span class="pre">usrdat2</span></code> subroutine, make sure that all boundaries for which
+you want to compute the distance for are marked as “wall” boundaries in the <code class="docutils literal notranslate"><span class="pre">cbc</span></code> array.
+In the example shown below, we assume that
+the mesh already has sidesets defined in it (assigned through Cubit/gmsh/however else
+the mesh was created). We then loop over all the <a class="reference internal" href="glossary.html#term-GLL"><span class="xref std std-term">GLL</span></a> points and determine
+if the point is on the boundary of interest by checking if the boundary ID is
+equal to the sideset of interest. This is done by checking the absolute difference
+between the <code class="docutils literal notranslate"><span class="pre">bc</span></code> array and the sideset value of interest (in this example, the sideset
+is 7). If the boundary ID matches the sideset of interest, then we set the <code class="docutils literal notranslate"><span class="pre">cbc</span></code> array
+to <code class="docutils literal notranslate"><span class="pre">W</span></code>, or the character that indicates a no-slip wall boundary.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subroutine</span> <span class="n">usrdat2</span>
+<span class="n">include</span> <span class="s1">&#39;SIZE&#39;</span>
+<span class="n">include</span> <span class="s1">&#39;TOTAL&#39;</span>
+<span class="n">integer</span> <span class="n">e</span><span class="p">,</span><span class="n">f</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="n">lx1</span><span class="o">*</span><span class="n">ly1</span><span class="o">*</span><span class="n">lz1</span><span class="o">*</span><span class="n">nelv</span>
+<span class="n">nxz</span> <span class="o">=</span> <span class="n">nx1</span><span class="o">*</span><span class="n">nz1</span>
+<span class="n">nface</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">ldim</span>
+
+<span class="n">do</span> <span class="n">iel</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nelv</span>
+<span class="n">do</span> <span class="n">ifc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">ndim</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">((</span><span class="n">bc</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mf">7.0</span><span class="p">))</span><span class="o">.</span><span class="n">lt</span><span class="mf">.1e-4</span><span class="p">)</span> <span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">=</span> <span class="s1">&#39;W  &#39;</span>
+<span class="n">enddo</span>
+<span class="n">enddo</span>
+
+<span class="k">return</span>
+<span class="n">end</span>
+</pre></div>
+</div>
+<p>In other words,
+if your wall boundaries were instead boundaries 3 and 4, the <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">(abs...)</span></code> lines
+in the above example would become:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">((</span><span class="n">bc</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mf">3.0</span><span class="p">))</span><span class="o">.</span><span class="n">lt</span><span class="mf">.1e-4</span><span class="p">)</span> <span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">=</span> <span class="s1">&#39;W  &#39;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">((</span><span class="n">bc</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mf">4.0</span><span class="p">))</span><span class="o">.</span><span class="n">lt</span><span class="mf">.1e-4</span><span class="p">)</span> <span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">=</span> <span class="s1">&#39;W  &#39;</span>
+</pre></div>
+</div>
+<p>Next, in the <code class="docutils literal notranslate"><span class="pre">usrdat3</span></code> subroutine, you simply need to call the
+<code class="docutils literal notranslate"><span class="pre">dist</span></code> function, which loops over all boundaries with <code class="docutils literal notranslate"><span class="pre">W</span></code> type
+and determines the distance of all <a class="reference internal" href="glossary.html#term-GLL"><span class="xref std std-term">GLL</span></a> points to those boundaries.
+The result of the calculation should be stored into the <code class="docutils literal notranslate"><span class="pre">nrs_scptr(1)</span></code> pointer,
+which is then what we will access in the <code class="docutils literal notranslate"><span class="pre">.udf</span></code> file.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subroutine</span> <span class="n">usrdat3</span>
+<span class="n">include</span> <span class="s1">&#39;SIZE&#39;</span>
+<span class="n">include</span> <span class="s1">&#39;TOTAL&#39;</span>
+
+<span class="n">common</span> <span class="o">/</span><span class="n">scrach_o1</span><span class="o">/</span>
+ <span class="n">w1</span><span class="p">(</span><span class="n">lx1</span><span class="o">*</span><span class="n">ly1</span><span class="o">*</span><span class="n">lz1</span><span class="o">*</span><span class="n">lelv</span><span class="p">)</span>
+<span class="p">,</span><span class="n">w2</span><span class="p">(</span><span class="n">lx1</span><span class="o">*</span><span class="n">ly1</span><span class="o">*</span><span class="n">lz1</span><span class="o">*</span><span class="n">lelv</span><span class="p">)</span>
+<span class="p">,</span><span class="n">w3</span><span class="p">(</span><span class="n">lx1</span><span class="o">*</span><span class="n">ly1</span><span class="o">*</span><span class="n">lz1</span><span class="o">*</span><span class="n">lelv</span><span class="p">)</span>
+<span class="p">,</span><span class="n">w4</span><span class="p">(</span><span class="n">lx1</span><span class="o">*</span><span class="n">ly1</span><span class="o">*</span><span class="n">lz1</span><span class="o">*</span><span class="n">lelv</span><span class="p">)</span>
+<span class="p">,</span><span class="n">w5</span><span class="p">(</span><span class="n">lx1</span><span class="o">*</span><span class="n">ly1</span><span class="o">*</span><span class="n">lz1</span><span class="o">*</span><span class="n">lelv</span><span class="p">)</span>
+
+<span class="n">common</span> <span class="o">/</span><span class="n">scrach_o2</span><span class="o">/</span>
+ <span class="n">ywd</span><span class="p">(</span><span class="n">lx1</span><span class="p">,</span><span class="n">ly1</span><span class="p">,</span><span class="n">lz1</span><span class="p">,</span><span class="n">lelv</span><span class="p">)</span>
+
+<span class="n">COMMON</span> <span class="o">/</span><span class="n">NRSSCPTR</span><span class="o">/</span> <span class="n">nrs_scptr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">integer</span><span class="o">*</span><span class="mi">8</span>         <span class="n">nrs_scptr</span>
+
+<span class="n">call</span> <span class="n">distf</span><span class="p">(</span><span class="n">ywd</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="s1">&#39;W  &#39;</span><span class="p">,</span><span class="n">w1</span><span class="p">,</span><span class="n">w2</span><span class="p">,</span><span class="n">w3</span><span class="p">,</span><span class="n">w4</span><span class="p">,</span><span class="n">w5</span><span class="p">)</span>
+
+<span class="n">nrs_scptr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">loc</span><span class="p">(</span><span class="n">ywd</span><span class="p">)</span>
+
+<span class="k">return</span>
+<span class="n">end</span>
+</pre></div>
+</div>
+<p>In other words, if your wall boundaries were instead boundaries 3 and 4, the
+<code class="docutils literal notranslate"><span class="pre">call</span> <span class="pre">distf...</span></code> lines in the above example would become:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">call</span> <span class="n">distf</span><span class="p">(</span><span class="n">ywd</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="s1">&#39;W  &#39;</span><span class="p">,</span><span class="n">w1</span><span class="p">,</span><span class="n">w2</span><span class="p">,</span><span class="n">w3</span><span class="p">,</span><span class="n">w4</span><span class="p">,</span><span class="n">w5</span><span class="p">)</span>
+<span class="n">call</span> <span class="n">distf</span><span class="p">(</span><span class="n">ywd</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="s1">&#39;W  &#39;</span><span class="p">,</span><span class="n">w1</span><span class="p">,</span><span class="n">w2</span><span class="p">,</span><span class="n">w3</span><span class="p">,</span><span class="n">w4</span><span class="p">,</span><span class="n">w5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then, you can access the results of the distance-to-wall calculation in the <code class="docutils literal notranslate"><span class="pre">.udf</span></code>
+by assigning a pointer to the <code class="docutils literal notranslate"><span class="pre">nek::scPtr(1)</span></code> array. Note that this call must be
+within <code class="docutils literal notranslate"><span class="pre">UDF_ExecuteStep</span></code> so that the Nek5000 backend will have been called first.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">UDF_ExecuteStep</span><span class="p">(</span><span class="n">nrs_t</span> <span class="o">*</span> <span class="n">nrs</span><span class="p">,</span> <span class="n">dfloat</span> <span class="n">time</span><span class="p">,</span> <span class="nb">int</span> <span class="n">tstep</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">double</span> <span class="o">*</span> <span class="n">wall_distance</span> <span class="o">=</span> <span class="p">(</span><span class="n">double</span> <span class="o">*</span><span class="p">)</span> <span class="n">nek</span><span class="p">::</span><span class="n">scPtr</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+  <span class="o">//</span> <span class="n">then</span><span class="p">,</span> <span class="n">you</span> <span class="n">can</span> <span class="n">copy</span> <span class="n">it</span> <span class="n">into</span> <span class="n">some</span> <span class="n">device</span><span class="o">-</span><span class="n">side</span> <span class="n">memory</span> <span class="n">so</span> <span class="n">you</span> <span class="n">can</span> <span class="n">use</span> <span class="n">it</span> <span class="ow">in</span>
+  <span class="o">//</span> <span class="n">BCs</span> <span class="k">if</span> <span class="n">you</span> <span class="n">want</span>
+  <span class="n">auto</span> <span class="n">mesh</span> <span class="o">=</span> <span class="n">nrs</span><span class="o">-&gt;</span><span class="n">meshV</span><span class="p">;</span>
+  <span class="nb">int</span> <span class="n">n_gll_points</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">-&gt;</span><span class="n">Np</span> <span class="o">*</span> <span class="n">mesh</span><span class="o">-&gt;</span><span class="n">Nelements</span><span class="p">;</span>
+  <span class="nb">int</span> <span class="n">write_location</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="o">//</span> <span class="s2">&quot;slice&quot;</span> <span class="n">into</span> <span class="n">which</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">write</span><span class="p">,</span> <span class="ow">in</span> <span class="n">case</span> <span class="n">nrs</span><span class="o">-&gt;</span><span class="n">o_usrwrk</span> <span class="n">holds</span> <span class="n">other</span> <span class="n">info</span>
+  <span class="n">nrs</span><span class="o">-&gt;</span><span class="n">o_usrwrk</span><span class="o">.</span><span class="n">copyFrom</span><span class="p">(</span><span class="n">wall_distance</span><span class="p">,</span> <span class="n">n_gll_points</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">dfloat</span><span class="p">),</span> <span class="n">write_location</span> <span class="o">*</span> <span class="n">nrs</span><span class="o">-&gt;</span><span class="n">fieldOffset</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">dfloat</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="periodic-boundary-conditions">
+<h2>Periodic Boundary Conditions<a class="headerlink" href="#periodic-boundary-conditions" title="Link to this heading"></a></h2>
+<p>NekRS supports periodic boundary conditions. To set up a periodic case, first
+you need to run <code class="docutils literal notranslate"><span class="pre">exo2nek</span></code> to establish the pairings between the periodic sidesets.
+All this information will be prompted on the screen by <code class="docutils literal notranslate"><span class="pre">exo2nek</span></code>;
+You will provide the sideset IDs of the periodic boundaries, a search tolerance
+for identifying paired sides, and a translation vector that points from one of the
+paired sidesets to the other. For example, if you want to have one periodic surface
+that is a <span class="math notranslate nohighlight">\(z\)</span>-plane at <span class="math notranslate nohighlight">\(z=-1.0\)</span> that is paired to another <span class="math notranslate nohighlight">\(z\)</span>-plane
+at <span class="math notranslate nohighlight">\(z=1.0\)</span>, the translation vector would be <span class="math notranslate nohighlight">\((0.0, 0.0, 2.0)\)</span>.</p>
+<p>After generating the mesh, you then need to modify the sideset IDs inside the
+<code class="docutils literal notranslate"><span class="pre">usrdat2</span></code> function. Any boundary that is now periodic, you need to set
+<code class="docutils literal notranslate"><span class="pre">boundaryID(ifc,iel)</span></code> to 0. For all non-periodic boundaries, you need to
+“renormalize” those boundaries to “begin counting” from 1. For example, consider
+an original (non-periodic) mesh with sidesets 1, 2, 3, and 4. You run <code class="docutils literal notranslate"><span class="pre">exo2nek</span></code>
+and set up sidesets 2 and 3 as periodic. Then, in the code snippet below, you
+would reset sidesets 2 and 3 in <code class="docutils literal notranslate"><span class="pre">boundaryID</span></code> to zero. For the remaining two
+boundaries (originally 1 and 4), you need to renormalized those to boundaries
+1 and 2 (because NekRS wants the boundaries to be ordered sequentially beginning
+from 1).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subroutine</span> <span class="n">usrdat2</span>
+<span class="n">include</span> <span class="s1">&#39;SIZE&#39;</span>
+<span class="n">include</span> <span class="s1">&#39;TOTAL&#39;</span>
+<span class="n">integer</span> <span class="n">e</span><span class="p">,</span><span class="n">f</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="n">lx1</span><span class="o">*</span><span class="n">ly1</span><span class="o">*</span><span class="n">lz1</span><span class="o">*</span><span class="n">nelv</span>
+<span class="n">nxz</span> <span class="o">=</span> <span class="n">nx1</span><span class="o">*</span><span class="n">nz1</span>
+<span class="n">nface</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">ldim</span>
+
+<span class="n">do</span> <span class="n">iel</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nelt</span>
+<span class="n">do</span> <span class="n">ifc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">ndim</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">boundaryID</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">)</span><span class="o">.</span><span class="n">eq</span><span class="o">.</span> <span class="mi">1</span><span class="p">)</span> <span class="n">then</span>
+     <span class="n">boundaryID</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span>
+   <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">boundaryID</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">)</span><span class="o">.</span><span class="n">eq</span><span class="o">.</span> <span class="mi">2</span><span class="p">)</span> <span class="n">then</span>
+     <span class="n">boundaryID</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
+   <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">boundaryID</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">)</span> <span class="o">.</span><span class="n">eq</span><span class="o">.</span> <span class="mi">3</span><span class="p">)</span> <span class="n">then</span>
+     <span class="n">boundaryID</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span>
+   <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">boundaryID</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">)</span> <span class="o">.</span><span class="n">eq</span><span class="o">.</span> <span class="mi">4</span><span class="p">)</span> <span class="n">then</span>
+     <span class="n">boundaryID</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">)</span> <span class="o">=</span> <span class="mi">2</span>
+   <span class="n">endif</span>
+<span class="n">enddo</span>
+<span class="n">enddo</span>
+
+<span class="k">return</span>
+<span class="n">end</span>
+</pre></div>
+</div>
+<p>Then, in the other case files, you do not need any boundary conditions for the periodic
+boundaries - for instance, in the <code class="docutils literal notranslate"><span class="pre">&lt;case&gt;.par</span></code> file for this example, the boundary conditions
+set in <code class="docutils literal notranslate"><span class="pre">boundaryTypeMap</span></code> would only display the boundary conditions for the non-periodic
+boundaries (and similarly in the <code class="docutils literal notranslate"><span class="pre">&lt;case&gt;.oudf</span></code> file). Finally, in order to enforce periodic
+flow with a constant flow rate, specify the <code class="docutils literal notranslate"><span class="pre">constFlowRate</span></code> parameter in the <code class="docutils literal notranslate"><span class="pre">&lt;case&gt;.par</span></code>
+file, such as</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">GENERAL</span><span class="p">]</span>
+  <span class="n">constFlowRate</span> <span class="o">=</span> <span class="n">meanVelocity</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">direction</span><span class="o">=</span><span class="n">Z</span>
+</pre></div>
+</div>
+</section>
+<section id="stamping-initial-conditions">
+<h2>Stamping Initial Conditions<a class="headerlink" href="#stamping-initial-conditions" title="Link to this heading"></a></h2>
+<p>For many periodic flows, you can save significant computing time by solving the flow equations
+on a shorter-height mesh, and then “stamping” that solution onto a full-height mesh (where you
+might then be solving for passive scalar transport). NekRS allows you to “stamp” a partial-height
+solution onto a full-height mesh using the <code class="docutils literal notranslate"><span class="pre">gfldr</span></code> utility. To do so, you simply need to call
+the <code class="docutils literal notranslate"><span class="pre">gfldr</span></code> function in a loop inside of <code class="docutils literal notranslate"><span class="pre">userchk()</span></code>. Below, <code class="docutils literal notranslate"><span class="pre">nd</span></code> represents the number
+of times you want to stamp a short-height solution to obtain the full-height case and <code class="docutils literal notranslate"><span class="pre">delta</span></code>
+represents the height of one short-height domain. So, the example below would represent
+a previous solution (<code class="docutils literal notranslate"><span class="pre">short.fld</span></code>) on a short-height domain of height 62.42, that you want to stamp five times
+onto a new mesh that has a height of 312.1.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subroutine</span> <span class="n">userchk</span><span class="p">()</span>
+<span class="n">include</span> <span class="s1">&#39;SIZE&#39;</span>
+<span class="n">include</span> <span class="s1">&#39;TOTAL&#39;</span>
+
+
+<span class="n">ntot</span> <span class="o">=</span> <span class="n">lx1</span><span class="o">*</span><span class="n">ly1</span><span class="o">*</span><span class="n">lz1</span><span class="o">*</span><span class="n">nelv</span>
+
+<span class="n">do</span> <span class="n">nd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="mi">5</span>
+
+  <span class="n">delta</span> <span class="o">=</span> <span class="mf">62.421731741003335</span>
+
+  <span class="n">do</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span><span class="n">ntot</span>
+   <span class="n">zm1</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">zm1</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">delta</span><span class="o">*</span><span class="n">nd</span>
+  <span class="n">enddo</span>
+
+  <span class="n">call</span> <span class="n">gfldr</span><span class="p">(</span><span class="s1">&#39;short.fld&#39;</span><span class="p">)</span>
+
+  <span class="n">do</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span><span class="n">ntot</span>
+   <span class="n">zm1</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">zm1</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">delta</span><span class="o">*</span><span class="n">nd</span>
+  <span class="n">enddo</span>
+
+<span class="n">enddo</span>
+
+<span class="k">return</span>
+<span class="n">end</span>
+</pre></div>
+</div>
+<p class="rubric">Footnotes</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="f1" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>There are many different ways to write <a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a> kernels. The examples shown here are by no means the most optimal form, and are only intended for illustration.</p>
+</aside>
+<aside class="footnote brackets" id="f2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a> kernels are programmed in OKL, a thin extension to C++. Unfortunately, the <code class="docutils literal notranslate"><span class="pre">pygmentize</span></code> Python syntax highlighter does not recognize OKL syntax, so these examples here lack syntax highlighting.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorials.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="plugins.html" class="btn btn-neutral float-right" title="Plugins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Huanxia Wei.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

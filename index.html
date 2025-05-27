@@ -1,0 +1,204 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The nekRS Computational Fluid Dynamics Code &mdash; PyFTLE3D 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=2709fde1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Requirements" href="requirements.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            PyFTLE3D
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="input_files.html">The nekRS Input Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="commonly_used_variables.html">Commonly-Used Variables in nekRS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiling.html">Compiling nekRS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="detailed_usage.html">FAQs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="just_in_time_compilation.html">Just-in-time Compilation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doxygen.html">Doxygen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">PyFTLE3D</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">The nekRS Computational Fluid Dynamics Code</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-nekrs-computational-fluid-dynamics-code">
+<h1>The nekRS Computational Fluid Dynamics Code<a class="headerlink" href="#the-nekrs-computational-fluid-dynamics-code" title="Link to this heading"></a></h1>
+<p>nekRS is a computational fluid dynamics code developed at <a class="reference internal" href="glossary.html#term-ANL"><span class="xref std std-term">ANL</span></a>, <a class="reference internal" href="glossary.html#term-UIUC"><span class="xref std std-term">UIUC</span></a>, and <a class="reference internal" href="glossary.html#term-PSU"><span class="xref std std-term">PSU</span></a>.
+nekRS aims to leverage the present trend in <a class="reference internal" href="glossary.html#term-GPU"><span class="xref std std-term">GPU</span></a>-based <a class="reference internal" href="glossary.html#term-HPC"><span class="xref std std-term">HPC</span></a> systems to perform
+<a class="reference internal" href="glossary.html#term-CFD"><span class="xref std std-term">CFD</span></a> on <a class="reference internal" href="glossary.html#term-GPU"><span class="xref std std-term">GPU</span></a>-accelerated systems. By using the <a class="reference internal" href="glossary.html#term-OCCA"><span class="xref std std-term">OCCA</span></a> library’s unified
+<a class="reference internal" href="glossary.html#term-API"><span class="xref std std-term">API</span></a>, nekRS can run on <a class="reference internal" href="glossary.html#term-CPU"><span class="xref std std-term">CPUs</span></a> and on <a class="reference internal" href="glossary.html#term-GPU"><span class="xref std std-term">GPU</span></a>-accelerated <a class="reference internal" href="glossary.html#term-CPU"><span class="xref std std-term">CPUs</span></a> that
+support <a class="reference internal" href="glossary.html#term-CUDA"><span class="xref std std-term">CUDA</span></a>, <a class="reference internal" href="glossary.html#term-HIP"><span class="xref std std-term">HIP</span></a>, or <a class="reference internal" href="glossary.html#term-OpenCL"><span class="xref std std-term">OpenCL</span></a>.</p>
+<p>This guide is intended to help new users get started with using nekRS, as well as serve as a
+reference for more advanced users. Because the <a class="reference internal" href="glossary.html#term-Nek5000"><span class="xref std std-term">Nek5000</span></a> code is somewhat of a predecessor to
+nekRS, some aspects of the current nekRS design are selected to enable faster translation of
+<a class="reference internal" href="glossary.html#term-Nek5000"><span class="xref std std-term">Nek5000</span></a> input files into nekRS input files. Throughout this documentation, all such
+<a class="reference internal" href="glossary.html#term-Nek5000"><span class="xref std std-term">Nek5000</span></a>-oriented settings will be referred to as “legacy” settings. Because these
+<a class="reference internal" href="glossary.html#term-Nek5000"><span class="xref std std-term">Nek5000</span></a>-oriented settings require proficiency in Fortran, structured text formats,
+and several additional input files, all new users are encouraged to adopt the nekRS-based problem setup.</p>
+<p>We recommend working through this user guide in the order below. At the very least, please
+read <a class="reference internal" href="input_files.html#input"><span class="std std-ref">The nekRS Input Files</span></a> page before reading the <a class="reference internal" href="detailed_usage.html#detailed"><span class="std std-ref">FAQs</span></a>
+page, as some necessary concepts are introduced in this order.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This documentation is a work in progress, and will undergo big changes as more
+features are added to nekRS. Please open issues to track any missing information
+at the github repository <a class="reference external" href="https://github.com/aprilnovak/nekRSDoc">here</a>.</p>
+</div>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="requirements.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#incompressible-flow-model">Incompressible Flow Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#low-mach-partially-compressible-model">Low-Mach Partially-Compressible Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#stokes-equations">Stokes Equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#rans-models">RANS Models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="input_files.html">The nekRS Input Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="input_files.html#parameter-file-par">Parameter File (.par)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_files.html#mesh-file-re2">Mesh File (.re2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_files.html#user-defined-host-functions-udf">User-Defined Host Functions (.udf)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="input_files.html#user-defined-device-functions-oudf">User-Defined Device Functions (.oudf)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="commonly_used_variables.html">Commonly-Used Variables in nekRS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="commonly_used_variables.html#mesh">Mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commonly_used_variables.html#flow-solution-fields-and-simulation-settings">Flow Solution Fields and Simulation Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="commonly_used_variables.html#passive-scalar-solution-fields-and-simulation-settings">Passive Scalar Solution Fields and Simulation Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compiling.html">Compiling nekRS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html#summit">Summit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html#sawtooth">Sawtooth</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="detailed_usage.html">FAQs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#building-the-nek5000-tool-scripts">Building the Nek5000 Tool Scripts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#scripts-that-ship-with-nekrs">Scripts That Ship with nekRS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#converting-a-mesh-to-re2-format">Converting a Mesh to .re2 Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#creating-a-mesh-for-conjugate-heat-transfer">Creating a Mesh for Conjugate Heat Transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#setting-initial-conditions-with-udf-setup">Setting Initial Conditions with <code class="docutils literal notranslate"><span class="pre">UDF_Setup</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#grabbing-user-par-settings">Grabbing User .par Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#defining-variables-to-access-in-device-kernels">Defining Variables to Access in Device Kernels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#setting-boundary-conditions-with-device-kernels">Setting Boundary Conditions with Device Kernels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#setting-custom-properties">Setting Custom Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#setting-custom-source-terms">Setting Custom Source Terms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#solving-in-non-dimensional-form">Solving in Non-Dimensional Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#copying-from-device-to-host">Copying From Device to Host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#writing-an-output-file">Writing an Output File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#visualizing-output-files">Visualizing Output Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#calculating-the-distance-to-a-wall">Calculating the Distance to a Wall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#periodic-boundary-conditions">Periodic Boundary Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detailed_usage.html#stamping-initial-conditions">Stamping Initial Conditions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugins.html">Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#rans-k-tau-plugin">RANS <span class="math notranslate nohighlight">\(k\)</span>-<span class="math notranslate nohighlight">\(\tau\)</span> Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#low-mach-plugin">Low-Mach Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#turbulence-statistics-plugin">Turbulence Statistics Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins.html#velocity-recycling-plugin">Velocity Recycling Plugin</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="just_in_time_compilation.html">Just-in-time Compilation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doxygen.html">Doxygen</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="requirements.html" class="btn btn-neutral float-right" title="Requirements" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Huanxia Wei.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
