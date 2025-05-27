@@ -16,6 +16,7 @@ GPU acceleration is suggested for large dataset computation. Therefore, the requ
 * NVIDIA GPUs, with a minimum `compute capability <https://developer.nvidia.com/cuda-gpus>`__ of 5.0, i.e., later than GTX 750.
 * It is suggested that, make ``Nx`` × ``Ny`` × ``Nz`` × ``Nt`` less than 200,000,000 Lagrangian particles on each Gigabyte of GPU memory for double-side computation under default numerical methods for one still. Generally half it under high-order computations.
 For example, you can execute on a 600×300×300 mesh for c.a. 80 time steps for a still on a welcomed RTX 2080ti 22G customized GPU, with the price of ~$400.
+* The general short for GPU is VRAM, not computational power, hence old-but-large GPUs are great for use. Newers can be faster, but smallers can run nothing.
 * The GPU requirements for dynamic LCS are undergoing experiments by the author.
 
 
