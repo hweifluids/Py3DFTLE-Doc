@@ -91,17 +91,17 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vtk_folder</span></code></p></td>
-<td><p>Path to folder containing VTK data files</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code></p></td>
+<td><p>Path to folder containing VTK input data</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code></p></td>
 <td><p>NA</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">output_dir</span></code></p></td>
-<td><p>Path to directory for saving FTLE results</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code></p></td>
+<td><p>Path to directory for saving results</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code></p></td>
 <td><p>NA</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">auto_wall</span></code></p></td>
-<td><p>Flag for automatic wall detection (0 = off, 1 = on)</p></td>
+<td><p>Flag for automatic wall detection</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
 <td><p>NA</p></td>
 </tr>
@@ -136,17 +136,17 @@
 <td><p>NA</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">T_range</span></code></p></td>
-<td><p>Integration time range [Tstart, Tend]</p></td>
+<td><p>Time range [Tstart, Tend] in frames</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">[&lt;float&gt;,</span> <span class="pre">&lt;float&gt;]</span></code></p></td>
 <td><p>NA</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dt</span></code></p></td>
-<td><p>Time step for particle advection</p></td>
+<td><p>Time step (frame) for particle advection</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&lt;float&gt;</span></code></p></td>
 <td><p>NA</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">if_backward</span></code></p></td>
-<td><p>Backward integration flag (0 = off, 1 = on)</p></td>
+<td><p>Backward integration flag</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
 <td><p>NA</p></td>
 </tr>
@@ -160,12 +160,13 @@
 <td><p><code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code></p></td>
 <td><p>NA</p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p><a href="#id1"><span class="problematic" id="id2">``</span></a>wall_treatment``| Wall-treatment strategy</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">wall_treatment</span></code></p></td>
+<td><p>Wall-treatment strategy</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code></p></td>
 <td><p>NA</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">grad_order</span></code></p></td>
-<td><p>Order of spatial gradient approximation</p></td>
+<td><p>Gradient approximation scheme</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">&lt;int&gt;</span></code></p></td>
 <td><p>NA</p></td>
 </tr>
@@ -175,13 +176,13 @@
 <td><p>NA</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">if_visual</span></code></p></td>
-<td><p>Visualization flag (0 = off; 1 = on)</p></td>
+<td><p>Glace visualization enabler</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
 <td><p>NA</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dyn_mode</span></code></p></td>
 <td><p>Dynamic LCS mode selector</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">&lt;int&gt;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
 <td><p>NA</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">win_size</span></code></p></td>
