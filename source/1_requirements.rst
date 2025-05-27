@@ -3,6 +3,22 @@
 Requirements and Quickstart
 ========================
 
+Hardware and Hardware Requirements
+----------------------------------
+
+The minimiums are listed as follows:
+
+* Minimium 4GB RAM and 10GB free disk.
+* Not sensitive to platform. Windows 11 and Ubuntu 22.04 are fully tested.
+
+GPU acceleration is suggested for large dataset computation. Therefore, the requirements for GPU acceleration is listed as follows:
+
+* NVIDIA GPUs, with a minimum `compute capability <https://developer.nvidia.com/cuda-gpus>`__ of 5.0, i.e., later than GTX 750.
+* It is suggested that, make ``Nx`` × ``Ny`` × ``Nz`` × ``Nt`` less than 200,000,000 Lagrangian particles on each Gigabyte of GPU memory for double-side computation under default numerical methods for one still. Generally half it under high-order computations.
+For example, you can execute on a 600×300×300 mesh for c.a. 80 time steps for a still.
+* The GPU requirements for dynamic LCS are undergoing experiments by the author.
+
+
 Basic Environment
 -----------------
 
@@ -11,9 +27,7 @@ This page summarizes the system requirements and dependencies of ``PyFTLE3D``.
 Firstly, the following packages are supposed to be installed on your computer manually in advance.
 
 1. `Python <https://www.python.org/>`__ version 3.13. Later version than 3.8 till 3.13 should work properly, but was not fully tested. The official download could be found at `here <https://www.python.org/downloads/release/python-3130/?featured_on=pythonbytes>`__. Please select Python installer according to your system framework.
-
 2. `CUDA Toolkit <https://developer.nvidia.com/cuda-toolkit>`__ version 12.9 (`Download <https://developer.nvidia.com/cuda-toolkit-archive>`__). All versions crossing 12.x.x should theoretically work, but only 12.9 was fully tested. Ealier versions could work as well, but it requires a different version of `cupy`, and could cause unexpected performance decay and errors. See `cupy` documentation for more information.
-
 3. `pip <https://pypi.org/project/pip/>`__ newest version, which is used for installing further dependencies. It can be installed by:
 
 .. code-block::
