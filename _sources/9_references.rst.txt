@@ -32,9 +32,9 @@ References
 Papers Who Uses ``Py3DFTLE``
 -----------------------------
 
-Currently NO. ``QwQ``
+Currently NO. ``(QwQ)``
 
 Related Papers Who Cited ``Py3DFTLE``
 ----------------------------------------
 
-Currently NO. ``QwQ``
+Currently NO. ``(QwQ)``
