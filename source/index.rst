@@ -3,7 +3,7 @@ PyFTLE3D: Research Toolkit for 3D Lagrangian coherent structures with GUI
 
 .. note::
 
-   Notice: The toolkit is undergoing an internal testing, and currently not publicly released. Who would like to use it in advance to release for non-profit use as early birds, please feel free contact me. The planned release time is 2025.06 - 2025.07 with high-freedom opensource license type, while the author still holds the right to change the release time. - Huanxia with Regards.
+   **Notice: The toolkit is undergoing an internal testing, and currently not publicly released. Who would like to use it in advance to release for non-profit use as early birds, please feel free contact me. The planned release time is 2025.06 - 2025.07 with high-freedom opensource license type, while the author still holds the right to change the release time. - Huanxia with Regards.**
 
 
 PyFTLE3D is a Python-based research toolkit for computing and visualizing Lagrangian coherent structures (LCS) in three-dimensional fluid flows and other complex systems by computing Finite Time Lyapunov Exponent (FTLE) field.
