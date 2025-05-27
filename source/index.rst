@@ -3,7 +3,7 @@ PyFTLE3D: 3D LCS Research Toolkit with GUI
 
 .. note::
 
-   **Notice: The toolkit is undergoing an internal testing, and currently not publicly released. Who would like to use it in advance to release for non-profit use as early birds, please feel free contact me. The planned release time is 2025.06 - 2025.07 with high-freedom opensource license type, while the author still holds the right to change the release time.** 
+   **The toolkit is undergoing an internal testing, and currently not publicly released. Who would like to use it in advance to release for non-profit use as early birds, please feel free contact me. The planned release time is 2025.06 - 2025.07 with high-freedom opensource license type, while the author still holds the right to change the release time.** 
    **- Huanxia with Regards.**
 
 
@@ -20,7 +20,7 @@ Although, the new features would firstly be added to the GPU version, and the CP
 For the start, it is strongly suggested to begin with reading the review by Prof. George Haller in regard to LCS `here <https://www.georgehaller.com/reprints/annurev-fluid-010313-141322.pdf>`__, published on Annual Review of Fluid Mechanics, instead of directly use this toolkit without any theoretical foundation.
 Some of the theories can be found in this section, it is more encouraged to learn LCS theories and numerical methods by reading the technical papers.
 
-The author has invested countless off-work hours developing this software, with the goal of making such a powerful turbulence/complex-systems research tool by Professor Haller's team available to a wider audience and, through it, exploring charming phenomena in flow structures and instability. The author is not short of money and therefore does not accept donations or sponsorships. As the *"price"* for using this toolbox, if you publish a paper that employs it, you are asked to notify the author by email. These publications will be collected and listed in the “Articles” section for reference by peers. The author also encourages peers who have cited this toolbox for reference, even if they did not directly use it in their investigation, to inform the authors. Those works will likewise be advertised in the documentation and repository.
+The author has invested countless off-work hours developing this software, with the goal of making such a powerful turbulence/complex-systems research tool by Professor Haller's team available to a wider audience and, through it, exploring charming phenomena in flow structures and instability. The author is not short of money and therefore does not accept donations or sponsorships. As the *"price"* for using this toolbox, if you publish a paper that employs it, you are asked to notify the author by email. These publications will be collected and listed in :ref:`References <references>` section for reference by peers. The author also encourages peers who have cited this toolbox for reference, even if they did not directly use it in their investigation, to inform the authors. Those works will likewise be advertised in the documentation and repository.
 
 
 
@@ -36,6 +36,7 @@ Table of Contents
 .. toctree::
    :maxdepth: 2
 
+   
    1_requirements
    2_theory
    3_numerical
@@ -43,7 +44,8 @@ Table of Contents
    5_gui
    6_inputdeck
    7_command
-   8_references
+   8_faqs
+   9_references
 
 
 .. Indices and tables
