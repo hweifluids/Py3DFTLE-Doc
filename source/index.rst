@@ -5,12 +5,12 @@ PyFTLE3D: Research Toolkit for 3D Lagrangian coherent structures with GUI
 
 PyFTLE3D is a Python-based research toolkit for computing and visualizing
 Lagrangian coherent structures (LCS) in three-dimensional fluid flows and other complex systems by computing Finite Time Lyapunov Exponent.
-Coming with GUI and integrated environment, it is designed to be user-friendly and accessible, allowing peers to easily analyze and visualize LCS in their data
+Coming with GUI and integrated runtime, it is designed to be user-friendly and accessible, allowing peers to easily analyze and visualize LCS in their data
 with multiple OOTB numerical methods, with various computation density, accuracy, and focus preferences,
 with no need for researchers to have any programming knowledge.
 Certainly, it is also suitable for those with programming experience who want to customize their analysis.
 
-The computation is accelerated by CUDA (Python Numba), the NVIDIA treasure, achieving over 30x speedup compared to the CPU version.
+The computation is accelerated by CUDA (Python Numba implement), achieving over 30x speedup compared to the CPU version.
 The author currently lacks the capability to develop with OpenCL, so for now only NVIDIA GPUs are supported for acceleration.
 As most of computers have larger RAM than GPU memory, the toolkit also supports CPU mode for large datasets on CPU systems.
 Although, the new features would firstly be added to the GPU version, and the CPU version would be updated with month-scale delay.
