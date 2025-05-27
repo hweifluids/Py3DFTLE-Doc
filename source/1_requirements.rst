@@ -44,11 +44,13 @@ When it does not work, consider if your current dir is incorrect. It should be r
 
 Add-on Libs
 -----------------
+
 **1. ParaView** is a powerful beloved open-source visualization platform based on *vtk* that can be used to visualize the results of 3D FTLE computations. We also integrated the ParaView entrance into our GUI, so you can directly open ParaView from it.
 The ParaView installation-free package (v6.0) can be downloaded from `official <https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v6.0&type=binary&os=Windows&downloadFile=ParaView-6.0.0-RC1-MPI-Windows-Python3.12-msvc2017-AMD64.zip>`__. 
 For already-installed ParaView, set environment variable ``PARAVIEW_PATH`` pointing to the root dir of ParaView to enable integration from GUI of ``Py3DFTLE``.
 
 Quickstart
 -----------------
+
 An computation example coming with a set of our in-house downscaled Direct Navier-Stokes Simulation (DNS) data is provided, including :math:
 The dataset can be downloaded from `here <https://noting.noting>__`, and the case descriptions can be referred to paper [1]_.
