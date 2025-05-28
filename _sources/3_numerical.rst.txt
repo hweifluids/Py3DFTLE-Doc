@@ -50,12 +50,9 @@ First, compute the intermediate stage vectors:
 
 .. math::
 
-   \mathbf{k}i
-   ;=;
-   \mathbf{u}!\Bigl(
-   \mathbf{x}n
-   ;+;
-   \Delta t \sum_{j=1}^{i-1} a_{ij}\,\mathbf{k}_j,\, t_n + c_i \Delta t \Bigr),
+   \mathbf{k}_i = 
+   \mathbf{u} \Bigl(   \mathbf{x}_n + \Delta t \sum_{j=1}^{i-1} a_{ij}\,\mathbf{k}_j,\,
+   t_n + c_i \Delta t \Bigr),
    \qquad i = 1, 2, \dots, s,
 
 and then update the solution:
