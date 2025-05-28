@@ -97,14 +97,17 @@
 <span id="numerical"></span><h1>Numerical Methods<a class="headerlink" href="#numerical-methods" title="Link to this heading"></a></h1>
 <section id="lagrangian-advection">
 <span id="advc"></span><h2>Lagrangian Advection<a class="headerlink" href="#lagrangian-advection" title="Link to this heading"></a></h2>
-<section id="time-integration">
-<span id="marching"></span><h3>Time Integration<a class="headerlink" href="#time-integration" title="Link to this heading"></a></h3>
-<p>In the numerical computation of the FTLE (Finite-Time Lyapunov Exponent), we first compute the <em>flow map</em> <span class="math notranslate nohighlight">\(\varphi_{t_n}^{t_{n+1}}(y_n)\)</span>, which maps the initial point <span class="math notranslate nohighlight">\(y_n\)</span> at time <span class="math notranslate nohighlight">\(t_n\)</span> to time <span class="math notranslate nohighlight">\(t_{n+1}\)</span>.</p>
-<p>To obtain this map, one must numerically integrate the underlying dynamical system, which is described by the ordinary differential equation (ODE):</p>
+<p>In the numerical computation of the <code class="docutils literal notranslate"><span class="pre">FTLE</span></code>, we first compute the <em>flow map</em> <span class="math notranslate nohighlight">\(\varphi_{t_n}^{t_{n+1}}(y_n)\)</span>, which maps the initial seed point <span class="math notranslate nohighlight">\(y_n\)</span> at time <span class="math notranslate nohighlight">\(t_n\)</span> to time <span class="math notranslate nohighlight">\(t_{n+1}\)</span>.
+To obtain this map, one must numerically integrate the underlying dynamical system, which is described by the ordinary differential equation (ODE):</p>
 <div class="math notranslate nohighlight">
 \[\frac{d\mathbf{x}}{dt} = \sigma\,\mathbf{u}(\mathbf{x},t)\,,
 \mathbf{x}(t_n)=\mathbf{x}_n\,,\]</div>
-<p>where <span class="math notranslate nohighlight">\(\sigma = \pm1\)</span> selects forward or backward integration.</p>
+<p>where <span class="math notranslate nohighlight">\(\sigma = \pm1\)</span> selects forward or backward integration.
+During the time integration process, the algorithm frequently queries the flow velocity vector <span class="math notranslate nohighlight">\(\bm{v}(\bm{x},t)\)</span> at specific locations and moments with very high precision.
+However, since the computational grid is inherently spatially discretized, high-order interpolation methods are required by the program to obtain a physically meaningful flow map.
+Furthermore, when querying the velocity, special wall treatment must be applied at the boundaries to avoid value discontinuities and to represent certain real physical conditions.</p>
+<section id="time-integration">
+<span id="marching"></span><h3>Time Integration<a class="headerlink" href="#time-integration" title="Link to this heading"></a></h3>
 <p><strong>Explicit Euler Method</strong></p>
 <p>The first-order explicit Euler scheme advances the position by sampling the velocity at the beginning of the time step:</p>
 <div class="math notranslate nohighlight">

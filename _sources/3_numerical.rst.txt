@@ -9,15 +9,7 @@ Lagrangian Advection
 -----------------------
 
 
-
-
-.. _marching:
-
-Time Integration
-~~~~~~~~~~~~~~~~~~
-
-In the numerical computation of the FTLE (Finite-Time Lyapunov Exponent), we first compute the *flow map* :math:`\varphi_{t_n}^{t_{n+1}}(y_n)`, which maps the initial point :math:`y_n` at time :math:`t_n` to time :math:`t_{n+1}`.
-
+In the numerical computation of the ``FTLE``, we first compute the *flow map* :math:`\varphi_{t_n}^{t_{n+1}}(y_n)`, which maps the initial seed point :math:`y_n` at time :math:`t_n` to time :math:`t_{n+1}`.
 To obtain this map, one must numerically integrate the underlying dynamical system, which is described by the ordinary differential equation (ODE):
 
 .. math::
@@ -26,6 +18,17 @@ To obtain this map, one must numerically integrate the underlying dynamical syst
    \mathbf{x}(t_n)=\mathbf{x}_n\,,  
 
 where :math:`\sigma = \pm1` selects forward or backward integration.
+During the time integration process, the algorithm frequently queries the flow velocity vector :math:`\bm{v}(\bm{x},t)` at specific locations and moments with very high precision.
+However, since the computational grid is inherently spatially discretized, high-order interpolation methods are required by the program to obtain a physically meaningful flow map.
+Furthermore, when querying the velocity, special wall treatment must be applied at the boundaries to avoid value discontinuities and to represent certain real physical conditions.
+
+
+
+.. _marching:
+
+Time Integration
+~~~~~~~~~~~~~~~~~~
+
 
 **Explicit Euler Method**
 
