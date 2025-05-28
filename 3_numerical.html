@@ -131,7 +131,7 @@
 <p>The classical RK4 method achieves fourth-order accuracy via four slope evaluations at intermediate points:</p>
 <p>This yields a global error of order <span class="math notranslate nohighlight">\(O(\Delta t^4)\)</span> with four velocity evaluations per step.</p>
 <p><strong>Sixth-Order Runge-Kutta (RK6)</strong></p>
-<p>The seven-stage scheme uses non-uniform weights to attain global <span class="math notranslate nohighlight">\(O(\Delta t^6)\)</span> accuracy. This method originates from <a class="reference internal" href="9_references.html#butcher" id="id1"><span>[Butcher]</span></a>.
+<p>The seven-stage scheme <code class="docutils literal notranslate"><span class="pre">ERK6(7)</span></code> uses non-uniform weights to attain global <span class="math notranslate nohighlight">\(O(\Delta t^6)\)</span> accuracy. This method originates from <a class="reference internal" href="9_references.html#butcher" id="id1"><span>[Butcher]</span></a>.
 As for the coefficients for <code class="docutils literal notranslate"><span class="pre">RK6</span></code> are more complex to write into equations, the Butcher table is given as follows.</p>
 <table class="docutils align-default">
 <thead>
@@ -220,6 +220,7 @@ As for the coefficients for <code class="docutils literal notranslate"><span cla
 </tr>
 </tbody>
 </table>
+<p>In our computation, the up symbol side is applied, in other words, <code class="docutils literal notranslate"><span class="pre">±</span></code> represents <code class="docutils literal notranslate"><span class="pre">+</span></code>, taking <span class="math notranslate nohighlight">\(\lambda=+\sqrt{5}\)</span>.</p>
 </section>
 </section>
 <section id="ftle-computation">
