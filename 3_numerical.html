@@ -144,6 +144,72 @@ k_5 = \mathbf{u}\!\bigl(\mathbf{x}_n + \Delta t(\tfrac{1}{2}k_1 - \tfrac{3}{2}k_
 k_6 = \mathbf{u}\!\bigl(\mathbf{x}_n + \Delta t(-\tfrac{3}{2}k_1 + 2k_2 - \tfrac{1}{2}k_3 + k_4),\;t_n + \Delta t\bigr),\\
 \mathbf{x}_{n+1} = \mathbf{x}_n + \Delta t\bigl(\tfrac{1}{20}k_1 + \tfrac{1}{4}k_4 + \tfrac{1}{5}k_5 + \tfrac{1}{2}k_6\bigr).\end{split}\]</div>
 <p>This scheme incurs a global error of order <span class="math notranslate nohighlight">\(O(\Delta t^6)\)</span> with six velocity evaluations.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">output_dir</span></code></p></th>
+<th class="head"><p>Path to directory for saving results</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">&lt;string&gt;</span></code></p></th>
+<th class="head"></th>
+</tr>
+<tr class="row-even"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">auto_wall</span></code></p></th>
+<th class="head"><p>Flag for automatic wall detection</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></th>
+<th class="head"><p>Manually indicate computation bounds.</p></th>
+</tr>
+<tr class="row-odd"><th class="head"></th>
+<th class="head"></th>
+<th class="head"><p>(<code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></th>
+<th class="head"><p>Auto detect bounds from input mesh.</p></th>
+</tr>
+<tr class="row-even"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">wall_xrange</span></code></p></th>
+<th class="head"><p>X-direction wall bounds [xmin, xmax]</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">[&lt;float&gt;,</span> <span class="pre">&lt;float&gt;]</span></code></p></th>
+<th class="head"><p>Dimensionalized coordinates bounds.</p></th>
+</tr>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">wall_yrange</span></code></p></th>
+<th class="head"><p>Y-direction wall bounds [ymin, ymax]</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">[&lt;float&gt;,</span> <span class="pre">&lt;float&gt;]</span></code></p></th>
+<th class="head"></th>
+</tr>
+<tr class="row-even"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">wall_zrange</span></code></p></th>
+<th class="head"><p>Z-direction wall bounds [zmin, zmax]</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">[&lt;float&gt;,</span> <span class="pre">&lt;float&gt;]</span></code></p></th>
+<th class="head"></th>
+</tr>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">x</span></code></p></th>
+<th class="head"><p>Number of Lagrangian seed points in X direction</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">&lt;int&gt;</span></code></p></th>
+<th class="head"></th>
+</tr>
+<tr class="row-even"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">y</span></code></p></th>
+<th class="head"><p>Number of Lagrangian seed points in Y direction</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">&lt;int&gt;</span></code></p></th>
+<th class="head"></th>
+</tr>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">z</span></code></p></th>
+<th class="head"><p>Number of Lagrangian seed points in Z direction</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">&lt;int&gt;</span></code></p></th>
+<th class="head"></th>
+</tr>
+<tr class="row-even"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">T_range</span></code></p></th>
+<th class="head"><p>Time range [<code class="docutils literal notranslate"><span class="pre">T_start</span></code>, <code class="docutils literal notranslate"><span class="pre">T_end</span></code>] in frames</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">[&lt;float&gt;,</span> <span class="pre">&lt;float&gt;]</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">T_end</span></code> no larger than <code class="docutils literal notranslate"><span class="pre">N_frames</span></code>.</p></th>
+</tr>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">dt</span></code></p></th>
+<th class="head"><p>Time step for particle advection in frames</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">&lt;float&gt;</span></code></p></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">physical_dt</span></code></p></td>
+<td><p>Physical time step between two input frames</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;float&gt;</span></code></p></td>
+<td><p>Perform physical advection.</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="ftle-computation">

@@ -14,8 +14,7 @@ The minimiums are listed as follows:
 GPU acceleration is suggested for large dataset computation. Therefore, the requirements for GPU acceleration is listed as follows:
 
 * NVIDIA GPUs, with a minimum `compute capability <https://developer.nvidia.com/cuda-gpus>`__ of 5.0, i.e., later than GTX 750.
-* It is suggested that, make ``Nx`` × ``Ny`` × ``Nz`` × ``Nt`` less than 200,000,000 Lagrangian particles on each Gigabyte of GPU memory for double-side computation under default numerical methods for one still. Generally half it under high-order computations.
-For example, you can execute on a 600×300×300 mesh for c.a. 80 time steps for a still on a welcomed RTX 2080ti 22G customized GPU, with the price of ~$400.
+* It is suggested that, make ``Nx`` × ``Ny`` × ``Nz`` × ``Nt`` less than 200,000,000 Lagrangian particles on each Gigabyte of GPU memory for double-side computation under default numerical methods for one still. Generally half it under high-order computations. For example, you can execute on a 600×300×300 mesh for c.a. 80 time steps for a still on a welcomed RTX 2080ti 22G customized GPU, with the price of ~$400.
 * The general short for GPU is VRAM, not computational power, hence old-but-large GPUs are great for use. Newers can be faster, but smallers can run nothing.
 * The GPU requirements for dynamic LCS are undergoing experiments by the author.
 
@@ -67,5 +66,6 @@ For already-installed ParaView, set environment variable ``PARAVIEW_PATH`` point
 Quickstart
 -----------------
 
+After configurations of environment, you can run a very first demo to test the environment as well as the code, and learn how to use this toolbox for your own data towards new insights.
 An computation example coming with a set of our in-house downscaled Direct Navier-Stokes Simulation (DNS) data is provided, including :math:
 The dataset can be downloaded from `here <https://noting.noting>`__, and the case descriptions can be referred to paper ``I.P.``.

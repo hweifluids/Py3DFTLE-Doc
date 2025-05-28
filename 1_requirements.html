@@ -97,11 +97,10 @@
 <p>GPU acceleration is suggested for large dataset computation. Therefore, the requirements for GPU acceleration is listed as follows:</p>
 <ul class="simple">
 <li><p>NVIDIA GPUs, with a minimum <a class="reference external" href="https://developer.nvidia.com/cuda-gpus">compute capability</a> of 5.0, i.e., later than GTX 750.</p></li>
-<li><p>It is suggested that, make <code class="docutils literal notranslate"><span class="pre">Nx</span></code> × <code class="docutils literal notranslate"><span class="pre">Ny</span></code> × <code class="docutils literal notranslate"><span class="pre">Nz</span></code> × <code class="docutils literal notranslate"><span class="pre">Nt</span></code> less than 200,000,000 Lagrangian particles on each Gigabyte of GPU memory for double-side computation under default numerical methods for one still. Generally half it under high-order computations.</p></li>
+<li><p>It is suggested that, make <code class="docutils literal notranslate"><span class="pre">Nx</span></code> × <code class="docutils literal notranslate"><span class="pre">Ny</span></code> × <code class="docutils literal notranslate"><span class="pre">Nz</span></code> × <code class="docutils literal notranslate"><span class="pre">Nt</span></code> less than 200,000,000 Lagrangian particles on each Gigabyte of GPU memory for double-side computation under default numerical methods for one still. Generally half it under high-order computations. For example, you can execute on a 600×300×300 mesh for c.a. 80 time steps for a still on a welcomed RTX 2080ti 22G customized GPU, with the price of ~$400.</p></li>
+<li><p>The general short for GPU is VRAM, not computational power, hence old-but-large GPUs are great for use. Newers can be faster, but smallers can run nothing.</p></li>
+<li><p>The GPU requirements for dynamic LCS are undergoing experiments by the author.</p></li>
 </ul>
-<p>For example, you can execute on a 600×300×300 mesh for c.a. 80 time steps for a still on a welcomed RTX 2080ti 22G customized GPU, with the price of ~$400.
-* The general short for GPU is VRAM, not computational power, hence old-but-large GPUs are great for use. Newers can be faster, but smallers can run nothing.
-* The GPU requirements for dynamic LCS are undergoing experiments by the author.</p>
 </section>
 <section id="basic-environment">
 <h2>Basic Environment<a class="headerlink" href="#basic-environment" title="Link to this heading"></a></h2>
@@ -142,7 +141,8 @@ For already-installed ParaView, set environment variable <code class="docutils l
 </section>
 <section id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h2>
-<p>An computation example coming with a set of our in-house downscaled Direct Navier-Stokes Simulation (DNS) data is provided, including :math:
+<p>After configurations of environment, you can run a very first demo to test the environment as well as the code, and learn how to use this toolbox for your own data towards new insights.
+An computation example coming with a set of our in-house downscaled Direct Navier-Stokes Simulation (DNS) data is provided, including :math:
 The dataset can be downloaded from <a class="reference external" href="https://noting.noting">here</a>, and the case descriptions can be referred to paper <code class="docutils literal notranslate"><span class="pre">I.P.</span></code>.</p>
 </section>
 </section>
