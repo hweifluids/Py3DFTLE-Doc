@@ -46,17 +46,20 @@
 <li class="toctree-l1"><a class="reference internal" href="1_requirements.html">Requirements and Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2_theory.html">Theory of FTLE and LCS</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Numerical Methods</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#wall-treatment">Wall Treatment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#lagrangian-advection">Lagrangian Advection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#velocity-interpolation">Velocity Interpolation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#gradient-discretization">Gradient Discretization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#eigenvalue-solver">Eigenvalue Solver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lagrangian-advection">Lagrangian Advection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#velocity-interpolation">Velocity Interpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wall-treatment">Wall Treatment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#particle-marching">Particle Marching</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#computational-density-and-comparison">Computational Density and Comparison</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#general-tips">General Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ftle-computation">FTLE Computation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gradient-discretization">Gradient Discretization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#eigenvalue-solver">Eigenvalue Solver</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#computational-density-and-comparison">Computational Density and Comparison</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4_input.html">Input Data Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="5_gui.html">Graphical User Interface (GUI)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="6_inputdeck.html">Input Deck for Solver Parameters</a></li>
@@ -91,31 +94,34 @@
              
   <section id="numerical-methods">
 <span id="numerical"></span><h1>Numerical Methods<a class="headerlink" href="#numerical-methods" title="Link to this heading"></a></h1>
-<section id="wall-treatment">
-<span id="wall"></span><h2>Wall Treatment<a class="headerlink" href="#wall-treatment" title="Link to this heading"></a></h2>
-</section>
 <section id="lagrangian-advection">
 <span id="advc"></span><h2>Lagrangian Advection<a class="headerlink" href="#lagrangian-advection" title="Link to this heading"></a></h2>
-</section>
 <section id="velocity-interpolation">
-<span id="intp"></span><h2>Velocity Interpolation<a class="headerlink" href="#velocity-interpolation" title="Link to this heading"></a></h2>
+<span id="intp"></span><h3>Velocity Interpolation<a class="headerlink" href="#velocity-interpolation" title="Link to this heading"></a></h3>
 </section>
+<section id="wall-treatment">
+<span id="wall"></span><h3>Wall Treatment<a class="headerlink" href="#wall-treatment" title="Link to this heading"></a></h3>
+</section>
+<section id="particle-marching">
+<span id="marching"></span><h3>Particle Marching<a class="headerlink" href="#particle-marching" title="Link to this heading"></a></h3>
+</section>
+</section>
+<section id="ftle-computation">
+<span id="ftlefinal"></span><h2>FTLE Computation<a class="headerlink" href="#ftle-computation" title="Link to this heading"></a></h2>
 <section id="gradient-discretization">
-<span id="grad"></span><h2>Gradient Discretization<a class="headerlink" href="#gradient-discretization" title="Link to this heading"></a></h2>
+<span id="grad"></span><h3>Gradient Discretization<a class="headerlink" href="#gradient-discretization" title="Link to this heading"></a></h3>
 </section>
 <section id="eigenvalue-solver">
-<span id="eigen"></span><h2>Eigenvalue Solver<a class="headerlink" href="#eigenvalue-solver" title="Link to this heading"></a></h2>
+<span id="eigen"></span><h3>Eigenvalue Solver<a class="headerlink" href="#eigenvalue-solver" title="Link to this heading"></a></h3>
+</section>
 </section>
 </section>
 <section id="computational-density-and-comparison">
 <span id="numcompare"></span><h1>Computational Density and Comparison<a class="headerlink" href="#computational-density-and-comparison" title="Link to this heading"></a></h1>
-<section id="general-tips">
-<span id="numtips"></span><h2>General Tips<a class="headerlink" href="#general-tips" title="Link to this heading"></a></h2>
-<p>As for your reference, and configured as defaults, the <em>Berkeley LCS Tutorials</em> used <code class="docutils literal notranslate"><span class="pre">RK4</span></code> for advection.
+<p id="numtips">As for your reference, and configured as defaults, the <em>Berkeley LCS Tutorials</em> used <code class="docutils literal notranslate"><span class="pre">RK4</span></code> for advection.
 The velocity fields were interpolated with <code class="docutils literal notranslate"><span class="pre">tricubic-FL</span></code> by them, originating from <a class="reference internal" href="9_references.html#lekien2005" id="id1"><span>[Lekien2005]</span></a>, which has higher performance by solving a 64×64 linear system using the function values, gradients, and mixed partial derivatives at its eight corners, which is in future development plan for <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code> with high priority.
 Although not detailed, <code class="docutils literal notranslate"><span class="pre">grad_order=2</span></code> was employed by them from the equation, supposing the mesh is sufficiently refined.</p>
 <p>Please always notice that, although providing much better numerical precision and looks cool in papers, high-order methods could be resource-consuming, even several hundred times.</p>
-</section>
 </section>
 
 
