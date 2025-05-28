@@ -43,23 +43,43 @@ This method incurs a global error of order :math:`O(\Delta t)` and requires only
 
 **Runge-Kutta Method**
 
-In an explicit :math:`s`-stage Runge–Kutta method for the initial-value problem:
+Proposed by Carl Runge and Martin Kutta around 1900, Runge-Kutta methods constitute a widely used family of single-step algorithms for the numerical integration of ordinary differential equations.
+
+In an explicit :math:`s`-stage Runge-Kutta scheme for the initial-value problem:
 
 .. math::
 
-   \mathbf{x}' = \mathbf{u}(\mathbf{x},t), \quad \mathbf{x}(t_n) = \mathbf{x}_n.
+\mathbf{x}' ;=; \mathbf{u}(\mathbf{x}, t),
+\qquad
+\mathbf{x}(t_n) ;=; \mathbf{x}_n,
 
-One advances the solution by a step :math:h as follows. First compute the intermediate velocities:
+the solution is advanced over a time step :math:h as follows:
 
-.. math::
-
-   \mathbf{k}i = \mathbf{u}\Bigl(\mathbf{x}n + h \sum{j=1}^{i-1} a{ij},\mathbf{k}_j,;t_n + c_i,h\Bigr), \quad i = 1,2,\dots,s,,
-
-and then form the new approximation by:
+First, compute the intermediate stage vectors:
 
 .. math::
 
-   \mathbf{x}_{n+1} = \mathbf{x}n + h \sum{i=1}^s b_i,\mathbf{k}_i.
+\mathbf{k}i
+;=;
+\mathbf{u}!\Bigl(
+\mathbf{x}n
+;+;
+h \sum{j=1}^{i-1} a{ij},\mathbf{k}_j,
+; t_n + c_i h
+\Bigr),
+\qquad i = 1, 2, \dots, s,
+
+and then update the solution:
+
+.. math::
+
+\mathbf{x}_{n+1}
+;=;
+\mathbf{x}n
+;+;
+h \sum{i=1}^{s} b_i,\mathbf{k}_i.
+
+Here, the boldface stage variables :math:\mathbf{k}_i represent intermediate slope estimates.
 
 
 **Second-Order Runge-Kutta (RK2, Heun's)**

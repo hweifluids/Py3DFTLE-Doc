@@ -115,15 +115,35 @@ Furthermore, when querying the velocity, special wall treatment must be applied 
 \mathbf{x}_{n+1} = \mathbf{x}_n + \sigma\,\Delta t\,\mathbf{u}_n.\end{split}\]</div>
 <p>This method incurs a global error of order <span class="math notranslate nohighlight">\(O(\Delta t)\)</span> and requires only one velocity evaluation per step, therefore has high computational speed.</p>
 <p><strong>Runge-Kutta Method</strong></p>
-<p>In an explicit <span class="math notranslate nohighlight">\(s\)</span>-stage Runge–Kutta method for the initial-value problem:</p>
+<p>Proposed by Carl Runge and Martin Kutta around 1900, Runge-Kutta methods constitute a widely used family of single-step algorithms for the numerical integration of ordinary differential equations.</p>
+<p>In an explicit <span class="math notranslate nohighlight">\(s\)</span>-stage Runge-Kutta scheme for the initial-value problem:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{x}' = \mathbf{u}(\mathbf{x},t), \quad \mathbf{x}(t_n) = \mathbf{x}_n.\]</div>
-<p>One advances the solution by a step :math:h as follows. First compute the intermediate velocities:</p>
+\[\]</div>
+<p>mathbf{x}’ ;=; mathbf{u}(mathbf{x}, t),
+qquad
+mathbf{x}(t_n) ;=; mathbf{x}_n,</p>
+<p>the solution is advanced over a time step :math:h as follows:</p>
+<p>First, compute the intermediate stage vectors:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{k}i = \mathbf{u}\Bigl(\mathbf{x}n + h \sum{j=1}^{i-1} a{ij},\mathbf{k}_j,;t_n + c_i,h\Bigr), \quad i = 1,2,\dots,s,,\]</div>
-<p>and then form the new approximation by:</p>
+\[\]</div>
+<p>mathbf{k}i
+;=;
+mathbf{u}!Bigl(
+mathbf{x}n
+;+;
+h sum{j=1}^{i-1} a{ij},mathbf{k}_j,
+; t_n + c_i h
+Bigr),
+qquad i = 1, 2, dots, s,</p>
+<p>and then update the solution:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{x}_{n+1} = \mathbf{x}n + h \sum{i=1}^s b_i,\mathbf{k}_i.\]</div>
+\[\]</div>
+<p>mathbf{x}_{n+1}
+;=;
+mathbf{x}n
+;+;
+h sum{i=1}^{s} b_i,mathbf{k}_i.</p>
+<p>Here, the boldface stage variables :math:mathbf{k}_i represent intermediate slope estimates.</p>
 <p><strong>Second-Order Runge-Kutta (RK2, Heun’s)</strong></p>
 <p>Heun’s <code class="docutils literal notranslate"><span class="pre">RK2</span></code> method attains second-order accuracy by combining predictor and corrector slopes:</p>
 <div class="math notranslate nohighlight">
