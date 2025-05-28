@@ -18,8 +18,8 @@ To obtain this map, one must numerically integrate the underlying dynamical syst
    \mathbf{x}(t_n)=\mathbf{x}_n\,,  
 
 where :math:`\sigma = \pm1` selects forward or backward integration.
-During the time integration process, the algorithm frequently queries the flow velocity vector :math:`\bm{v}(\bm{x},t)` at specific locations and moments with very high precision.
-However, since the computational grid is inherently spatially discretized, high-order interpolation methods are required by the program to obtain a physically meaningful flow map.
+During the time integration process, the algorithm frequently queries the flow velocity vector :math:`\mathbf{v}(\mathbf{x},t)` at specific locations and moments with very high precision requirements.
+However, since the data grid is inherently spatially discretized, high-order interpolation methods are required by the program to keep numerical stability and obtain a physically meaningful flow map.
 Furthermore, when querying the velocity, special wall treatment must be applied at the boundaries to avoid value discontinuities and to represent certain real physical conditions.
 
 
@@ -65,7 +65,7 @@ and then form the new approximation by:
 
 **Second-Order Runge-Kutta (RK2, Heun's)**
 
-Heun's method attains second-order accuracy by combining predictor and corrector slopes:
+Heun's ``RK2`` method attains second-order accuracy by combining predictor and corrector slopes:
 
 .. math::
 
@@ -78,7 +78,7 @@ This scheme yields a global error of order :math:`O(\Delta t^2)` with two veloci
 
 **Classical Fourth-Order Runge-Kutta (RK4)**
 
-The classical RK4 method achieves fourth-order accuracy via four slope evaluations at intermediate points:
+The classical ``RK4`` method achieves fourth-order accuracy via four slope evaluations at intermediate points:
 
 .. math::
 

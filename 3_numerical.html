@@ -103,8 +103,8 @@ To obtain this map, one must numerically integrate the underlying dynamical syst
 \[\frac{d\mathbf{x}}{dt} = \sigma\,\mathbf{u}(\mathbf{x},t)\,,
 \mathbf{x}(t_n)=\mathbf{x}_n\,,\]</div>
 <p>where <span class="math notranslate nohighlight">\(\sigma = \pm1\)</span> selects forward or backward integration.
-During the time integration process, the algorithm frequently queries the flow velocity vector <span class="math notranslate nohighlight">\(\bm{v}(\bm{x},t)\)</span> at specific locations and moments with very high precision.
-However, since the computational grid is inherently spatially discretized, high-order interpolation methods are required by the program to obtain a physically meaningful flow map.
+During the time integration process, the algorithm frequently queries the flow velocity vector <span class="math notranslate nohighlight">\(\mathbf{v}(\mathbf{x},t)\)</span> at specific locations and moments with very high precision requirements.
+However, since the data grid is inherently spatially discretized, high-order interpolation methods are required by the program to keep numerical stability and obtain a physically meaningful flow map.
 Furthermore, when querying the velocity, special wall treatment must be applied at the boundaries to avoid value discontinuities and to represent certain real physical conditions.</p>
 <section id="time-integration">
 <span id="marching"></span><h3>Time Integration<a class="headerlink" href="#time-integration" title="Link to this heading"></a></h3>
@@ -126,7 +126,7 @@ Furthermore, when querying the velocity, special wall treatment must be applied 
 <div class="math notranslate nohighlight">
 \[y_{n+1} = y_n + h \sum_{i=1}^s b_i\,k_i.\]</div>
 <p><strong>Second-Order Runge-Kutta (RK2, Heun’s)</strong></p>
-<p>Heun’s method attains second-order accuracy by combining predictor and corrector slopes:</p>
+<p>Heun’s <code class="docutils literal notranslate"><span class="pre">RK2</span></code> method attains second-order accuracy by combining predictor and corrector slopes:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}k_1 &amp;= \sigma\,\mathbf{u}(\mathbf{x}_n,t_n),\\
 \mathbf{x}^* &amp;= \mathbf{x}_n + \Delta t\,k_1,\\
@@ -134,7 +134,7 @@ k_2 &amp;= \sigma\,\mathbf{u}(\mathbf{x}^*,t_n + \Delta t),\\
 \mathbf{x}_{n+1} &amp;= \mathbf{x}_n + \tfrac{\Delta t}{2}\,(k_1 + k_2).\end{split}\]</div>
 <p>This scheme yields a global error of order <span class="math notranslate nohighlight">\(O(\Delta t^2)\)</span> with two velocity evaluations per step.</p>
 <p><strong>Classical Fourth-Order Runge-Kutta (RK4)</strong></p>
-<p>The classical RK4 method achieves fourth-order accuracy via four slope evaluations at intermediate points:</p>
+<p>The classical <code class="docutils literal notranslate"><span class="pre">RK4</span></code> method achieves fourth-order accuracy via four slope evaluations at intermediate points:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}k_1 = \mathbf{u}(\mathbf{x}_n,t_n),\\
 k_2 = \mathbf{u}\!\bigl(\mathbf{x}_n + \tfrac{\Delta t}{2}k_1,\;t_n + \tfrac{\Delta t}{2}\bigr),\\
