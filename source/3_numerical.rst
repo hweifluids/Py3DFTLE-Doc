@@ -99,7 +99,7 @@ This yields a global error of order :math:`O(\Delta t^4)` with four velocity eva
 
 **Sixth-Order Runge-Kutta (RK6)**
 
-The seven-stage scheme uses non-uniform weights to attain global :math:`O(\Delta t^6)` accuracy. This method originates from [Butcher]_.
+The seven-stage scheme ``ERK6(7)`` uses non-uniform weights to attain global :math:`O(\Delta t^6)` accuracy. This method originates from [Butcher]_.
 As for the coefficients for ``RK6`` are more complex to write into equations, the Butcher table is given as follows.
 
 +-----------------------------+-------------------------------+----------------------------+---------------------------------+------------------------------+-----------------------------+--------------------------+-------------------------+
@@ -122,7 +122,7 @@ As for the coefficients for ``RK6`` are more complex to write into equations, th
 | :math:`b_i`                 | :math:`1/12`                  | :math:`0`                  | :math:`0`                       | :math:`0`                    | :math:`5/12`                | :math:`5/12`             | :math:`1/12`            |
 +-----------------------------+-------------------------------+----------------------------+---------------------------------+------------------------------+-----------------------------+--------------------------+-------------------------+
 
-
+In our computation, the up symbol side is applied, in other words, ``±`` represents ``+``, taking :math:`\lambda=+\sqrt{5}`.
 
 
 
