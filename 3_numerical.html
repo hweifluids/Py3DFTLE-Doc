@@ -125,11 +125,8 @@ t_n + c_i \Delta t \Bigr),
 \qquad i = 1, 2, \dots, s,\]</div>
 <p>and then update the solution:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{x}_{n+1}
-;=;
-\mathbf{x}n
-;+;
-\Delta t \sum{i=1}^{s} b_i,\mathbf{k}_i.\]</div>
+\[\mathbf{x}_{n+1} =
+\mathbf{x}_n + \Delta t \sum_{i=1}^s b_i\,\mathbf{k}_i.\]</div>
 <p>Here, the boldface stage variables <span class="math notranslate nohighlight">\(\mathbf{k}_i\)</span> represent intermediate slope estimates.</p>
 <p><strong>Second-Order Runge-Kutta (RK2, Heun’s)</strong></p>
 <p>Heun’s <code class="docutils literal notranslate"><span class="pre">RK2</span></code> method attains second-order accuracy by combining predictor and corrector slopes:</p>
