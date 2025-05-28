@@ -45,8 +45,7 @@ This method incurs a global error of order :math:`O(\Delta t)` and requires only
 
 Proposed by Carl Runge and Martin Kutta around 1900, Runge-Kutta methods constitute a widely used family of algorithms for the numerical integration of ODEs.
 
-In an explicit :math:`s`-stage Runge-Kutta scheme for this initial-value problem, the solution is advanced over a time step :math:`h` as follows:
-
+In an explicit :math:`s`-stage Runge-Kutta scheme for this initial-value problem, the solution is advanced over a time step :math:`\Delta t` as follows.
 First, compute the intermediate stage vectors:
 
 .. math::
@@ -56,8 +55,8 @@ First, compute the intermediate stage vectors:
    \mathbf{u}!\Bigl(
    \mathbf{x}n
    ;+;
-   h \sum{j=1}^{i-1} a{ij},\mathbf{k}_j,
-   ; t_n + c_i h
+   \Delta t \sum_{j=1}^{i-1} a_{ij},\mathbf{k}_j,
+   ; t_n + c_i \Delta t
    \Bigr),
    \qquad i = 1, 2, \dots, s,
 
@@ -65,11 +64,11 @@ and then update the solution:
 
 .. math::
 
-\mathbf{x}_{n+1}
-;=;
-\mathbf{x}n
-;+;
-h \sum{i=1}^{s} b_i,\mathbf{k}_i.
+   \mathbf{x}_{n+1}
+   ;=;
+   \mathbf{x}n
+   ;+;
+   \Delta t \sum{i=1}^{s} b_i,\mathbf{k}_i.
 
 Here, the boldface stage variables :math:`\mathbf{k}_i` represent intermediate slope estimates.
 

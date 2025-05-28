@@ -116,26 +116,25 @@ Furthermore, when querying the velocity, special wall treatment must be applied 
 <p>This method incurs a global error of order <span class="math notranslate nohighlight">\(O(\Delta t)\)</span> and requires only one velocity evaluation per step, therefore has high computational speed.</p>
 <p><strong>Runge-Kutta Method</strong></p>
 <p>Proposed by Carl Runge and Martin Kutta around 1900, Runge-Kutta methods constitute a widely used family of algorithms for the numerical integration of ODEs.</p>
-<p>In an explicit <span class="math notranslate nohighlight">\(s\)</span>-stage Runge-Kutta scheme for this initial-value problem, the solution is advanced over a time step <span class="math notranslate nohighlight">\(h\)</span> as follows:</p>
-<p>First, compute the intermediate stage vectors:</p>
+<p>In an explicit <span class="math notranslate nohighlight">\(s\)</span>-stage Runge-Kutta scheme for this initial-value problem, the solution is advanced over a time step <span class="math notranslate nohighlight">\(\Delta t\)</span> as follows.
+First, compute the intermediate stage vectors:</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{k}i
 ;=;
 \mathbf{u}!\Bigl(
 \mathbf{x}n
 ;+;
-h \sum{j=1}^{i-1} a{ij},\mathbf{k}_j,
-; t_n + c_i h
+\Delta t \sum_{j=1}^{i-1} a_{ij},\mathbf{k}_j,
+; t_n + c_i \Delta t
 \Bigr),
 \qquad i = 1, 2, \dots, s,\]</div>
 <p>and then update the solution:</p>
 <div class="math notranslate nohighlight">
-\[\]</div>
-<p>mathbf{x}_{n+1}
+\[\mathbf{x}_{n+1}
 ;=;
-mathbf{x}n
+\mathbf{x}n
 ;+;
-h sum{i=1}^{s} b_i,mathbf{k}_i.</p>
+\Delta t \sum{i=1}^{s} b_i,\mathbf{k}_i.\]</div>
 <p>Here, the boldface stage variables <span class="math notranslate nohighlight">\(\mathbf{k}_i\)</span> represent intermediate slope estimates.</p>
 <p><strong>Second-Order Runge-Kutta (RK2, Heun’s)</strong></p>
 <p>Heun’s <code class="docutils literal notranslate"><span class="pre">RK2</span></code> method attains second-order accuracy by combining predictor and corrector slopes:</p>
