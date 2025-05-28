@@ -134,7 +134,7 @@ k_4 = \mathbf{u}(\mathbf{x}_n + \Delta t\,k_3,\;t_n + \Delta t),\\
 \mathbf{x}_{n+1} = \mathbf{x}_n + \tfrac{\Delta t}{6}\,(k_1 + 2k_2 + 2k_3 + k_4).\end{split}\]</div>
 <p>This yields a global error of order <span class="math notranslate nohighlight">\(O(\Delta t^4)\)</span> with four velocity evaluations per step.</p>
 <p><strong>Sixth-Order Runge-Kutta (RK6)</strong></p>
-<p>The seven-stage scheme uses non-uniform weights to attain global <span class="math notranslate nohighlight">\(O(\Delta t^6)\)</span> accuracy. This method originates from</p>
+<p>The seven-stage scheme uses non-uniform weights to attain global <span class="math notranslate nohighlight">\(O(\Delta t^6)\)</span> accuracy. This method originates from <a class="reference internal" href="9_references.html#butcher" id="id1"><span>[Butcher]</span></a>, as well as the coefficients (Butcher table) listed in the basically-tailest table of the reference.</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}k_1 = \mathbf{u}(\mathbf{x}_n,t_n),\\
 k_2 = \mathbf{u}\!\bigl(\mathbf{x}_n + \tfrac{\Delta t}{3}k_1,\;t_n + \tfrac{\Delta t}{3}\bigr),\\
@@ -212,6 +212,74 @@ k_6 = \mathbf{u}\!\bigl(\mathbf{x}_n + \Delta t(-\tfrac{3}{2}k_1 + 2k_2 - \tfrac
 </tr>
 </tbody>
 </table>
+<table class="docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\frac{5\mp\sqrt{5}}{10}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{5\mp\sqrt{5}}{10}\)</span></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\frac{5\pm\sqrt{5}}{10}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{\mp\sqrt{5}}{10}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{5\pm2\sqrt{5}}{10}\)</span></p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\frac{5\mp\sqrt{5}}{10}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{-15\pm7\sqrt{5}}{20}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{-1\pm\sqrt{5}}{4}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{15\mp7\sqrt{5}}{10}\)</span></p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\frac{5\pm\sqrt{5}}{10}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{5\mp\sqrt{5}}{60}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{1}{6}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{15\pm7\sqrt{5}}{60}\)</span></p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\frac{5\mp\sqrt{5}}{10}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{5\pm\sqrt{5}}{60}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{9\mp5\sqrt{5}}{12}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{1}{6}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{-5\pm3\sqrt{5}}{10}\)</span></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{1}{6}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{-55\pm25\sqrt{5}}{12}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{-25\mp7\sqrt{5}}{12}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(5\mp2\sqrt{5}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{5\pm\sqrt{5}}{2}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\frac{1}{12}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{5}{12}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{5}{12}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\frac{1}{12}\)</span></p></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="ftle-computation">
@@ -227,7 +295,7 @@ k_6 = \mathbf{u}\!\bigl(\mathbf{x}_n + \Delta t(-\tfrac{3}{2}k_1 + 2k_2 - \tfrac
 <section id="computational-density-and-comparison">
 <span id="numcompare"></span><h1>Computational Density and Comparison<a class="headerlink" href="#computational-density-and-comparison" title="Link to this heading"></a></h1>
 <p id="numtips">As for your reference, and configured as defaults, the <em>Berkeley LCS Tutorials</em> used <code class="docutils literal notranslate"><span class="pre">RK4</span></code> for advection.
-The velocity fields were interpolated with <code class="docutils literal notranslate"><span class="pre">tricubic-FL</span></code> by them, originating from <a class="reference internal" href="9_references.html#lekien2005" id="id1"><span>[Lekien2005]</span></a>, which has higher performance by solving a 64×64 linear system using the function values, gradients, and mixed partial derivatives at its eight corners, which is in future development plan for <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code> with high priority.
+The velocity fields were interpolated with <code class="docutils literal notranslate"><span class="pre">tricubic-FL</span></code> by them, originating from <a class="reference internal" href="9_references.html#lekien2005" id="id2"><span>[Lekien2005]</span></a>, which has higher performance by solving a 64×64 linear system using the function values, gradients, and mixed partial derivatives at its eight corners, which is in future development plan for <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code> with high priority.
 Although not detailed, <code class="docutils literal notranslate"><span class="pre">grad_order=2</span></code> was employed by them from the equation, supposing the mesh is sufficiently refined.</p>
 <p>Please always notice that, although providing much better numerical precision and looks cool in papers, high-order methods could be resource-consuming, even several hundred times.</p>
 </section>
