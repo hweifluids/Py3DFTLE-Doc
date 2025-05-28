@@ -18,7 +18,7 @@ Time Integration
 
 In the numerical computation of the FTLE (Finite-Time Lyapunov Exponent), we first compute the *flow map* :math:`\varphi_{t_n}^{t_{n+1}}(y_n)`, which maps the initial point :math:`y_n` at time :math:`t_n` to time :math:`t_{n+1}`.
 
-To obtain this map, one must numerically integrate the underlying dynamical system, which is described by the ordinary differential equation (ODE)::
+To obtain this map, one must numerically integrate the underlying dynamical system, which is described by the ordinary differential equation (ODE):
 
 .. math::
 
@@ -33,10 +33,8 @@ The first-order explicit Euler scheme advances the position by sampling the velo
 
 .. math::
 
-   \begin{aligned}
    \mathbf{u}_n = \mathbf{u}(\mathbf{x}_n,t_n),\\
    \mathbf{x}_{n+1} = \mathbf{x}_n + \sigma\,\Delta t\,\mathbf{u}_n.
-   \end{aligned}
 
 This method incurs a global error of order :math:`O(\Delta t)` and requires only one velocity evaluation per step.
 
@@ -53,7 +51,7 @@ One advances the solution by a step :math:`h` as follows. First compute the inte
 .. math::
 
    k_i = f\Bigl(t_n + c_i\,h,\;y_n + h \sum_{j=1}^{i-1} a_{ij}\,k_j\Bigr),
-   \quad i = 1,2,\dots,s,
+   \quad i = 1,2,\dots,s\,,
 
 and then form the new approximation by:
 
@@ -68,12 +66,10 @@ Heun's method attains second-order accuracy by combining predictor and corrector
 
 .. math::
 
-   \begin{aligned}
    k_1 &= \sigma\,\mathbf{u}(\mathbf{x}_n,t_n),\\
    \mathbf{x}^* &= \mathbf{x}_n + \Delta t\,k_1,\\
    k_2 &= \sigma\,\mathbf{u}(\mathbf{x}^*,t_n + \Delta t),\\
    \mathbf{x}_{n+1} &= \mathbf{x}_n + \tfrac{\Delta t}{2}\,(k_1 + k_2).
-   \end{aligned}
 
 This scheme yields a global error of order :math:`O(\Delta t^2)` with two velocity evaluations per step.
 
