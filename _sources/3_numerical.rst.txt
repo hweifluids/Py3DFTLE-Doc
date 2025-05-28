@@ -39,7 +39,7 @@ The first-order explicit Euler scheme advances the position by sampling the velo
    \mathbf{u}_n = \mathbf{u}(\mathbf{x}_n,t_n),\\
    \mathbf{x}_{n+1} = \mathbf{x}_n + \sigma\,\Delta t\,\mathbf{u}_n.
 
-This method incurs a global error of order :math:`O(\Delta t)` and requires only one velocity evaluation per step.
+This method incurs a global error of order :math:`O(\Delta t)` and requires only one velocity evaluation per step, therefore has high computational speed.
 
 **Runge-Kutta Method**
 
@@ -47,20 +47,19 @@ In an explicit :math:`s`-stage Runge–Kutta method for the initial-value proble
 
 .. math::
 
-   y' = f(t,y), \quad y(t_n) = y_n.
+   \mathbf{x}' = \mathbf{u}(\mathbf{x},t), \quad \mathbf{x}(t_n) = \mathbf{x}_n.
 
-One advances the solution by a step :math:`h` as follows. First compute the intermediate slopes:
+One advances the solution by a step :math:h as follows. First compute the intermediate velocities:
 
 .. math::
 
-   k_i = f\Bigl(t_n + c_i\,h,\;y_n + h \sum_{j=1}^{i-1} a_{ij}\,k_j\Bigr),
-   \quad i = 1,2,\dots,s\,,
+   \mathbf{k}i = \mathbf{u}\Bigl(\mathbf{x}n + h \sum{j=1}^{i-1} a{ij},\mathbf{k}_j,;t_n + c_i,h\Bigr), \quad i = 1,2,\dots,s,,
 
 and then form the new approximation by:
 
 .. math::
 
-   y_{n+1} = y_n + h \sum_{i=1}^s b_i\,k_i.
+   \mathbf{x}_{n+1} = \mathbf{x}n + h \sum{i=1}^s b_i,\mathbf{k}_i.
 
 
 **Second-Order Runge-Kutta (RK2, Heun's)**
@@ -69,10 +68,10 @@ Heun's ``RK2`` method attains second-order accuracy by combining predictor and c
 
 .. math::
 
-   k_1 &= \sigma\,\mathbf{u}(\mathbf{x}_n,t_n),\\
-   \mathbf{x}^* &= \mathbf{x}_n + \Delta t\,k_1,\\
-   k_2 &= \sigma\,\mathbf{u}(\mathbf{x}^*,t_n + \Delta t),\\
-   \mathbf{x}_{n+1} &= \mathbf{x}_n + \tfrac{\Delta t}{2}\,(k_1 + k_2).
+   k_1 = \sigma\,\mathbf{u}(\mathbf{x}_n,t_n),\\
+   \mathbf{x}^* = \mathbf{x}_n + \Delta t\,k_1,\\
+   k_2 = \sigma\,\mathbf{u}(\mathbf{x}^*,t_n + \Delta t),\\
+   \mathbf{x}_{n+1} = \mathbf{x}_n + \tfrac{\Delta t}{2}\,(k_1 + k_2).
 
 This scheme yields a global error of order :math:`O(\Delta t^2)` with two velocity evaluations per step.
 

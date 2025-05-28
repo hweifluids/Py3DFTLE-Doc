@@ -113,25 +113,24 @@ Furthermore, when querying the velocity, special wall treatment must be applied 
 <div class="math notranslate nohighlight">
 \[\begin{split}\mathbf{u}_n = \mathbf{u}(\mathbf{x}_n,t_n),\\
 \mathbf{x}_{n+1} = \mathbf{x}_n + \sigma\,\Delta t\,\mathbf{u}_n.\end{split}\]</div>
-<p>This method incurs a global error of order <span class="math notranslate nohighlight">\(O(\Delta t)\)</span> and requires only one velocity evaluation per step.</p>
+<p>This method incurs a global error of order <span class="math notranslate nohighlight">\(O(\Delta t)\)</span> and requires only one velocity evaluation per step, therefore has high computational speed.</p>
 <p><strong>Runge-Kutta Method</strong></p>
 <p>In an explicit <span class="math notranslate nohighlight">\(s\)</span>-stage Runge–Kutta method for the initial-value problem:</p>
 <div class="math notranslate nohighlight">
-\[y' = f(t,y), \quad y(t_n) = y_n.\]</div>
-<p>One advances the solution by a step <span class="math notranslate nohighlight">\(h\)</span> as follows. First compute the intermediate slopes:</p>
+\[\mathbf{x}' = \mathbf{u}(\mathbf{x},t), \quad \mathbf{x}(t_n) = \mathbf{x}_n.\]</div>
+<p>One advances the solution by a step :math:h as follows. First compute the intermediate velocities:</p>
 <div class="math notranslate nohighlight">
-\[k_i = f\Bigl(t_n + c_i\,h,\;y_n + h \sum_{j=1}^{i-1} a_{ij}\,k_j\Bigr),
-\quad i = 1,2,\dots,s\,,\]</div>
+\[\mathbf{k}i = \mathbf{u}\Bigl(\mathbf{x}n + h \sum{j=1}^{i-1} a{ij},\mathbf{k}_j,;t_n + c_i,h\Bigr), \quad i = 1,2,\dots,s,,\]</div>
 <p>and then form the new approximation by:</p>
 <div class="math notranslate nohighlight">
-\[y_{n+1} = y_n + h \sum_{i=1}^s b_i\,k_i.\]</div>
+\[\mathbf{x}_{n+1} = \mathbf{x}n + h \sum{i=1}^s b_i,\mathbf{k}_i.\]</div>
 <p><strong>Second-Order Runge-Kutta (RK2, Heun’s)</strong></p>
 <p>Heun’s <code class="docutils literal notranslate"><span class="pre">RK2</span></code> method attains second-order accuracy by combining predictor and corrector slopes:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}k_1 &amp;= \sigma\,\mathbf{u}(\mathbf{x}_n,t_n),\\
-\mathbf{x}^* &amp;= \mathbf{x}_n + \Delta t\,k_1,\\
-k_2 &amp;= \sigma\,\mathbf{u}(\mathbf{x}^*,t_n + \Delta t),\\
-\mathbf{x}_{n+1} &amp;= \mathbf{x}_n + \tfrac{\Delta t}{2}\,(k_1 + k_2).\end{split}\]</div>
+\[\begin{split}k_1 = \sigma\,\mathbf{u}(\mathbf{x}_n,t_n),\\
+\mathbf{x}^* = \mathbf{x}_n + \Delta t\,k_1,\\
+k_2 = \sigma\,\mathbf{u}(\mathbf{x}^*,t_n + \Delta t),\\
+\mathbf{x}_{n+1} = \mathbf{x}_n + \tfrac{\Delta t}{2}\,(k_1 + k_2).\end{split}\]</div>
 <p>This scheme yields a global error of order <span class="math notranslate nohighlight">\(O(\Delta t^2)\)</span> with two velocity evaluations per step.</p>
 <p><strong>Classical Fourth-Order Runge-Kutta (RK4)</strong></p>
 <p>The classical <code class="docutils literal notranslate"><span class="pre">RK4</span></code> method achieves fourth-order accuracy via four slope evaluations at intermediate points:</p>
