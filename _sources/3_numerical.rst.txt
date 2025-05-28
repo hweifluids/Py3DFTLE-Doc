@@ -55,9 +55,7 @@ First, compute the intermediate stage vectors:
    \mathbf{u}!\Bigl(
    \mathbf{x}n
    ;+;
-   \Delta t \sum_{j=1}^{i-1} a_{ij},\mathbf{k}_j,
-   ; t_n + c_i \Delta t
-   \Bigr),
+   \Delta t \sum_{j=1}^{i-1} a_{ij}\,\mathbf{k}_j,\, t_n + c_i \Delta t \Bigr),
    \qquad i = 1, 2, \dots, s,
 
 and then update the solution:
