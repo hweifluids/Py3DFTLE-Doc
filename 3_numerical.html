@@ -112,9 +112,6 @@
 <p>where <span class="math notranslate nohighlight">\(\sigma = \pm1\)</span> selects forward or backward integration.</p>
 <p><strong>Explicit Euler Method</strong></p>
 <p>The first-order explicit Euler scheme advances the position by sampling the velocity at the beginning of the time step:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\mathbf{u}_n = \mathbf{u}(\mathbf{x}_n,t_n),\\
-\mathbf{x}_{n+1} = \mathbf{x}_n + \sigma\,\Delta t\,\mathbf{u}_n.\end{split}\]</div>
 <p>This method incurs a global error of order <span class="math notranslate nohighlight">\(O(\Delta t)\)</span> and requires only one velocity evaluation per step.</p>
 <p><strong>Runge-Kutta Method</strong></p>
 <p>In an explicit <span class="math notranslate nohighlight">\(s\)</span>-stage Runge–Kutta method for the initial-value problem:</p>
@@ -127,24 +124,13 @@
 <p>and then form the new approximation by</p>
 <div class="math notranslate nohighlight">
 \[y_{n+1} = y_n + h \sum_{i=1}^s b_i\,k_i.\]</div>
-<p><em>Second-Order Runge-Kutta (RK2, Heun’s)</em></p>
+<p><strong>Second-Order Runge-Kutta (RK2, Heun’s)</strong></p>
 <p>Heun’s method attains second-order accuracy by combining predictor and corrector slopes:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}k_1 = \sigma\,\mathbf{u}(\mathbf{x}_n,t_n),\\
-\mathbf{x}^* = \mathbf{x}_n + \Delta t\,k_1,\\
-k_2 = \sigma\,\mathbf{u}(\mathbf{x}^*,t_n + \Delta t),\\
-\mathbf{x}_{n+1} = \mathbf{x}_n + \tfrac{\Delta t}{2}\,(k_1 + k_2).\end{split}\]</div>
 <p>This scheme yields a global error of order <span class="math notranslate nohighlight">\(O(\Delta t^2)\)</span> with two velocity evaluations per step.</p>
-<p><em>Classical Fourth-Order Runge-Kutta (RK4)</em></p>
+<p><strong>Classical Fourth-Order Runge-Kutta (RK4)</strong></p>
 <p>The classical RK4 method achieves fourth-order accuracy via four slope evaluations at intermediate points:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}k_1 = \mathbf{u}(\mathbf{x}_n,t_n),\\
-k_2 = \mathbf{u}\!\bigl(\mathbf{x}_n + \tfrac{\Delta t}{2}k_1,\;t_n + \tfrac{\Delta t}{2}\bigr),\\
-k_3 = \mathbf{u}\!\bigl(\mathbf{x}_n + \tfrac{\Delta t}{2}k_2,\;t_n + \tfrac{\Delta t}{2}\bigr),\\
-k_4 = \mathbf{u}(\mathbf{x}_n + \Delta t\,k_3,\;t_n + \Delta t),\\
-\mathbf{x}_{n+1} = \mathbf{x}_n + \tfrac{\Delta t}{6}\,(k_1 + 2k_2 + 2k_3 + k_4).\end{split}\]</div>
 <p>This yields a global error of order <span class="math notranslate nohighlight">\(O(\Delta t^4)\)</span> with four velocity evaluations per step.</p>
-<p><em>Sixth-Order Runge-Kutta (RK6)</em></p>
+<p><strong>Sixth-Order Runge-Kutta (RK6)</strong></p>
 <p>The seven-stage scheme uses non-uniform weights to attain global <span class="math notranslate nohighlight">\(O(\Delta t^6)\)</span> accuracy. This method originates from <a class="reference internal" href="9_references.html#butcher" id="id1"><span>[Butcher]</span></a>.
 As for the coefficients for <code class="docutils literal notranslate"><span class="pre">RK6</span></code> are more complex to write into equations, the Butcher table is given as follows.</p>
 <table class="docutils align-default">

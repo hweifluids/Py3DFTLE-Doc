@@ -39,6 +39,7 @@ where :math:`\sigma = \pm1` selects forward or backward integration.
 The first-order explicit Euler scheme advances the position by sampling the velocity at the beginning of the time step:
 
 .. math::
+   :align: left
 
    \mathbf{u}_n = \mathbf{u}(\mathbf{x}_n,t_n),\\
    \mathbf{x}_{n+1} = \mathbf{x}_n + \sigma\,\Delta t\,\mathbf{u}_n.
@@ -67,11 +68,12 @@ and then form the new approximation by
    y_{n+1} = y_n + h \sum_{i=1}^s b_i\,k_i.
 
 
-*Second-Order Runge-Kutta (RK2, Heun's)*
+**Second-Order Runge-Kutta (RK2, Heun's)**
 
 Heun's method attains second-order accuracy by combining predictor and corrector slopes:
 
 .. math::
+   :align: left
 
    k_1 = \sigma\,\mathbf{u}(\mathbf{x}_n,t_n),\\
    \mathbf{x}^* = \mathbf{x}_n + \Delta t\,k_1,\\
@@ -80,11 +82,12 @@ Heun's method attains second-order accuracy by combining predictor and corrector
 
 This scheme yields a global error of order :math:`O(\Delta t^2)` with two velocity evaluations per step.
 
-*Classical Fourth-Order Runge-Kutta (RK4)*
+**Classical Fourth-Order Runge-Kutta (RK4)**
 
 The classical RK4 method achieves fourth-order accuracy via four slope evaluations at intermediate points:
 
 .. math::
+   :align: left
 
    k_1 = \mathbf{u}(\mathbf{x}_n,t_n),\\
    k_2 = \mathbf{u}\!\bigl(\mathbf{x}_n + \tfrac{\Delta t}{2}k_1,\;t_n + \tfrac{\Delta t}{2}\bigr),\\
@@ -94,7 +97,7 @@ The classical RK4 method achieves fourth-order accuracy via four slope evaluatio
 
 This yields a global error of order :math:`O(\Delta t^4)` with four velocity evaluations per step.
 
-*Sixth-Order Runge-Kutta (RK6)*
+**Sixth-Order Runge-Kutta (RK6)**
 
 The seven-stage scheme uses non-uniform weights to attain global :math:`O(\Delta t^6)` accuracy. This method originates from [Butcher]_.
 As for the coefficients for ``RK6`` are more complex to write into equations, the Butcher table is given as follows.
