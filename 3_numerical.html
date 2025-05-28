@@ -101,21 +101,15 @@
 <span id="marching"></span><h3>Time Integration<a class="headerlink" href="#time-integration" title="Link to this heading"></a></h3>
 <p>In the numerical computation of the FTLE (Finite-Time Lyapunov Exponent), we first compute the <em>flow map</em> <span class="math notranslate nohighlight">\(\varphi_{t_n}^{t_{n+1}}(y_n)\)</span>, which maps the initial point <span class="math notranslate nohighlight">\(y_n\)</span> at time <span class="math notranslate nohighlight">\(t_n\)</span> to time <span class="math notranslate nohighlight">\(t_{n+1}\)</span>.</p>
 <p>To obtain this map, one must numerically integrate the underlying dynamical system, which is described by the ordinary differential equation (ODE):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">math</span><span class="p">::</span>
-</pre></div>
-</div>
-<blockquote>
-<div><p>frac{dmathbf{x}}{dt} = sigma,mathbf{u}(mathbf{x},t),,
-mathbf{x}(t_n)=mathbf{x}_n,,</p>
-</div></blockquote>
+<div class="math notranslate nohighlight">
+\[\frac{d\mathbf{x}}{dt} = \sigma\,\mathbf{u}(\mathbf{x},t)\,,
+\mathbf{x}(t_n)=\mathbf{x}_n\,,\]</div>
 <p>where <span class="math notranslate nohighlight">\(\sigma = \pm1\)</span> selects forward or backward integration.</p>
 <p><strong>Explicit Euler Method</strong></p>
 <p>The first-order explicit Euler scheme advances the position by sampling the velocity at the beginning of the time step:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-\mathbf{u}_n = \mathbf{u}(\mathbf{x}_n,t_n),\\
-\mathbf{x}_{n+1} = \mathbf{x}_n + \sigma\,\Delta t\,\mathbf{u}_n.
-\end{aligned}\end{split}\]</div>
+\[\begin{split}\mathbf{u}_n = \mathbf{u}(\mathbf{x}_n,t_n),\\
+\mathbf{x}_{n+1} = \mathbf{x}_n + \sigma\,\Delta t\,\mathbf{u}_n.\end{split}\]</div>
 <p>This method incurs a global error of order <span class="math notranslate nohighlight">\(O(\Delta t)\)</span> and requires only one velocity evaluation per step.</p>
 <p><strong>Runge-Kutta Method</strong></p>
 <p>In an explicit <span class="math notranslate nohighlight">\(s\)</span>-stage Runge–Kutta method for the initial-value problem:</p>
@@ -124,19 +118,17 @@ mathbf{x}(t_n)=mathbf{x}_n,,</p>
 <p>One advances the solution by a step <span class="math notranslate nohighlight">\(h\)</span> as follows. First compute the intermediate slopes:</p>
 <div class="math notranslate nohighlight">
 \[k_i = f\Bigl(t_n + c_i\,h,\;y_n + h \sum_{j=1}^{i-1} a_{ij}\,k_j\Bigr),
-\quad i = 1,2,\dots,s,\]</div>
+\quad i = 1,2,\dots,s\,,\]</div>
 <p>and then form the new approximation by:</p>
 <div class="math notranslate nohighlight">
 \[y_{n+1} = y_n + h \sum_{i=1}^s b_i\,k_i.\]</div>
 <p><strong>Second-Order Runge-Kutta (RK2, Heun’s)</strong></p>
 <p>Heun’s method attains second-order accuracy by combining predictor and corrector slopes:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{aligned}
-k_1 &amp;= \sigma\,\mathbf{u}(\mathbf{x}_n,t_n),\\
+\[\begin{split}k_1 &amp;= \sigma\,\mathbf{u}(\mathbf{x}_n,t_n),\\
 \mathbf{x}^* &amp;= \mathbf{x}_n + \Delta t\,k_1,\\
 k_2 &amp;= \sigma\,\mathbf{u}(\mathbf{x}^*,t_n + \Delta t),\\
-\mathbf{x}_{n+1} &amp;= \mathbf{x}_n + \tfrac{\Delta t}{2}\,(k_1 + k_2).
-\end{aligned}\end{split}\]</div>
+\mathbf{x}_{n+1} &amp;= \mathbf{x}_n + \tfrac{\Delta t}{2}\,(k_1 + k_2).\end{split}\]</div>
 <p>This scheme yields a global error of order <span class="math notranslate nohighlight">\(O(\Delta t^2)\)</span> with two velocity evaluations per step.</p>
 <p><strong>Classical Fourth-Order Runge-Kutta (RK4)</strong></p>
 <p>The classical RK4 method achieves fourth-order accuracy via four slope evaluations at intermediate points:</p>
