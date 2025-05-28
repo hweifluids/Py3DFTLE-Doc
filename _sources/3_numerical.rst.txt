@@ -51,7 +51,7 @@ First, compute the intermediate stage vectors:
 .. math::
 
    \mathbf{k}_i = 
-   \mathbf{u} \Bigl(   \mathbf{x}_n + \Delta t \sum_{j=1}^{i-1} a_{ij}\,\mathbf{k}_j,\,
+   \mathbf{u} \Bigl(   \mathbf{x}_n + \sigma\,\Delta t \sum_{j=1}^{i-1} a_{ij}\,\mathbf{k}_j,\,
    t_n + c_i \Delta t \Bigr),
    \qquad i = 1, 2, \dots, s,
 
@@ -60,7 +60,7 @@ and then update the solution:
 .. math::
 
    \mathbf{x}_{n+1} =
-   \mathbf{x}_n + \Delta t \sum_{i=1}^s b_i\,\mathbf{k}_i.
+   \mathbf{x}_n + \sigma\,\Delta t \sum_{i=1}^s b_i\,\mathbf{k}_i.
 
 Here, the boldface stage variables :math:`\mathbf{k}_i` represent intermediate slope estimates.
 
