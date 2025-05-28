@@ -59,11 +59,8 @@ and then update the solution:
 
 .. math::
 
-   \mathbf{x}_{n+1}
-   ;=;
-   \mathbf{x}n
-   ;+;
-   \Delta t \sum{i=1}^{s} b_i,\mathbf{k}_i.
+   \mathbf{x}_{n+1} =
+   \mathbf{x}_n + \Delta t \sum_{i=1}^s b_i\,\mathbf{k}_i.
 
 Here, the boldface stage variables :math:`\mathbf{k}_i` represent intermediate slope estimates.
 
