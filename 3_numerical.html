@@ -97,8 +97,8 @@
 <span id="numerical"></span><h1>Numerical Methods<a class="headerlink" href="#numerical-methods" title="Link to this heading"></a></h1>
 <section id="lagrangian-advection">
 <span id="advc"></span><h2>Lagrangian Advection<a class="headerlink" href="#lagrangian-advection" title="Link to this heading"></a></h2>
-<p>In the numerical computation of the <code class="docutils literal notranslate"><span class="pre">FTLE</span></code>, we first compute the <em>flow map</em> <span class="math notranslate nohighlight">\(\varphi_{t_n}^{t_{n+1}}(y_n)\)</span>, which maps the initial seed point <span class="math notranslate nohighlight">\(y_n\)</span> at time <span class="math notranslate nohighlight">\(t_n\)</span> to time <span class="math notranslate nohighlight">\(t_{n+1}\)</span>.
-To obtain this map, one must numerically integrate the underlying dynamical system, which is described by the ordinary differential equation (ODE):</p>
+<p>In the numerical computation of the <code class="docutils literal notranslate"><span class="pre">FTLE</span></code>, we first compute the <em>flow map</em> <span class="math notranslate nohighlight">\(\varphi_{t_n}^{t_{n+1}}(x_n)\)</span>, which maps the initial seed point <span class="math notranslate nohighlight">\(x_n\)</span> at time <span class="math notranslate nohighlight">\(t_n\)</span> to time <span class="math notranslate nohighlight">\(t_{n+1}\)</span>.
+To obtain this map, one must numerically integrate the underlying dynamical system, which is described by the ODE:</p>
 <div class="math notranslate nohighlight">
 \[\frac{d\mathbf{x}}{dt} = \sigma\,\mathbf{u}(\mathbf{x},t)\,,
 \mathbf{x}(t_n)=\mathbf{x}_n\,,\]</div>

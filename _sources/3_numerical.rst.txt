@@ -9,8 +9,8 @@ Lagrangian Advection
 -----------------------
 
 
-In the numerical computation of the ``FTLE``, we first compute the *flow map* :math:`\varphi_{t_n}^{t_{n+1}}(y_n)`, which maps the initial seed point :math:`y_n` at time :math:`t_n` to time :math:`t_{n+1}`.
-To obtain this map, one must numerically integrate the underlying dynamical system, which is described by the ordinary differential equation (ODE):
+In the numerical computation of the ``FTLE``, we first compute the *flow map* :math:`\varphi_{t_n}^{t_{n+1}}(x_n)`, which maps the initial seed point :math:`x_n` at time :math:`t_n` to time :math:`t_{n+1}`.
+To obtain this map, one must numerically integrate the underlying dynamical system, which is described by the ODE:
 
 .. math::
 
