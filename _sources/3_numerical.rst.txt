@@ -49,9 +49,9 @@ In an explicit :math:`s`-stage Runge-Kutta scheme for the initial-value problem:
 
 .. math::
 
-\mathbf{x}' ;=; \mathbf{u}(\mathbf{x}, t),
-\qquad
-\mathbf{x}(t_n) ;=; \mathbf{x}_n,
+   \mathbf{x}' ;=; \mathbf{u}(\mathbf{x}, t),
+   \qquad
+   \mathbf{x}(t_n) ;=; \mathbf{x}_n,
 
 the solution is advanced over a time step :math:h as follows:
 
@@ -59,15 +59,15 @@ First, compute the intermediate stage vectors:
 
 .. math::
 
-\mathbf{k}i
-;=;
-\mathbf{u}!\Bigl(
-\mathbf{x}n
-;+;
-h \sum{j=1}^{i-1} a{ij},\mathbf{k}_j,
-; t_n + c_i h
-\Bigr),
-\qquad i = 1, 2, \dots, s,
+   \mathbf{k}i
+   ;=;
+   \mathbf{u}!\Bigl(
+   \mathbf{x}n
+   ;+;
+   h \sum{j=1}^{i-1} a{ij},\mathbf{k}_j,
+   ; t_n + c_i h
+   \Bigr),
+   \qquad i = 1, 2, \dots, s,
 
 and then update the solution:
 
