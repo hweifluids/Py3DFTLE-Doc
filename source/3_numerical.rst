@@ -45,7 +45,29 @@ The first-order explicit Euler scheme advances the position by sampling the velo
 
 This method incurs a global error of order :math:`O(\Delta t)` and requires only one velocity evaluation per step.
 
-**Second-Order Runge-Kutta (Heun's Method)**
+**Runge-Kutta Method**
+
+In an explicit :math:`s`-stage Runge–Kutta method for the initial-value problem:
+
+.. math::
+
+   y' = f(t,y), \quad y(t_n) = y_n
+
+one advances the solution by a step :math:`h` as follows. First compute the intermediate slopes
+
+.. math::
+
+   k_i = f\Bigl(t_n + c_i\,h,\;y_n + h \sum_{j=1}^{i-1} a_{ij}\,k_j\Bigr),
+   \quad i = 1,2,\dots,s
+
+and then form the new approximation by
+
+.. math::
+
+   y_{n+1} = y_n + h \sum_{i=1}^s b_i\,k_i.
+
+
+*Second-Order Runge-Kutta (RK2, Heun's)*
 
 Heun's method attains second-order accuracy by combining predictor and corrector slopes:
 
@@ -58,7 +80,7 @@ Heun's method attains second-order accuracy by combining predictor and corrector
 
 This scheme yields a global error of order :math:`O(\Delta t^2)` with two velocity evaluations per step.
 
-**Classical Fourth-Order Runge-Kutta (RK4)**
+*Classical Fourth-Order Runge-Kutta (RK4)*
 
 The classical RK4 method achieves fourth-order accuracy via four slope evaluations at intermediate points:
 
@@ -72,22 +94,10 @@ The classical RK4 method achieves fourth-order accuracy via four slope evaluatio
 
 This yields a global error of order :math:`O(\Delta t^4)` with four velocity evaluations per step.
 
-**Sixth-Order Runge-Kutta (RK6)**
+*Sixth-Order Runge-Kutta (RK6)*
 
-The seven-stage scheme uses non-uniform weights to attain global :math:`O(\Delta t^6)` accuracy. This method originates from [Butcher]_, as well as the coefficients (Butcher table) listed in the basically-tailest table of the reference.
-
-
-.. math::
-
-   k_1 = \mathbf{u}(\mathbf{x}_n,t_n),\\
-   k_2 = \mathbf{u}\!\bigl(\mathbf{x}_n + \tfrac{\Delta t}{3}k_1,\;t_n + \tfrac{\Delta t}{3}\bigr),\\
-   k_3 = \mathbf{u}\!\bigl(\mathbf{x}_n + \Delta t(\tfrac{1}{6}k_1 + \tfrac{1}{6}k_2),\;t_n + \tfrac{\Delta t}{3}\bigr),\\
-   k_4 = \mathbf{u}\!\bigl(\mathbf{x}_n + \Delta t(\tfrac{1}{8}k_1 + \tfrac{3}{8}k_3),\;t_n + \tfrac{\Delta t}{2}\bigr),\\
-   k_5 = \mathbf{u}\!\bigl(\mathbf{x}_n + \Delta t(\tfrac{1}{2}k_1 - \tfrac{3}{2}k_3 + 2k_4),\;t_n + \tfrac{2\Delta t}{3}\bigr),\\
-   k_6 = \mathbf{u}\!\bigl(\mathbf{x}_n + \Delta t(-\tfrac{3}{2}k_1 + 2k_2 - \tfrac{1}{2}k_3 + k_4),\;t_n + \Delta t\bigr),\\
-   \mathbf{x}_{n+1} = \mathbf{x}_n + \Delta t\bigl(\tfrac{1}{20}k_1 + \tfrac{1}{4}k_4 + \tfrac{1}{5}k_5 + \tfrac{1}{2}k_6\bigr).
-
-This scheme incurs a global error of order  with six velocity evaluations.  
+The seven-stage scheme uses non-uniform weights to attain global :math:`O(\Delta t^6)` accuracy. This method originates from [Butcher]_.
+As for the coefficients for ``RK6`` are more complex to write into equations, the Butcher table is given as follows.
 
 +-----------------------------+-------------------------------+----------------------------+---------------------------------+------------------------------+-----------------------------+--------------------------+-------------------------+
 | :math:`c_i`                 | :math:`a_{i1}`                | :math:`a_{i2}`             | :math:`a_{i3}`                  | :math:`a_{i4}`               | :math:`a_{i5}`              | :math:`a_{i6}`           | :math:`a_{i7}`          |
