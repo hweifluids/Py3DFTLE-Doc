@@ -43,17 +43,9 @@ This method incurs a global error of order :math:`O(\Delta t)` and requires only
 
 **Runge-Kutta Method**
 
-Proposed by Carl Runge and Martin Kutta around 1900, Runge-Kutta methods constitute a widely used family of single-step algorithms for the numerical integration of ordinary differential equations.
+Proposed by Carl Runge and Martin Kutta around 1900, Runge-Kutta methods constitute a widely used family of algorithms for the numerical integration of ODEs.
 
-In an explicit :math:`s`-stage Runge-Kutta scheme for the initial-value problem:
-
-.. math::
-
-   \mathbf{x}' ;=; \mathbf{u}(\mathbf{x}, t),
-   \qquad
-   \mathbf{x}(t_n) ;=; \mathbf{x}_n,
-
-the solution is advanced over a time step :math:h as follows:
+In an explicit :math:`s`-stage Runge-Kutta scheme for this initial-value problem, the solution is advanced over a time step :math:`h` as follows:
 
 First, compute the intermediate stage vectors:
 
@@ -79,7 +71,7 @@ and then update the solution:
 ;+;
 h \sum{i=1}^{s} b_i,\mathbf{k}_i.
 
-Here, the boldface stage variables :math:\mathbf{k}_i represent intermediate slope estimates.
+Here, the boldface stage variables :math:`\mathbf{k}_i` represent intermediate slope estimates.
 
 
 **Second-Order Runge-Kutta (RK2, Heun's)**

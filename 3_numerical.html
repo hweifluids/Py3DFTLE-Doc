@@ -115,13 +115,8 @@ Furthermore, when querying the velocity, special wall treatment must be applied 
 \mathbf{x}_{n+1} = \mathbf{x}_n + \sigma\,\Delta t\,\mathbf{u}_n.\end{split}\]</div>
 <p>This method incurs a global error of order <span class="math notranslate nohighlight">\(O(\Delta t)\)</span> and requires only one velocity evaluation per step, therefore has high computational speed.</p>
 <p><strong>Runge-Kutta Method</strong></p>
-<p>Proposed by Carl Runge and Martin Kutta around 1900, Runge-Kutta methods constitute a widely used family of single-step algorithms for the numerical integration of ordinary differential equations.</p>
-<p>In an explicit <span class="math notranslate nohighlight">\(s\)</span>-stage Runge-Kutta scheme for the initial-value problem:</p>
-<div class="math notranslate nohighlight">
-\[\mathbf{x}' ;=; \mathbf{u}(\mathbf{x}, t),
-\qquad
-\mathbf{x}(t_n) ;=; \mathbf{x}_n,\]</div>
-<p>the solution is advanced over a time step :math:h as follows:</p>
+<p>Proposed by Carl Runge and Martin Kutta around 1900, Runge-Kutta methods constitute a widely used family of algorithms for the numerical integration of ODEs.</p>
+<p>In an explicit <span class="math notranslate nohighlight">\(s\)</span>-stage Runge-Kutta scheme for this initial-value problem, the solution is advanced over a time step <span class="math notranslate nohighlight">\(h\)</span> as follows:</p>
 <p>First, compute the intermediate stage vectors:</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{k}i
@@ -141,7 +136,7 @@ h \sum{j=1}^{i-1} a{ij},\mathbf{k}_j,
 mathbf{x}n
 ;+;
 h sum{i=1}^{s} b_i,mathbf{k}_i.</p>
-<p>Here, the boldface stage variables :math:mathbf{k}_i represent intermediate slope estimates.</p>
+<p>Here, the boldface stage variables <span class="math notranslate nohighlight">\(\mathbf{k}_i\)</span> represent intermediate slope estimates.</p>
 <p><strong>Second-Order Runge-Kutta (RK2, Heun’s)</strong></p>
 <p>Heun’s <code class="docutils literal notranslate"><span class="pre">RK2</span></code> method attains second-order accuracy by combining predictor and corrector slopes:</p>
 <div class="math notranslate nohighlight">
