@@ -73,12 +73,13 @@ and then form the new approximation by
 Heun's method attains second-order accuracy by combining predictor and corrector slopes:
 
 .. math::
-   :align: left
 
-   k_1 = \sigma\,\mathbf{u}(\mathbf{x}_n,t_n),\\
-   \mathbf{x}^* = \mathbf{x}_n + \Delta t\,k_1,\\
-   k_2 = \sigma\,\mathbf{u}(\mathbf{x}^*,t_n + \Delta t),\\
-   \mathbf{x}_{n+1} = \mathbf{x}_n + \tfrac{\Delta t}{2}\,(k_1 + k_2).
+   \begin{aligned}
+   k_1 &= \sigma\,\mathbf{u}(\mathbf{x}_n,t_n),\\
+   \mathbf{x}^* &= \mathbf{x}_n + \Delta t\,k_1,\\
+   k_2 &= \sigma\,\mathbf{u}(\mathbf{x}^*,t_n + \Delta t),\\
+   \mathbf{x}_{n+1} &= \mathbf{x}_n + \tfrac{\Delta t}{2}\,(k_1 + k_2).
+   \end{aligned}
 
 This scheme yields a global error of order :math:`O(\Delta t^2)` with two velocity evaluations per step.
 
@@ -87,7 +88,6 @@ This scheme yields a global error of order :math:`O(\Delta t^2)` with two veloci
 The classical RK4 method achieves fourth-order accuracy via four slope evaluations at intermediate points:
 
 .. math::
-   :align: left
 
    k_1 = \mathbf{u}(\mathbf{x}_n,t_n),\\
    k_2 = \mathbf{u}\!\bigl(\mathbf{x}_n + \tfrac{\Delta t}{2}k_1,\;t_n + \tfrac{\Delta t}{2}\bigr),\\
@@ -122,7 +122,7 @@ As for the coefficients for ``RK6`` are more complex to write into equations, th
 | :math:`b_i`                 | :math:`1/12`                  | :math:`0`                  | :math:`0`                       | :math:`0`                    | :math:`5/12`                | :math:`5/12`             | :math:`1/12`            |
 +-----------------------------+-------------------------------+----------------------------+---------------------------------+------------------------------+-----------------------------+--------------------------+-------------------------+
 
-In our computation, the up symbol side is applied, in other words, ``±`` represents ``+``, taking :math:`\lambda=+\sqrt{5}`. With 15 digis are kept, the Butcher table used by the author is shown in the following table.
+In our computation, the up symbol side is applied, in other words, ``±`` represents ``+``, taking :math:`\lambda=+\sqrt{5}`. With 15 digis are kept, the explicit Butcher table for ``RK6`` used by the author is shown in the following table.
 
 +-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+
 |  :math:`c_i`                  |  :math:`a_{i1}`               |  :math:`a_{i2}`               |  :math:`a_{i3}`               |  :math:`a_{i4}`               |  :math:`a_{i5}`               |  :math:`a_{i6}`               |  :math:`a_{i7}`               |
@@ -141,7 +141,7 @@ In our computation, the up symbol side is applied, in other words, ``±`` repres
 +-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+
 | 1                             | 0.166666666666667             | 0                             | 0.0751416197912285            | -3.38770632020821             | 0.52786404500042              | 3.61803398874989              | 0                             |
 +-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+
-| b_i                           | 0.0833333333333333            | 0                             | 0                             | 0                             | 0.416666666666667             | 0.416666666666667             | 0.0833333333333333            |
+| :math:`b_i`                   | 0.0833333333333333            | 0                             | 0                             | 0                             | 0.416666666666667             | 0.416666666666667             | 0.0833333333333333            |
 +-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+
 
 
