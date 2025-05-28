@@ -10,22 +10,15 @@ Lagrangian Advection
 
 
 
-.. _intp:
-
-Velocity Interpolation
-~~~~~~~~~~~~~~~~~~~~~~~
-
-.. _wall:
-
-Wall Treatment
-~~~~~~~~~~~~~~~
 
 .. _marching:
 
 Time Integration
 ~~~~~~~~~~~~~~~~~~
 
-Consider the initial-value problem for passive tracer advection in a continuous velocity field
+In the numerical computation of the FTLE (Finite-Time Lyapunov Exponent), we first compute the *flow map* :math:`\varphi_{t_n}^{t_{n+1}}(y_n)`, which maps the initial point :math:`y_n` at time :math:`t_n` to time :math:`t_{n+1}`.
+
+To obtain this map, one must numerically integrate the underlying dynamical system, which is described by the ordinary differential equation (ODE)::
 
 .. math::
 
@@ -39,10 +32,11 @@ where :math:`\sigma = \pm1` selects forward or backward integration.
 The first-order explicit Euler scheme advances the position by sampling the velocity at the beginning of the time step:
 
 .. math::
-   :align: left
 
+   \begin{aligned}
    \mathbf{u}_n = \mathbf{u}(\mathbf{x}_n,t_n),\\
    \mathbf{x}_{n+1} = \mathbf{x}_n + \sigma\,\Delta t\,\mathbf{u}_n.
+   \end{aligned}
 
 This method incurs a global error of order :math:`O(\Delta t)` and requires only one velocity evaluation per step.
 
@@ -52,16 +46,16 @@ In an explicit :math:`s`-stage Runge–Kutta method for the initial-value proble
 
 .. math::
 
-   y' = f(t,y), \quad y(t_n) = y_n
+   y' = f(t,y), \quad y(t_n) = y_n.
 
-one advances the solution by a step :math:`h` as follows. First compute the intermediate slopes
+One advances the solution by a step :math:`h` as follows. First compute the intermediate slopes:
 
 .. math::
 
    k_i = f\Bigl(t_n + c_i\,h,\;y_n + h \sum_{j=1}^{i-1} a_{ij}\,k_j\Bigr),
-   \quad i = 1,2,\dots,s
+   \quad i = 1,2,\dots,s,
 
-and then form the new approximation by
+and then form the new approximation by:
 
 .. math::
 
@@ -141,8 +135,29 @@ In our computation, the up symbol side is applied, in other words, ``±`` repres
 +-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+
 | 1                             | 0.166666666666667             | 0                             | 0.0751416197912285            | -3.38770632020821             | 0.52786404500042              | 3.61803398874989              | 0                             |
 +-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+
-| :math:`b_i`                   | 0.0833333333333333            | 0                             | 0                             | 0                             | 0.416666666666667             | 0.416666666666667             | 0.0833333333333333            |
+| :math:`\mathbf{b_i}`          | 0.0833333333333333            | 0                             | 0                             | 0                             | 0.416666666666667             | 0.416666666666667             | 0.0833333333333333            |
 +-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+-------------------------------+
+
+
+
+.. _intp:
+
+Velocity Interpolation
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. _wall:
+
+Wall Treatment
+~~~~~~~~~~~~~~~
+
+
+
+
+
+
+
+
+
 
 
 
