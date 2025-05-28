@@ -16,6 +16,7 @@
       <script src="_static/documentation_options.js?v=2709fde1"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -49,7 +50,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#lagrangian-advection">Lagrangian Advection</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#velocity-interpolation">Velocity Interpolation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#wall-treatment">Wall Treatment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#particle-marching">Particle Marching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#time-integration">Time Integration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#ftle-computation">FTLE Computation</a><ul>
@@ -102,8 +103,108 @@
 <section id="wall-treatment">
 <span id="wall"></span><h3>Wall Treatment<a class="headerlink" href="#wall-treatment" title="Link to this heading"></a></h3>
 </section>
-<section id="particle-marching">
-<span id="marching"></span><h3>Particle Marching<a class="headerlink" href="#particle-marching" title="Link to this heading"></a></h3>
+<section id="time-integration">
+<span id="marching"></span><h3>Time Integration<a class="headerlink" href="#time-integration" title="Link to this heading"></a></h3>
+<p>Consider the initial-value problem for particle advection in a velocity field</p>
+<div class="math notranslate nohighlight">
+\[\frac{d\mathbf{x}}{dt} = \sigma\,\mathbf{u}(\mathbf{x},t),
+\quad \mathbf{x}(t_n) = \mathbf{x}_n,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma = \pm 1\)</span> indicates forward/backward advection.</p>
+<p><strong>Explicit Euler Method</strong></p>
+<p>Given <span class="math notranslate nohighlight">\(\mathbf{x}_n\)</span> at time <span class="math notranslate nohighlight">\(t_n\)</span>, the first-order (Euler) update is</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{x}_{n+1} = \mathbf{x}_n + \Delta t\,f(\mathbf{x}_n,t_n)
+                  = \mathbf{x}_n + \sigma\,\Delta t\,\mathbf{u}(\mathbf{x}_n,t_n)\]</div>
+<p>Implementation steps:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Evaluate velocity:
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">mathbf</span><span class="p">{</span><span class="n">u</span><span class="p">}</span><span class="n">_n</span> <span class="o">=</span> \<span class="n">mathbf</span><span class="p">{</span><span class="n">u</span><span class="p">}(</span>\<span class="n">mathbf</span><span class="p">{</span><span class="n">x</span><span class="p">}</span><span class="n">_n</span><span class="p">,</span> <span class="n">t_n</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Advance position:
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">mathbf</span><span class="p">{</span><span class="n">x</span><span class="p">}</span><span class="n">_</span><span class="p">{</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">}</span> <span class="o">=</span> \<span class="n">mathbf</span><span class="p">{</span><span class="n">x</span><span class="p">}</span><span class="n">_n</span> <span class="o">+</span> \<span class="n">sigma</span>\<span class="p">,</span>\<span class="n">Delta</span> <span class="n">t</span>\<span class="p">,</span>\<span class="n">mathbf</span><span class="p">{</span><span class="n">u</span><span class="p">}</span><span class="n">_n</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+<p>This method is simple but incurs <span class="math notranslate nohighlight">\(O(\Delta t)\)</span> local truncation error.</p>
+<p><strong>Second-Order Runge–Kutta (Heun’s Method)</strong></p>
+<p>A two-stage explicit scheme with <span class="math notranslate nohighlight">\(O(\Delta t^2)\)</span> accuracy:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}k_1 &amp;= f(\mathbf{x}_n, t_n),\\
+\mathbf{x}^* &amp;= \mathbf{x}_n + \Delta t\,k_1,\\
+k_2 &amp;= f(\mathbf{x}^*, t_n + \Delta t),\\
+\mathbf{x}_{n+1} &amp;= \mathbf{x}_n + \tfrac{\Delta t}{2}\,(k_1 + k_2).\end{split}\]</div>
+<p>Implementation steps:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Compute <span class="math notranslate nohighlight">\(k_1 = \sigma\,\mathbf{u}(\mathbf{x}_n, t_n)\)</span>.</p></li>
+<li><p>Predict step:
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">mathbf</span><span class="p">{</span><span class="n">x</span><span class="p">}</span><span class="o">^*</span> <span class="o">=</span> \<span class="n">mathbf</span><span class="p">{</span><span class="n">x</span><span class="p">}</span><span class="n">_n</span> <span class="o">+</span> \<span class="n">sigma</span>\<span class="p">,</span>\<span class="n">Delta</span> <span class="n">t</span>\<span class="p">,</span><span class="n">k_1</span>
+</pre></div>
+</div>
+</li>
+<li><p>Compute <span class="math notranslate nohighlight">\(k_2 = \sigma\,\mathbf{u}(\mathbf{x}^*, t_n + \Delta t)\)</span>.</p></li>
+<li><p>Update:
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">mathbf</span><span class="p">{</span><span class="n">x</span><span class="p">}</span><span class="n">_</span><span class="p">{</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">}</span> <span class="o">=</span> \<span class="n">mathbf</span><span class="p">{</span><span class="n">x</span><span class="p">}</span><span class="n">_n</span> <span class="o">+</span> \<span class="n">tfrac</span><span class="p">{</span>\<span class="n">sigma</span>\<span class="p">,</span>\<span class="n">Delta</span> <span class="n">t</span><span class="p">}{</span><span class="mi">2</span><span class="p">}</span>\<span class="p">,(</span><span class="n">k_1</span> <span class="o">+</span> <span class="n">k_2</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+<p><strong>Classical Fourth-Order Runge–Kutta (RK4)</strong></p>
+<p>A four-stage scheme with <span class="math notranslate nohighlight">\(O(\Delta t^4)\)</span> accuracy:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}k_1 &amp;= f(\mathbf{x}_n, t_n),\\
+k_2 &amp;= f\!\bigl(\mathbf{x}_n + \tfrac{\Delta t}{2}k_1,\;t_n + \tfrac{\Delta t}{2}\bigr),\\
+k_3 &amp;= f\!\bigl(\mathbf{x}_n + \tfrac{\Delta t}{2}k_2,\;t_n + \tfrac{\Delta t}{2}\bigr),\\
+k_4 &amp;= f(\mathbf{x}_n + \Delta t\,k_3,\;t_n + \Delta t),\\
+\mathbf{x}_{n+1} &amp;= \mathbf{x}_n + \tfrac{\Delta t}{6}\,(k_1 + 2k_2 + 2k_3 + k_4).\end{split}\]</div>
+<p>Implementation steps:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Compute <span class="math notranslate nohighlight">\(k_1\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_n\)</span>.</p></li>
+<li><p>Compute <span class="math notranslate nohighlight">\(k_2\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_n + \tfrac{\Delta t}{2}k_1\)</span>.</p></li>
+<li><p>Compute <span class="math notranslate nohighlight">\(k_3\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_n + \tfrac{\Delta t}{2}k_2\)</span>.</p></li>
+<li><p>Compute <span class="math notranslate nohighlight">\(k_4\)</span> at <span class="math notranslate nohighlight">\(\mathbf{x}_n + \Delta t\,k_3\)</span>.</p></li>
+<li><p>Combine:
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">mathbf</span><span class="p">{</span><span class="n">x</span><span class="p">}</span><span class="n">_</span><span class="p">{</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">}</span> <span class="o">=</span> \<span class="n">mathbf</span><span class="p">{</span><span class="n">x</span><span class="p">}</span><span class="n">_n</span> <span class="o">+</span> \<span class="n">tfrac</span><span class="p">{</span>\<span class="n">Delta</span> <span class="n">t</span><span class="p">}{</span><span class="mi">6</span><span class="p">}</span>\<span class="p">,(</span><span class="n">k_1</span> <span class="o">+</span> <span class="mi">2</span><span class="n">k_2</span> <span class="o">+</span> <span class="mi">2</span><span class="n">k_3</span> <span class="o">+</span> <span class="n">k_4</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+<p><strong>Sixth-Order Runge–Kutta (RK6)</strong></p>
+<p>A six-stage explicit method with <span class="math notranslate nohighlight">\(O(\Delta t^6)\)</span> accuracy. Define:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}k_1 &amp;= f(\mathbf{x}_n, t_n),\\
+k_2 &amp;= f\!\bigl(\mathbf{x}_n + \tfrac{\Delta t}{3}k_1,\;t_n + \tfrac{\Delta t}{3}\bigr),\\
+k_3 &amp;= f\!\Bigl(\mathbf{x}_n + \Delta t\bigl(\tfrac{1}{6}k_1 + \tfrac{1}{6}k_2\bigr),\;t_n + \tfrac{\Delta t}{3}\Bigr),\\
+k_4 &amp;= f\!\Bigl(\mathbf{x}_n + \Delta t\bigl(\tfrac{1}{8}k_1 + \tfrac{3}{8}k_3\bigr),\;t_n + \tfrac{\Delta t}{2}\Bigr),\\
+k_5 &amp;= f\!\Bigl(\mathbf{x}_n + \Delta t\bigl(\tfrac{1}{2}k_1 - \tfrac{3}{2}k_3 + 2k_4\bigr),\;t_n + \tfrac{2\Delta t}{3}\Bigr),\\
+k_6 &amp;= f\!\Bigl(\mathbf{x}_n + \Delta t\bigl(-\tfrac{3}{2}k_1 + 2k_2 - \tfrac{1}{2}k_3 + k_4\bigr),\;t_n + \Delta t\Bigr),\\
+\mathbf{x}_{n+1} &amp;= \mathbf{x}_n + \Delta t\Bigl(\tfrac{1}{20}k_1 + \tfrac{1}{4}k_4 + \tfrac{1}{5}k_5 + \tfrac{1}{2}k_6\Bigr).\end{split}\]</div>
+<p>Implementation steps:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>Compute each <span class="math notranslate nohighlight">\(k_i = \sigma\,\mathbf{u}(\cdot)\)</span> at its intermediate point.</p></li>
+<li><p>Form the weighted sum:
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">mathbf</span><span class="p">{</span><span class="n">x</span><span class="p">}</span><span class="n">_</span><span class="p">{</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">}</span> <span class="o">=</span> \<span class="n">mathbf</span><span class="p">{</span><span class="n">x</span><span class="p">}</span><span class="n">_n</span> <span class="o">+</span> \<span class="n">Delta</span> <span class="n">t</span>\<span class="n">Bigl</span><span class="p">(</span>\<span class="n">tfrac</span><span class="p">{</span><span class="mi">1</span><span class="p">}{</span><span class="mi">20</span><span class="p">}</span><span class="n">k_1</span> <span class="o">+</span> \<span class="n">tfrac</span><span class="p">{</span><span class="mi">1</span><span class="p">}{</span><span class="mi">4</span><span class="p">}</span><span class="n">k_4</span> <span class="o">+</span> \<span class="n">tfrac</span><span class="p">{</span><span class="mi">1</span><span class="p">}{</span><span class="mi">5</span><span class="p">}</span><span class="n">k_5</span> <span class="o">+</span> \<span class="n">tfrac</span><span class="p">{</span><span class="mi">1</span><span class="p">}{</span><span class="mi">2</span><span class="p">}</span><span class="n">k_6</span>\<span class="n">Bigr</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+<p>All methods assume a continuous, differentiable velocity field via tricubic interpolation; replacing <span class="math notranslate nohighlight">\(f\)</span> by the chosen sampler affects only boundary‐condition treatment.</p>
 </section>
 </section>
 <section id="ftle-computation">
