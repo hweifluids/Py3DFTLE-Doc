@@ -19,7 +19,7 @@ To obtain this map, one must numerically integrate the underlying dynamical syst
 
 where :math:`\sigma = \pm1` selects forward or backward integration.
 During the time integration process, the algorithm frequently queries the flow velocity vector :math:`\mathbf{u}(\mathbf{x},t)` at specific locations and moments with very high precision requirements.
-However, since the data grid is inherently spatially discretized, high-order interpolation methods are required by the program to keep numerical stability and obtain a physically meaningful flow map.
+However, since the data grid is inherently spatially discretized, high-order interpolation methods are required to keep numerical stability and obtain a physically meaningful flow map.
 Furthermore, when querying the velocity, special wall treatment must be applied at the boundaries to avoid value discontinuities and to represent certain real physical conditions.
 
 
