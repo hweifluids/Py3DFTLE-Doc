@@ -329,6 +329,26 @@ As for the coefficients for <code class="docutils literal notranslate"><span cla
 </section>
 <section id="velocity-interpolation">
 <span id="intp"></span><h3>Velocity Interpolation<a class="headerlink" href="#velocity-interpolation" title="Link to this heading"></a></h3>
+<p><strong>Trilinear</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">trilinear</span></code> interpolation method is the fastest among all the methods given in <code class="docutils literal notranslate"><span class="pre">PyFTLE3D</span></code>, which is a low-order implement.
+The continuous velocity field is reconstructed by trilinear interpolation of the component maps <code class="docutils literal notranslate"><span class="pre">u</span></code>, <code class="docutils literal notranslate"><span class="pre">v</span></code>, <code class="docutils literal notranslate"><span class="pre">w</span></code> that live on the eight vertices of a Cartesian cell:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}i   = \left\lfloor\frac{x-x_0}{\Delta x}\right\rfloor,\;
+j   = \left\lfloor\frac{y-y_0}{\Delta y}\right\rfloor,\;
+k   = \left\lfloor\frac{z-z_0}{\Delta z}\right\rfloor,\\
+\tau_x = \frac{x-x_0}{\Delta x}-i,\;
+\tau_y = \frac{y-y_0}{\Delta y}-j,\;
+\tau_z = \frac{z-z_0}{\Delta z}-k.\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\mathbf{u}(x,y,z)=
+\sum_{d_x,d_y,d_z\in\{0,1\}}
+(1-d_x+(-1)^{d_x}\tau_x)\,
+(1-d_y+(-1)^{d_y}\tau_y)\,
+(1-d_z+(-1)^{d_z}\tau_z)\,
+\mathbf{u}_{\,i+d_x,\,j+d_y,\,k+d_z}.\]</div>
+<p><strong>Tricubic</strong></p>
+<p><strong>Hermite</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">hermite</span></code></p>
 </section>
 <section id="wall-treatment">
 <span id="wall"></span><h3>Wall Treatment<a class="headerlink" href="#wall-treatment" title="Link to this heading"></a></h3>
