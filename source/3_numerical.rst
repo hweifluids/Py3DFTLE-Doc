@@ -183,11 +183,15 @@ The ``hermite``
 **WENO**
 
 The weighted essentially non-oscillatory ``WENO`` used here is a fifth-order WENO reconstruction (WENO-5). It is suggested to be used in research with intermittent capture need, e.g., high-speed flows and shock capture.
-It shows relatively poor performance in general cases, and comsuming more wall time. The process is given as follows.
+It shows relatively poor performance in general cases, and comsuming more wall time. 
+The method originates from [Jiang1996]_ and expanded to three-dimensional computation, and [Shu2009]_ gave a review on the WEMO method.
+
+The process is given as follows.
 
 **Fifth-Order WENO Reconstruction (WENO-5)**
 
-The WENO-5 method reconstructs a non-oscillatory, fifth-order-accurate approximation of a function value at an arbitrary location :math:`x = x_{i+1/2} + t\,\Delta x`, where :math:`t \in [0,1)` and :math:`x_{i+1/2} = x_i + \tfrac{1}{2}\,\Delta x` on a uniform grid with :math:`\Delta x = 1`. A five-point stencil ``{f_{i-2}, f_{i-1}, f_i, f_{i+1}, f_{i+2}}`` is used.
+The WENO-5 method reconstructs a non-oscillatory, fifth-order-accurate approximation of a function value at an arbitrary location :math:`x = x_{i+1/2} + t\,\Delta x`, where :math:`t \in [0,1)` and :math:`x_{i+1/2} = x_i + \tfrac{1}{2}\,\Delta x` on a uniform grid with :math:`\Delta x = 1`. 
+A five-point stencil ``{f_{i-2}``, ``f_{i-1}``, ``f_i``, ``f_{i+1}``, ``f_{i+2}}`` is used.
 
 .. math::
 
@@ -209,7 +213,9 @@ On each stencil :math:`S_{\ell}` (:math:`\ell = 0,1,2`), construct a quadratic p
 
 that interpolates the three values in that stencil at :math:`x = x_{i+1/2} + t\,\Delta x`.
 
-The coefficients are chosen so that each :math:`p_{\ell}(t)` matches :math:`f` at the three stencil points. For 
+The coefficients are chosen so that each :math:`p_{\ell}(t)` matches :math:`f` at the three stencil points. 
+
+For 
 :math:`S_{0} = \{f_{i-2}, f_{i-1}, f_{i}\}`:
 
 .. math::
