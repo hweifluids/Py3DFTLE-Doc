@@ -162,11 +162,11 @@ The continuous velocity field is reconstructed by trilinear interpolation of the
 
 .. math::
 
-   \mathbf{u}(x,y,z)=
+   \mathbf{u}=
    \sum_{d_x,d_y,d_z\in\{0,1\}}
-   (1-d_x+(-1)^{d_x}\tau_x)\,
-   (1-d_y+(-1)^{d_y}\tau_y)\,
-   (1-d_z+(-1)^{d_z}\tau_z)\,
+   (1-d_x+(-1)^{d_x}\tau_x)
+   (1-d_y+(-1)^{d_y}\tau_y)
+   (1-d_z+(-1)^{d_z}\tau_z)
    \mathbf{u}_{\,i+d_x,\,j+d_y,\,k+d_z}.
 
 
