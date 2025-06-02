@@ -174,9 +174,94 @@ The continuous velocity field is reconstructed by trilinear interpolation of the
 
 **Tricubic**
 
+
+
 **Hermite**
 
 The ``hermite`` 
+
+**WENO**
+
+The weighted essentially non-oscillatory ``WENO`` used here is a fifth-order WENO reconstruction (WENO-5). It is suggested to be used in research with intermittent capture need, e.g., high-speed flows and shock capture.
+It shows relatively poor performance in general cases, and comsuming more wall time. The process is given as follows.
+
+**Fifth-Order WENO Reconstruction (WENO-5)**
+
+The WENO-5 method reconstructs a non-oscillatory, fifth-order-accurate approximation of a function value at an arbitrary location :math:`x = x_{i+1/2} + t\,\Delta x`, where :math:`t \in [0,1)` and :math:`x_{i+1/2} = x_i + \tfrac{1}{2}\,\Delta x` on a uniform grid with :math:`\Delta x = 1`. A five-point stencil ``{f_{i-2}, f_{i-1}, f_i, f_{i+1}, f_{i+2}}`` is used.
+
+.. math::
+
+   \{\,f_{i-2}, f_{i-1}, f_{i}, f_{i+1}, f_{i+2}\}.
+
+Define three overlapping three-point stencils:
+
+.. math::
+
+   S_{0} = \{f_{i-2}, f_{i-1}, f_{i}\}, \quad
+   S_{1} = \{f_{i-1}, f_{i}, f_{i+1}\}, \quad
+   S_{2} = \{f_{i}, f_{i+1}, f_{i+2}\}.
+
+On each stencil :math:`S_{\ell}` (:math:`\ell = 0,1,2`), construct a quadratic polynomial 
+
+.. math::
+
+   p_{\ell}(t) = C_{\ell,0} + C_{\ell,1}\,t + C_{\ell,2}\,t^{2}, \quad \ell = 0,1,2,
+
+that interpolates the three values in that stencil at :math:`x = x_{i+1/2} + t\,\Delta x`.
+
+The coefficients are chosen so that each :math:`p_{\ell}(t)` matches :math:`f` at the three stencil points. For 
+:math:`S_{0} = \{f_{i-2}, f_{i-1}, f_{i}\}`:
+
+.. math::
+
+   C_{0,0} = \frac{2\,f_{i-2} - 7\,f_{i-1} + 11\,f_{i}}{6},\\
+   C_{0,1} = \frac{-f_{i-2} + 5\,f_{i-1} - 4\,f_{i} + f_{i+1}}{2},\\
+   C_{0,2} = \frac{f_{i-2} - 2\,f_{i-1} + f_{i}}{2}.
+
+For :math:`S_{1} = \{f_{i-1}, f_{i}, f_{i+1}\}`:
+
+.. math::
+
+   C_{1,0} = \frac{-f_{i-1} + 5\,f_{i} + 2\,f_{i+1}}{6},\\
+   C_{1,1} = \frac{f_{i-1} - f_{i+1}}{2},\\
+   C_{1,2} = \frac{f_{i-1} - 2\,f_{i} + f_{i+1}}{2}.
+
+For :math:`S_{2} = \{f_{i}, f_{i+1}, f_{i+2}\}`:
+
+.. math::
+
+   C_{2,0} = \frac{2\,f_{i} + 5\,f_{i+1} - f_{i+2}}{6},\\
+   C_{2,1} = \frac{-f_{i} + 4\,f_{i+1} - 3\,f_{i+2}}{2},\\
+   C_{2,2} = \frac{f_{i} - 2\,f_{i+1} + f_{i+2}}{2}.
+
+Once :math:`p_{0}(t)`, :math:`p_{1}(t)`, and :math:`p_{2}(t)` are defined, compute the Jiang–Shu smoothness indicators :math:`\beta_{\ell}` for each stencil:
+
+.. math::
+
+   \beta_{0} = 13\,\bigl(f_{i-2} - 2\,f_{i-1} + f_{i}\bigr)^{2} + 3\,\bigl(f_{i-2} - 4\,f_{i-1} + 3\,f_{i}\bigr)^{2},\\
+   \beta_{1} = 13\,\bigl(f_{i-1} - 2\,f_{i} + f_{i+1}\bigr)^{2} + 3\,\bigl(f_{i-1} - f_{i+1}\bigr)^{2},\\
+   \beta_{2} = 13\,\bigl(f_{i} - 2\,f_{i+1} + f_{i+2}\bigr)^{2} + 3\,\bigl(3\,f_{i} - 4\,f_{i+1} + f_{i+2}\bigr)^{2}.
+
+Fixed linear weights are :math:`(d_{0}, d_{1}, d_{2}) = (0.1,\,0.6,\,0.3)`. Introduce :math:`\varepsilon = 10^{-6}` and define unnormalized weights:
+
+.. math::
+
+   \tilde{\alpha}_{\ell} = \frac{d_{\ell}}{(\varepsilon + \beta_{\ell})^{2}}, \quad \ell = 0,1,2.
+
+Normalize to obtain nonlinear weights :math:`\omega_{\ell}`:
+
+.. math::
+
+   \omega_{\ell} = \frac{\tilde{\alpha}_{\ell}}{\tilde{\alpha}_{0} + \tilde{\alpha}_{1} + \tilde{\alpha}_{2}}, \quad \sum_{\ell=0}^{2} \omega_{\ell} = 1.
+
+Finally, reconstruct at :math:`x = x_{i+1/2} + t\,\Delta x` by combining:
+
+.. math::
+
+   f_{\mathrm{WENO5}}(x_{i+1/2} + t\,\Delta x) = \omega_{0}\,p_{0}(t) + \omega_{1}\,p_{1}(t) + \omega_{2}\,p_{2}(t).
+
+The code computes :math:`t^{2}`, forms coefficients :math:`C_{\ell,k}`, evaluates :math:`p_{\ell}(t)`, computes :math:`\beta_{\ell}`, then :math:`\tilde{\alpha}_{\ell}`, :math:`\omega_{\ell}`, and returns :math:`\omega_{0}\,p_{0} + \omega_{1}\,p_{1} + \omega_{2}\,p_{2}` exactly as above.
+
 
 
 .. _wall:
