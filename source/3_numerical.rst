@@ -146,6 +146,39 @@ In our computation, the up symbol side is applied, in other words, ``±`` repres
 Velocity Interpolation
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+**Trilinear**
+
+The ``trilinear`` interpolation method is the fastest among all the methods given in ``PyFTLE3D``, which is a low-order implement.
+The continuous velocity field is reconstructed by trilinear interpolation of the component maps ``u``, ``v``, ``w`` that live on the eight vertices of a Cartesian cell:
+
+.. math::
+
+   i   = \left\lfloor\frac{x-x_0}{\Delta x}\right\rfloor,\;
+   j   = \left\lfloor\frac{y-y_0}{\Delta y}\right\rfloor,\;
+   k   = \left\lfloor\frac{z-z_0}{\Delta z}\right\rfloor,\\
+   \tau_x = \frac{x-x_0}{\Delta x}-i,\;
+   \tau_y = \frac{y-y_0}{\Delta y}-j,\;
+   \tau_z = \frac{z-z_0}{\Delta z}-k.
+
+.. math::
+
+   \mathbf{u}(x,y,z)=
+   \sum_{d_x,d_y,d_z\in\{0,1\}}
+   (1-d_x+(-1)^{d_x}\tau_x)\,
+   (1-d_y+(-1)^{d_y}\tau_y)\,
+   (1-d_z+(-1)^{d_z}\tau_z)\,
+   \mathbf{u}_{\,i+d_x,\,j+d_y,\,k+d_z}.
+
+
+
+
+**Tricubic**
+
+**Hermite**
+
+The ``hermite`` 
+
+
 .. _wall:
 
 Wall Treatment
