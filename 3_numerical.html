@@ -58,6 +58,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#eigenvalue-solver">Eigenvalue Solver</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#windowing-for-dynamic-lcs">Windowing for Dynamic LCS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#computational-density-and-comparison">Computational Density and Comparison</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#general-tips">General Tips</a></li>
 </ul>
@@ -347,16 +348,17 @@ k   = \left\lfloor\frac{z-z_0}{\Delta z}\right\rfloor,\\
 (1-d_z+(-1)^{d_z}\tau_z)\,
 \mathbf{u}_{\,i+d_x,\,j+d_y,\,k+d_z}.\]</div>
 <p><strong>Tricubic</strong></p>
+<p><strong>Tricubic by F. Lekien</strong> <code class="docutils literal notranslate"><span class="pre">I.P.</span></code></p>
+<p>Marked as <code class="docutils literal notranslate"><span class="pre">tricubicFL</span></code>, this variation of tricubic interpolator is still under development by the author.</p>
 <p><strong>Hermite</strong></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">hermite</span></code></p>
 <p><strong>WENO</strong></p>
 <p>The weighted essentially non-oscillatory <code class="docutils literal notranslate"><span class="pre">WENO</span></code> used here is a fifth-order WENO reconstruction (WENO-5). It is suggested to be used in research with intermittent capture need, e.g., high-speed flows and shock capture.
 It shows relatively poor performance in general cases, and comsuming more wall time.
-The method originates from <a class="reference internal" href="9_references.html#jiang1996" id="id2"><span>[Jiang1996]</span></a> and expanded to three-dimensional computation, and <a class="reference internal" href="9_references.html#shu2009" id="id3"><span>[Shu2009]</span></a> gave a review on the WEMO method.</p>
-<p>The process is given as follows.</p>
-<p><strong>Fifth-Order WENO Reconstruction (WENO-5)</strong></p>
+The method originates from <a class="reference internal" href="9_references.html#jiang1996" id="id2"><span>[Jiang1996]</span></a> and expanded to three-dimensional computation, and <a class="reference internal" href="9_references.html#shu2009" id="id3"><span>[Shu2009]</span></a> gave a review on the WEMO method.
+The process is given as follows.</p>
 <p>The WENO-5 method reconstructs a non-oscillatory, fifth-order-accurate approximation of a function value at an arbitrary location <span class="math notranslate nohighlight">\(x = x_{i+1/2} + t\,\Delta x\)</span>, where <span class="math notranslate nohighlight">\(t \in [0,1)\)</span> and <span class="math notranslate nohighlight">\(x_{i+1/2} = x_i + \tfrac{1}{2}\,\Delta x\)</span> on a uniform grid with <span class="math notranslate nohighlight">\(\Delta x = 1\)</span>.
-A five-point stencil <code class="docutils literal notranslate"><span class="pre">{f_{i-2}</span></code>, <code class="docutils literal notranslate"><span class="pre">f_{i-1}</span></code>, <code class="docutils literal notranslate"><span class="pre">f_i</span></code>, <code class="docutils literal notranslate"><span class="pre">f_{i+1}</span></code>, <code class="docutils literal notranslate"><span class="pre">f_{i+2}}</span></code> is used.</p>
+A five-point stencil <code class="docutils literal notranslate"><span class="pre">f_{i-2}</span></code>, <code class="docutils literal notranslate"><span class="pre">f_{i-1}</span></code>, <code class="docutils literal notranslate"><span class="pre">f_i</span></code>, <code class="docutils literal notranslate"><span class="pre">f_{i+1}</span></code>, <code class="docutils literal notranslate"><span class="pre">f_{i+2}</span></code> is used.</p>
 <div class="math notranslate nohighlight">
 \[\{\,f_{i-2}, f_{i-1}, f_{i}, f_{i+1}, f_{i+2}\}.\]</div>
 <p>Define three overlapping three-point stencils:</p>
@@ -399,7 +401,6 @@ C_{2,2} = \frac{f_{i} - 2\,f_{i+1} + f_{i+2}}{2}.\end{split}\]</div>
 <p>Finally, reconstruct at <span class="math notranslate nohighlight">\(x = x_{i+1/2} + t\,\Delta x\)</span> by combining:</p>
 <div class="math notranslate nohighlight">
 \[f_{\mathrm{WENO5}}(x_{i+1/2} + t\,\Delta x) = \omega_{0}\,p_{0}(t) + \omega_{1}\,p_{1}(t) + \omega_{2}\,p_{2}(t).\]</div>
-<p>The code computes <span class="math notranslate nohighlight">\(t^{2}\)</span>, forms coefficients <span class="math notranslate nohighlight">\(C_{\ell,k}\)</span>, evaluates <span class="math notranslate nohighlight">\(p_{\ell}(t)\)</span>, computes <span class="math notranslate nohighlight">\(\beta_{\ell}\)</span>, then <span class="math notranslate nohighlight">\(\tilde{\alpha}_{\ell}\)</span>, <span class="math notranslate nohighlight">\(\omega_{\ell}\)</span>, and returns <span class="math notranslate nohighlight">\(\omega_{0}\,p_{0} + \omega_{1}\,p_{1} + \omega_{2}\,p_{2}\)</span> exactly as above.</p>
 </section>
 <section id="wall-treatment">
 <span id="wall"></span><h3>Wall Treatment<a class="headerlink" href="#wall-treatment" title="Link to this heading"></a></h3>
@@ -413,6 +414,9 @@ C_{2,2} = \frac{f_{i} - 2\,f_{i+1} + f_{i+2}}{2}.\end{split}\]</div>
 <section id="eigenvalue-solver">
 <span id="eigen"></span><h3>Eigenvalue Solver<a class="headerlink" href="#eigenvalue-solver" title="Link to this heading"></a></h3>
 </section>
+</section>
+<section id="windowing-for-dynamic-lcs">
+<span id="numdyn"></span><h2>Windowing for Dynamic LCS<a class="headerlink" href="#windowing-for-dynamic-lcs" title="Link to this heading"></a></h2>
 </section>
 <section id="computational-density-and-comparison">
 <span id="numcompare"></span><h2>Computational Density and Comparison<a class="headerlink" href="#computational-density-and-comparison" title="Link to this heading"></a></h2>
