@@ -349,6 +349,53 @@ k   = \left\lfloor\frac{z-z_0}{\Delta z}\right\rfloor,\\
 <p><strong>Tricubic</strong></p>
 <p><strong>Hermite</strong></p>
 <p>The <code class="docutils literal notranslate"><span class="pre">hermite</span></code></p>
+<p><strong>WENO</strong></p>
+<p>The weighted essentially non-oscillatory <code class="docutils literal notranslate"><span class="pre">WENO</span></code> used here is a fifth-order WENO reconstruction (WENO-5). It is suggested to be used in research with intermittent capture need, e.g., high-speed flows and shock capture.
+It shows relatively poor performance in general cases, and comsuming more wall time. The process is given as follows.</p>
+<p><strong>Fifth-Order WENO Reconstruction (WENO-5)</strong></p>
+<p>The WENO-5 method reconstructs a non-oscillatory, fifth-order-accurate approximation of a function value at an arbitrary location <span class="math notranslate nohighlight">\(x = x_{i+1/2} + t\,\Delta x\)</span>, where <span class="math notranslate nohighlight">\(t \in [0,1)\)</span> and <span class="math notranslate nohighlight">\(x_{i+1/2} = x_i + \tfrac{1}{2}\,\Delta x\)</span> on a uniform grid with <span class="math notranslate nohighlight">\(\Delta x = 1\)</span>. A five-point stencil <code class="docutils literal notranslate"><span class="pre">{f_{i-2},</span> <span class="pre">f_{i-1},</span> <span class="pre">f_i,</span> <span class="pre">f_{i+1},</span> <span class="pre">f_{i+2}}</span></code> is used.</p>
+<div class="math notranslate nohighlight">
+\[\{\,f_{i-2}, f_{i-1}, f_{i}, f_{i+1}, f_{i+2}\}.\]</div>
+<p>Define three overlapping three-point stencils:</p>
+<div class="math notranslate nohighlight">
+\[S_{0} = \{f_{i-2}, f_{i-1}, f_{i}\}, \quad
+S_{1} = \{f_{i-1}, f_{i}, f_{i+1}\}, \quad
+S_{2} = \{f_{i}, f_{i+1}, f_{i+2}\}.\]</div>
+<p>On each stencil <span class="math notranslate nohighlight">\(S_{\ell}\)</span> (<span class="math notranslate nohighlight">\(\ell = 0,1,2\)</span>), construct a quadratic polynomial</p>
+<div class="math notranslate nohighlight">
+\[p_{\ell}(t) = C_{\ell,0} + C_{\ell,1}\,t + C_{\ell,2}\,t^{2}, \quad \ell = 0,1,2,\]</div>
+<p>that interpolates the three values in that stencil at <span class="math notranslate nohighlight">\(x = x_{i+1/2} + t\,\Delta x\)</span>.</p>
+<p>The coefficients are chosen so that each <span class="math notranslate nohighlight">\(p_{\ell}(t)\)</span> matches <span class="math notranslate nohighlight">\(f\)</span> at the three stencil points. For
+<span class="math notranslate nohighlight">\(S_{0} = \{f_{i-2}, f_{i-1}, f_{i}\}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}C_{0,0} = \frac{2\,f_{i-2} - 7\,f_{i-1} + 11\,f_{i}}{6},\\
+C_{0,1} = \frac{-f_{i-2} + 5\,f_{i-1} - 4\,f_{i} + f_{i+1}}{2},\\
+C_{0,2} = \frac{f_{i-2} - 2\,f_{i-1} + f_{i}}{2}.\end{split}\]</div>
+<p>For <span class="math notranslate nohighlight">\(S_{1} = \{f_{i-1}, f_{i}, f_{i+1}\}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}C_{1,0} = \frac{-f_{i-1} + 5\,f_{i} + 2\,f_{i+1}}{6},\\
+C_{1,1} = \frac{f_{i-1} - f_{i+1}}{2},\\
+C_{1,2} = \frac{f_{i-1} - 2\,f_{i} + f_{i+1}}{2}.\end{split}\]</div>
+<p>For <span class="math notranslate nohighlight">\(S_{2} = \{f_{i}, f_{i+1}, f_{i+2}\}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}C_{2,0} = \frac{2\,f_{i} + 5\,f_{i+1} - f_{i+2}}{6},\\
+C_{2,1} = \frac{-f_{i} + 4\,f_{i+1} - 3\,f_{i+2}}{2},\\
+C_{2,2} = \frac{f_{i} - 2\,f_{i+1} + f_{i+2}}{2}.\end{split}\]</div>
+<p>Once <span class="math notranslate nohighlight">\(p_{0}(t)\)</span>, <span class="math notranslate nohighlight">\(p_{1}(t)\)</span>, and <span class="math notranslate nohighlight">\(p_{2}(t)\)</span> are defined, compute the Jiang–Shu smoothness indicators <span class="math notranslate nohighlight">\(\beta_{\ell}\)</span> for each stencil:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\beta_{0} = 13\,\bigl(f_{i-2} - 2\,f_{i-1} + f_{i}\bigr)^{2} + 3\,\bigl(f_{i-2} - 4\,f_{i-1} + 3\,f_{i}\bigr)^{2},\\
+\beta_{1} = 13\,\bigl(f_{i-1} - 2\,f_{i} + f_{i+1}\bigr)^{2} + 3\,\bigl(f_{i-1} - f_{i+1}\bigr)^{2},\\
+\beta_{2} = 13\,\bigl(f_{i} - 2\,f_{i+1} + f_{i+2}\bigr)^{2} + 3\,\bigl(3\,f_{i} - 4\,f_{i+1} + f_{i+2}\bigr)^{2}.\end{split}\]</div>
+<p>Fixed linear weights are <span class="math notranslate nohighlight">\((d_{0}, d_{1}, d_{2}) = (0.1,\,0.6,\,0.3)\)</span>. Introduce <span class="math notranslate nohighlight">\(\varepsilon = 10^{-6}\)</span> and define unnormalized weights:</p>
+<div class="math notranslate nohighlight">
+\[\tilde{\alpha}_{\ell} = \frac{d_{\ell}}{(\varepsilon + \beta_{\ell})^{2}}, \quad \ell = 0,1,2.\]</div>
+<p>Normalize to obtain nonlinear weights <span class="math notranslate nohighlight">\(\omega_{\ell}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\omega_{\ell} = \frac{\tilde{\alpha}_{\ell}}{\tilde{\alpha}_{0} + \tilde{\alpha}_{1} + \tilde{\alpha}_{2}}, \quad \sum_{\ell=0}^{2} \omega_{\ell} = 1.\]</div>
+<p>Finally, reconstruct at <span class="math notranslate nohighlight">\(x = x_{i+1/2} + t\,\Delta x\)</span> by combining:</p>
+<div class="math notranslate nohighlight">
+\[f_{\mathrm{WENO5}}(x_{i+1/2} + t\,\Delta x) = \omega_{0}\,p_{0}(t) + \omega_{1}\,p_{1}(t) + \omega_{2}\,p_{2}(t).\]</div>
+<p>The code computes <span class="math notranslate nohighlight">\(t^{2}\)</span>, forms coefficients <span class="math notranslate nohighlight">\(C_{\ell,k}\)</span>, evaluates <span class="math notranslate nohighlight">\(p_{\ell}(t)\)</span>, computes <span class="math notranslate nohighlight">\(\beta_{\ell}\)</span>, then <span class="math notranslate nohighlight">\(\tilde{\alpha}_{\ell}\)</span>, <span class="math notranslate nohighlight">\(\omega_{\ell}\)</span>, and returns <span class="math notranslate nohighlight">\(\omega_{0}\,p_{0} + \omega_{1}\,p_{1} + \omega_{2}\,p_{2}\)</span> exactly as above.</p>
 </section>
 <section id="wall-treatment">
 <span id="wall"></span><h3>Wall Treatment<a class="headerlink" href="#wall-treatment" title="Link to this heading"></a></h3>
