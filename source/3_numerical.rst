@@ -350,7 +350,7 @@ Finally, reconstruct at :math:`x = x_{i+1/2} + t\,\Delta x` by combining:
 Wall Treatment
 ~~~~~~~~~~~~~~~
 
-
+``Documentation being constructed``
 
 
 
@@ -372,6 +372,7 @@ FTLE Computation
 Gradient Discretization
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
+``Documentation being constructed``
 
 
 
@@ -379,18 +380,21 @@ Gradient Discretization
 Eigenvalue Solver
 ~~~~~~~~~~~~~~~~~~~~
 
+``Documentation being constructed``
 
 .. _numdyn:
 
 Windowing for Dynamic LCS
 ----------------------------------------------
 
-
+``Documentation being constructed``
 
 .. _numcompare:
 
 Computational Density and Comparison
 ----------------------------------------------
+
+``Under testing``
 
 .. _numtips:
 
