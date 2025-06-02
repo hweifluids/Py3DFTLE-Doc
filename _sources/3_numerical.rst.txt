@@ -257,7 +257,7 @@ Marked as ``tricubicFL``, this variation of tricubic interpolator is still under
 
 **Hermite**
 
-The ``hermite`` 
+The ``hermite`` is under an internal review by the author, thus the theoretical basis will be stated after that.
 
 **WENO**
 
