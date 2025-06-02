@@ -32,7 +32,7 @@ Time Integration
 
 **Explicit Euler Method**
 
-The first-order explicit Euler scheme advances the position by sampling the velocity at the beginning of the time step:
+The first-order explicit Euler scheme ``Euler`` advances the position by sampling the velocity at the beginning of the time step:
 
 .. math::
 
