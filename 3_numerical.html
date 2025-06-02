@@ -58,9 +58,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#eigenvalue-solver">Eigenvalue Solver</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#computational-density-and-comparison">Computational Density and Comparison</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general-tips">General Tips</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#computational-density-and-comparison">Computational Density and Comparison</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="4_input.html">Input Data Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="5_gui.html">Graphical User Interface (GUI)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="6_inputdeck.html">Input Deck for Solver Parameters</a></li>
@@ -109,7 +112,7 @@ Furthermore, when querying the velocity, special wall treatment must be applied 
 <section id="time-integration">
 <span id="marching"></span><h3>Time Integration<a class="headerlink" href="#time-integration" title="Link to this heading"></a></h3>
 <p><strong>Explicit Euler Method</strong></p>
-<p>The first-order explicit Euler scheme advances the position by sampling the velocity at the beginning of the time step:</p>
+<p>The first-order explicit Euler scheme <code class="docutils literal notranslate"><span class="pre">Euler</span></code> advances the position by sampling the velocity at the beginning of the time step:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\mathbf{u}_n = \mathbf{u}(\mathbf{x}_n,t_n),\\
 \mathbf{x}_{n+1} = \mathbf{x}_n + \sigma\,\Delta t\,\mathbf{u}_n.\end{split}\]</div>
@@ -340,13 +343,16 @@ As for the coefficients for <code class="docutils literal notranslate"><span cla
 <span id="eigen"></span><h3>Eigenvalue Solver<a class="headerlink" href="#eigenvalue-solver" title="Link to this heading"></a></h3>
 </section>
 </section>
-</section>
 <section id="computational-density-and-comparison">
-<span id="numcompare"></span><h1>Computational Density and Comparison<a class="headerlink" href="#computational-density-and-comparison" title="Link to this heading"></a></h1>
-<p id="numtips">As for your reference, and configured as defaults, the <em>Berkeley LCS Tutorials</em> used <code class="docutils literal notranslate"><span class="pre">RK4</span></code> for advection.
+<span id="numcompare"></span><h2>Computational Density and Comparison<a class="headerlink" href="#computational-density-and-comparison" title="Link to this heading"></a></h2>
+<section id="general-tips">
+<span id="numtips"></span><h3>General Tips<a class="headerlink" href="#general-tips" title="Link to this heading"></a></h3>
+<p>As for your reference, and configured as defaults, the <em>Berkeley LCS Tutorials</em> used <code class="docutils literal notranslate"><span class="pre">RK4</span></code> for advection.
 The velocity fields were interpolated with <code class="docutils literal notranslate"><span class="pre">tricubic-FL</span></code> by them, originating from <a class="reference internal" href="9_references.html#lekien2005" id="id2"><span>[Lekien2005]</span></a>, which has higher performance by solving a 64×64 linear system using the function values, gradients, and mixed partial derivatives at its eight corners, which is in future development plan for <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code> with high priority.
 Although not detailed, <code class="docutils literal notranslate"><span class="pre">grad_order=2</span></code> was employed by them from the equation, supposing the mesh is sufficiently refined.</p>
 <p>Please always notice that, although providing much better numerical precision and looks cool in papers, high-order methods could be resource-consuming, even several hundred times.</p>
+</section>
+</section>
 </section>
 
 
