@@ -347,7 +347,59 @@ k   = \left\lfloor\frac{z-z_0}{\Delta z}\right\rfloor,\\
 (1-d_y+(-1)^{d_y}\tau_y)
 (1-d_z+(-1)^{d_z}\tau_z)
 \mathbf{u}_{\,i+d_x,\,j+d_y,\,k+d_z}.\]</div>
-<p><strong>Tricubic</strong></p>
+<p><strong>Tricubic Catmull-Rom</strong></p>
+<p>The Tricubic Catmull-Rom interpolation <code class="docutils literal notranslate"><span class="pre">tricubic</span></code> used here is a separable three-dimensional cubic spline based on the one-dimensional Catmul-Rom spline (parameter <code class="docutils literal notranslate"><span class="pre">a=-0.5</span></code>) for velocity fields, which ensures <span class="math notranslate nohighlight">\(C^{1}\)</span> continuity.
+The process is given as follows.</p>
+<p>The one-dimensional Catmull-Rom interpolation reconstructs a <span class="math notranslate nohighlight">\(C^{1}\)</span>-continuous approximation of velocity at an arbitrary location <span class="math notranslate nohighlight">\(x = i + t\)</span>, where <span class="math notranslate nohighlight">\(t \in [0,1)\)</span> and <span class="math notranslate nohighlight">\(i = \lfloor x\rfloor\)</span> on a uniform grid with <span class="math notranslate nohighlight">\(\Delta x = 1\)</span>.
+A four-point stencil is used:</p>
+<div class="math notranslate nohighlight">
+\[\{\,u_{i-1},\,u_{i},\,u_{i+1},\,u_{i+2}\}.\]</div>
+<p>Define coefficients for <span class="math notranslate nohighlight">\(t \in [0,1)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}a_{0} &amp;= -\tfrac{1}{2}\,u_{i-1} + \tfrac{3}{2}\,u_{i} - \tfrac{3}{2}\,u_{i+1} + \tfrac{1}{2}\,u_{i+2},  \\[6pt]
+a_{1} &amp;= u_{i-1} - 2.5\,u_{i} + 2.0\,u_{i+1} - 0.5\,u_{i+2},  \\[6pt]
+a_{2} &amp;= -0.5\,u_{i-1} + 0.5\,u_{i+1},  \\[6pt]
+a_{3} &amp;= u_{i}.\end{split}\]</div>
+<p>The one-dimensional interpolant is:</p>
+<div class="math notranslate nohighlight">
+\[u_{\mathrm{CR}}(i + t)
+= ((a_{0}\,t + a_{1})\,t + a_{2})\,t + a_{3}.\]</div>
+<p>For three-dimensional interpolation, let the target velocity location be</p>
+<div class="math notranslate nohighlight">
+\[(f_{x},\,f_{y},\,f_{z}),
+\quad
+i = \lfloor f_{x}\rfloor,\;
+j = \lfloor f_{y}\rfloor,\;
+k = \lfloor f_{z}\rfloor,
+\quad
+t_{x} = f_{x} - i,\;
+t_{y} = f_{y} - j,\;
+t_{z} = f_{z} - k.\]</div>
+<p>At each <span class="math notranslate nohighlight">\(z = k + \Delta\)</span> (where <span class="math notranslate nohighlight">\(\Delta \in \{-1,0,1,2\}\)</span>), perform bicubic interpolation (first in <code class="docutils literal notranslate"><span class="pre">x</span></code>, then in <code class="docutils literal notranslate"><span class="pre">y</span></code>). For each <span class="math notranslate nohighlight">\(y = j + \ell\)</span> (where <span class="math notranslate nohighlight">\(\ell \in \{-1,0,1,2\}\)</span>), compute:</p>
+<div class="math notranslate nohighlight">
+\[M_{\,j+\ell}(k+\Delta)
+= \mathrm{CR}_{1}\bigl(
+  u_{\,i-1,\,j+\ell,\,k+\Delta},\,
+  u_{\,i,\,j+\ell,\,k+\Delta},\,
+  u_{\,i+1,\,j+\ell,\,k+\Delta},\,
+  u_{\,i+2,\,j+\ell,\,k+\Delta}
+  ;\,t_{x}\bigr).\]</div>
+<p>Then combine along <code class="docutils literal notranslate"><span class="pre">y</span></code>:</p>
+<div class="math notranslate nohighlight">
+\[B(k+\Delta)
+= \mathrm{CR}_{1}\bigl(
+  M_{\,j-1}(k+\Delta),\,
+  M_{\,j}(k+\Delta),\,
+  M_{\,j+1}(k+\Delta),\,
+  M_{\,j+2}(k+\Delta)
+  ;\,t_{y}\bigr).\]</div>
+<p>Finally, interpolate along the third direction <code class="docutils literal notranslate"><span class="pre">z</span></code>:</p>
+<div class="math notranslate nohighlight">
+\[u(f_{x},\,f_{y},\,f_{z})
+= \mathrm{CR}_{1}\bigl(
+  B(k-1),\,B(k),\,B(k+1),\,B(k+2)
+  ;\,t_{z}\bigr).\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\mathrm{CR}_{1}(⋯; t)\)</span> denotes the one-dimensional Catmull-Rom spline defined above.</p>
 <p><strong>Tricubic by F. Lekien</strong> <code class="docutils literal notranslate"><span class="pre">I.P.</span></code></p>
 <p>Marked as <code class="docutils literal notranslate"><span class="pre">tricubicFL</span></code>, this variation of tricubic interpolator is still under development by the author.</p>
 <p><strong>Hermite</strong></p>

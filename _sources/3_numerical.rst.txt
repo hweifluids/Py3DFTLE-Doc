@@ -172,7 +172,82 @@ The continuous velocity field is reconstructed by trilinear interpolation of the
 
 
 
-**Tricubic**
+**Tricubic Catmull-Rom**
+
+The Tricubic Catmull-Rom interpolation ``tricubic`` used here is a separable three-dimensional cubic spline based on the one-dimensional Catmul-Rom spline (parameter ``a=-0.5``) for velocity fields, which ensures :math:`C^{1}` continuity.
+The process is given as follows.
+
+The one-dimensional Catmull-Rom interpolation reconstructs a :math:`C^{1}`-continuous approximation of velocity at an arbitrary location :math:`x = i + t`, where :math:`t \in [0,1)` and :math:`i = \lfloor x\rfloor` on a uniform grid with :math:`\Delta x = 1`. 
+A four-point stencil is used:
+
+.. math::
+
+   \{\,u_{i-1},\,u_{i},\,u_{i+1},\,u_{i+2}\}.
+
+Define coefficients for :math:`t \in [0,1)`:
+
+.. math::
+
+   a_{0} &= -\tfrac{1}{2}\,u_{i-1} + \tfrac{3}{2}\,u_{i} - \tfrac{3}{2}\,u_{i+1} + \tfrac{1}{2}\,u_{i+2},  \\[6pt]
+   a_{1} &= u_{i-1} - 2.5\,u_{i} + 2.0\,u_{i+1} - 0.5\,u_{i+2},  \\[6pt]
+   a_{2} &= -0.5\,u_{i-1} + 0.5\,u_{i+1},  \\[6pt]
+   a_{3} &= u_{i}.
+
+The one-dimensional interpolant is:
+
+.. math::
+
+   u_{\mathrm{CR}}(i + t) 
+   = ((a_{0}\,t + a_{1})\,t + a_{2})\,t + a_{3}.
+
+For three-dimensional interpolation, let the target velocity location be
+
+.. math::
+
+   (f_{x},\,f_{y},\,f_{z}), 
+   \quad
+   i = \lfloor f_{x}\rfloor,\;
+   j = \lfloor f_{y}\rfloor,\; 
+   k = \lfloor f_{z}\rfloor,
+   \quad
+   t_{x} = f_{x} - i,\;
+   t_{y} = f_{y} - j,\;
+   t_{z} = f_{z} - k.
+
+At each :math:`z = k + \Delta` (where :math:`\Delta \in \{-1,0,1,2\}`), perform bicubic interpolation (first in ``x``, then in ``y``). For each :math:`y = j + \ell` (where :math:`\ell \in \{-1,0,1,2\}`), compute:
+
+.. math::
+
+   M_{\,j+\ell}(k+\Delta)
+   = \mathrm{CR}_{1}\bigl(
+     u_{\,i-1,\,j+\ell,\,k+\Delta},\,
+     u_{\,i,\,j+\ell,\,k+\Delta},\,
+     u_{\,i+1,\,j+\ell,\,k+\Delta},\,
+     u_{\,i+2,\,j+\ell,\,k+\Delta}
+     ;\,t_{x}\bigr).
+
+Then combine along ``y``:
+
+.. math::
+
+   B(k+\Delta)
+   = \mathrm{CR}_{1}\bigl(
+     M_{\,j-1}(k+\Delta),\,
+     M_{\,j}(k+\Delta),\,
+     M_{\,j+1}(k+\Delta),\,
+     M_{\,j+2}(k+\Delta)
+     ;\,t_{y}\bigr).
+
+Finally, interpolate along the third direction ``z``:
+
+.. math::
+
+   u(f_{x},\,f_{y},\,f_{z})
+   = \mathrm{CR}_{1}\bigl(
+     B(k-1),\,B(k),\,B(k+1),\,B(k+2)
+     ;\,t_{z}\bigr).
+
+Here :math:`\mathrm{CR}_{1}(⋯; t)` denotes the one-dimensional Catmull-Rom spline defined above.
 
 
 
