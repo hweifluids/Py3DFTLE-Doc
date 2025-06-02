@@ -56,7 +56,7 @@ You can install them after installing ``pip`` by:
 When it does not work, consider if your current dir is incorrect. It should be run from the project root of ``Py3DFTLE`` when undergoing configurations and under :ref:`command-line <command>` mode. Please feel free about such thing under GUI mode.
 
 
-Add-on Libs
+Add-on Libs (Optional)
 -----------------
 
 **1. ParaView** is a powerful beloved open-source visualization platform based on *vtk* that can be used to visualize the results of 3D FTLE computations. We also integrated the ParaView entrance into our GUI, so you can directly open ParaView from it.

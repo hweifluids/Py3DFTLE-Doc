@@ -186,7 +186,7 @@ Eigenvalue Solver
 .. _numcompare:
 
 Computational Density and Comparison
-==========================================
+----------------------------------------------
 
 .. _numtips:
 
