@@ -1,3 +1,5 @@
+userSections = CASEDATA
+
 [GENERAL] 
 polynomialOrder = 9
 #startFrom = "restart.fld"
@@ -6,21 +8,21 @@ endTime = 50
 
 dt = 7e-3
 timeStepper = tombo2
-subCyclingSteps = 1
+advectionSubCyclingSteps = 1
 
-writeControl = simulationTime 
-writeInterval = 1.0
+checkpointControl = simulationTime 
+checkpointInterval = 1.0
 
 regularization = hpfrt + nModes = 1 + scalingCoeff = 8
 
-[PRESSURE]
+[FLUID PRESSURE]
 residualTol = 1e-04
 
-[VELOCITY]
-boundaryTypeMap = inlet, outlet, wall, slipY, slipZ
+[FLUID VELOCITY]
+boundaryTypeMap = udfDirichlet, zeroNeumann, zeroDirichlet, zeroDirichletY/zeroNeumann, zeroDirichletZ/zeroNeumann 
 residualTol = 1e-06
-density = 1.0
-viscosity = -1400
+rho = 1.0
+viscosity = 1/1400
 
 [CASEDATA]
 # inject nParticlesInject particles every injectionFrequency time steps

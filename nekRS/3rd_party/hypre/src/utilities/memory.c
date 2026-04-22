@@ -13,6 +13,14 @@
 
 #include "_hypre_utilities.h"
 #include "_hypre_utilities.hpp"
+#if defined(__APPLE__)
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#include <mach/mach.h>
+#include <mach/task_info.h>
+#elif defined(__linux__)
+#include <sys/sysinfo.h>
+#endif
 
 #if defined(HYPRE_USE_UMALLOC)
 #undef HYPRE_USE_UMALLOC
@@ -55,10 +63,14 @@ hypre_GetMemoryLocationName(hypre_MemoryLocation  memory_location,
 /*--------------------------------------------------------------------------
  * hypre_OutOfMemory
  *--------------------------------------------------------------------------*/
+
 static inline void
 hypre_OutOfMemory(size_t size)
 {
-   hypre_error_w_msg(HYPRE_ERROR_MEMORY, "Out of memory trying to allocate too many bytes\n");
+   char msg[1024];
+
+   hypre_sprintf(msg, "Out of memory trying to allocate %zu bytes\n", size);
+   hypre_error_w_msg(HYPRE_ERROR_MEMORY, msg);
    hypre_assert(0);
    fflush(stdout);
 }
@@ -74,8 +86,7 @@ hypre_WrongMemoryLocation(void)
 void
 hypre_CheckMemoryLocation(void *ptr, hypre_MemoryLocation location)
 {
-#if defined(HYPRE_DEBUG)
-#if defined(HYPRE_USING_CUDA) || defined(HYPRE_USING_HIP) || defined(HYPRE_USING_SYCL)
+#if defined(HYPRE_DEBUG) && defined(HYPRE_USING_GPU)
    if (!ptr)
    {
       return;
@@ -86,7 +97,9 @@ hypre_CheckMemoryLocation(void *ptr, hypre_MemoryLocation location)
    /* do not use hypre_assert, which has alloc and free;
     * will create an endless loop otherwise */
    assert(location == location_ptr);
-#endif
+#else
+   HYPRE_UNUSED_VAR(ptr);
+   HYPRE_UNUSED_VAR(location);
 #endif
 }
 
@@ -118,18 +131,20 @@ hypre_DeviceMemset(void *ptr, HYPRE_Int value, size_t num)
    HYPRE_OMPOffload(hypre__offload_device_num, ptr, num, "update", "to");
 #endif
    /* HYPRE_CUDA_CALL( cudaDeviceSynchronize() ); */
-#endif
 
-#if defined(HYPRE_USING_CUDA)
+#elif defined(HYPRE_USING_CUDA)
    HYPRE_CUDA_CALL( cudaMemset(ptr, value, num) );
-#endif
 
-#if defined(HYPRE_USING_HIP)
+#elif defined(HYPRE_USING_HIP)
    HYPRE_HIP_CALL( hipMemset(ptr, value, num) );
-#endif
 
-#if defined(HYPRE_USING_SYCL)
+#elif defined(HYPRE_USING_SYCL)
    HYPRE_SYCL_CALL( (hypre_HandleComputeStream(hypre_handle()))->memset(ptr, value, num).wait() );
+
+#else
+   HYPRE_UNUSED_VAR(ptr);
+   HYPRE_UNUSED_VAR(value);
+   HYPRE_UNUSED_VAR(num);
 #endif
 }
 
@@ -148,18 +163,20 @@ hypre_UnifiedMemset(void *ptr, HYPRE_Int value, size_t num)
    HYPRE_OMPOffload(hypre__offload_device_num, ptr, num, "update", "to");
 #endif
    /* HYPRE_CUDA_CALL( cudaDeviceSynchronize() ); */
-#endif
 
-#if defined(HYPRE_USING_CUDA)
+#elif defined(HYPRE_USING_CUDA)
    HYPRE_CUDA_CALL( cudaMemset(ptr, value, num) );
-#endif
 
-#if defined(HYPRE_USING_HIP)
+#elif defined(HYPRE_USING_HIP)
    HYPRE_HIP_CALL( hipMemset(ptr, value, num) );
-#endif
 
-#if defined(HYPRE_USING_SYCL)
+#elif defined(HYPRE_USING_SYCL)
    HYPRE_SYCL_CALL( (hypre_HandleComputeStream(hypre_handle()))->memset(ptr, value, num).wait() );
+
+#else
+   HYPRE_UNUSED_VAR(ptr);
+   HYPRE_UNUSED_VAR(value);
+   HYPRE_UNUSED_VAR(num);
 #endif
 }
 
@@ -179,17 +196,19 @@ hypre_UnifiedMemPrefetch(void *ptr, size_t size, hypre_MemoryLocation location)
 #if defined(HYPRE_USING_CUDA)
    if (location == hypre_MEMORY_DEVICE)
    {
-      HYPRE_CUDA_CALL( cudaMemPrefetchAsync(ptr, size, hypre_HandleDevice(hypre_handle()),
+      HYPRE_CUDA_CALL( cudaMemPrefetchAsync(ptr, size, cudaMemLocation{cudaMemLocationTypeDevice, hypre_HandleDevice(hypre_handle())}, 0,
                                             hypre_HandleComputeStream(hypre_handle())) );
    }
    else if (location == hypre_MEMORY_HOST)
    {
-      HYPRE_CUDA_CALL( cudaMemPrefetchAsync(ptr, size, cudaCpuDeviceId,
+      HYPRE_CUDA_CALL( cudaMemPrefetchAsync(ptr, size, cudaMemLocation{cudaMemLocationTypeHost ,cudaCpuDeviceId}, 0,
                                             hypre_HandleComputeStream(hypre_handle())) );
    }
-#endif
 
-#if defined(HYPRE_USING_HIP)
+#elif defined(HYPRE_USING_HIP)
+   HYPRE_UNUSED_VAR(ptr);
+   HYPRE_UNUSED_VAR(size);
+   HYPRE_UNUSED_VAR(location);
    // Not currently implemented for HIP, but leaving place holder
    /*
     *if (location == hypre_MEMORY_DEVICE)
@@ -203,9 +222,11 @@ hypre_UnifiedMemPrefetch(void *ptr, size_t size, hypre_MemoryLocation location)
     *                    hypre_HandleComputeStream(hypre_handle())) );
     *}
     */
-#endif
 
-#if defined(HYPRE_USING_SYCL)
+#elif defined(HYPRE_USING_SYCL)
+   HYPRE_UNUSED_VAR(ptr);
+   HYPRE_UNUSED_VAR(size);
+   HYPRE_UNUSED_VAR(location);
    if (location == hypre_MEMORY_DEVICE)
    {
       /* WM: todo - the call below seems like it may occasionally result in an error: */
@@ -214,6 +235,10 @@ hypre_UnifiedMemPrefetch(void *ptr, size_t size, hypre_MemoryLocation location)
        *     to hang (or run excessively slow?). */
       /* HYPRE_SYCL_CALL( hypre_HandleComputeStream(hypre_handle())->prefetch(ptr, size).wait() ); */
    }
+#else
+   HYPRE_UNUSED_VAR(ptr);
+   HYPRE_UNUSED_VAR(size);
+   HYPRE_UNUSED_VAR(location);
 #endif
 }
 
@@ -491,31 +516,27 @@ hypre_UnifiedFree(void *ptr)
 {
 #if defined(HYPRE_USING_UMPIRE_UM)
    hypre_umpire_um_pooled_free(ptr);
-#else
 
-#if defined(HYPRE_USING_DEVICE_OPENMP)
-#if defined(HYPRE_DEVICE_OPENMP_ALLOC)
+#elif defined(HYPRE_USING_DEVICE_OPENMP) && defined(HYPRE_DEVICE_OPENMP_ALLOC)
    omp_target_free(ptr, hypre__offload_device_num);
-#else
+
+#elif defined(HYPRE_USING_DEVICE_OPENMP) && !defined(HYPRE_DEVICE_OPENMP_ALLOC)
    HYPRE_OMPOffload(hypre__offload_device_num, ptr, ((size_t *) ptr)[-1], "exit", "delete");
-#endif
-#endif
 
-#if defined(HYPRE_USING_CUDA)
-#if defined(HYPRE_USING_DEVICE_POOL)
+#elif defined(HYPRE_USING_CUDA) && defined(HYPRE_USING_DEVICE_POOL)
    HYPRE_CUDA_CALL( hypre_CachingFreeManaged(ptr) );
-#else
+
+#elif defined(HYPRE_USING_CUDA) && !defined(HYPRE_USING_DEVICE_POOL)
    HYPRE_CUDA_CALL( cudaFree(ptr) );
-#endif
-#endif
 
-#if defined(HYPRE_USING_HIP)
+#elif defined(HYPRE_USING_HIP)
    HYPRE_HIP_CALL( hipFree(ptr) );
-#endif
 
-#if defined(HYPRE_USING_SYCL)
+#elif defined(HYPRE_USING_SYCL)
    HYPRE_SYCL_CALL( sycl::free(ptr, *(hypre_HandleComputeStream(hypre_handle()))) );
-#endif
+
+#else
+   HYPRE_UNUSED_VAR(ptr);
 
 #endif /* #if defined(HYPRE_USING_UMPIRE_UM) */
 }
@@ -525,19 +546,18 @@ hypre_HostPinnedFree(void *ptr)
 {
 #if defined(HYPRE_USING_UMPIRE_PINNED)
    hypre_umpire_pinned_pooled_free(ptr);
-#else
 
-#if defined(HYPRE_USING_CUDA)
+#elif defined(HYPRE_USING_CUDA)
    HYPRE_CUDA_CALL( cudaFreeHost(ptr) );
-#endif
 
-#if defined(HYPRE_USING_HIP)
+#elif defined(HYPRE_USING_HIP)
    HYPRE_HIP_CALL( hipHostFree(ptr) );
-#endif
 
-#if defined(HYPRE_USING_SYCL)
+#elif defined(HYPRE_USING_SYCL)
    HYPRE_SYCL_CALL( sycl::free(ptr, *(hypre_HandleComputeStream(hypre_handle()))) );
-#endif
+
+#else
+   HYPRE_UNUSED_VAR(ptr);
 
 #endif /* #if defined(HYPRE_USING_UMPIRE_PINNED) */
 }
@@ -585,6 +605,11 @@ static inline void
 hypre_Memcpy_core(void *dst, void *src, size_t size, hypre_MemoryLocation loc_dst,
                   hypre_MemoryLocation loc_src)
 {
+   if (size == 0)
+   {
+      return;
+   }
+
 #if defined(HYPRE_USING_SYCL)
    sycl::queue* q = hypre_HandleComputeStream(hypre_handle());
 #endif
@@ -638,7 +663,10 @@ hypre_Memcpy_core(void *dst, void *src, size_t size, hypre_MemoryLocation loc_ds
 #endif
 
 #if defined(HYPRE_USING_HIP)
-      HYPRE_HIP_CALL( hipMemcpy(dst, src, size, hipMemcpyDeviceToDevice) );
+      // hipMemcpy(DtoD) causes a host-side synchronization, unlike cudaMemcpy(DtoD),
+      // use hipMemcpyAsync to get cuda's more performant behavior. For more info see:
+      // https://github.com/mfem/mfem/pull/2780
+      HYPRE_HIP_CALL( hipMemcpyAsync(dst, src, size, hipMemcpyDeviceToDevice) );
 #endif
 
 #if defined(HYPRE_USING_SYCL)
@@ -766,7 +794,10 @@ hypre_Memcpy_core(void *dst, void *src, size_t size, hypre_MemoryLocation loc_ds
 #endif
 
 #if defined(HYPRE_USING_HIP)
-      HYPRE_HIP_CALL( hipMemcpy(dst, src, size, hipMemcpyDeviceToDevice) );
+      // hipMemcpy(DtoD) causes a host-side synchronization, unlike cudaMemcpy(DtoD),
+      // use hipMemcpyAsync to get cuda's more performant behavior. For more info see:
+      // https://github.com/mfem/mfem/pull/2780
+      HYPRE_HIP_CALL( hipMemcpyAsync(dst, src, size, hipMemcpyDeviceToDevice) );
 #endif
 
 #if defined(HYPRE_USING_SYCL)
@@ -781,6 +812,7 @@ hypre_Memcpy_core(void *dst, void *src, size_t size, hypre_MemoryLocation loc_ds
 /*--------------------------------------------------------------------------*
  * ExecPolicy
  *--------------------------------------------------------------------------*/
+
 static inline HYPRE_ExecutionPolicy
 hypre_GetExecPolicy1_core(hypre_MemoryLocation location)
 {
@@ -796,7 +828,7 @@ hypre_GetExecPolicy1_core(hypre_MemoryLocation location)
          exec = HYPRE_EXEC_DEVICE;
          break;
       case hypre_MEMORY_UNIFIED :
-#if defined(HYPRE_USING_GPU)
+#if defined(HYPRE_USING_GPU) || defined(HYPRE_USING_DEVICE_OPENMP)
          exec = hypre_HandleDefaultExecPolicy(hypre_handle());
 #endif
          break;
@@ -843,7 +875,7 @@ hypre_GetExecPolicy2_core(hypre_MemoryLocation location1,
 
    if (location1 == hypre_MEMORY_UNIFIED && location2 == hypre_MEMORY_UNIFIED)
    {
-#if defined(HYPRE_USING_GPU)
+#if defined(HYPRE_USING_GPU) || defined(HYPRE_USING_DEVICE_OPENMP)
       exec = hypre_HandleDefaultExecPolicy(hypre_handle());
 #endif
    }
@@ -1143,14 +1175,28 @@ hypre_GetPointerLocation(const void *ptr, hypre_MemoryLocation *memory_location)
    {
       *memory_location = hypre_MEMORY_UNIFIED;
    }
+#if (HIP_VERSION_MAJOR >= 6)
+   else if (attr.type == hipMemoryTypeDevice)
+#else // (HIP_VERSION_MAJOR < 6)
    else if (attr.memoryType == hipMemoryTypeDevice)
+#endif // (HIP_VERSION_MAJOR >= 6)
    {
       *memory_location = hypre_MEMORY_DEVICE;
    }
+#if (HIP_VERSION_MAJOR >= 6)
+   else if (attr.type == hipMemoryTypeHost)
+#else // (HIP_VERSION_MAJOR < 6)
    else if (attr.memoryType == hipMemoryTypeHost)
+#endif // (HIP_VERSION_MAJOR >= 6)
    {
       *memory_location = hypre_MEMORY_HOST_PINNED;
    }
+#if (HIP_VERSION_MAJOR >= 6)
+   else if (attr.type == hipMemoryTypeUnregistered)
+   {
+      *memory_location = hypre_MEMORY_HOST;
+   }
+#endif
 #endif // defined(HYPRE_USING_HIP)
 
 #if defined(HYPRE_USING_SYCL)
@@ -1185,13 +1231,368 @@ hypre_GetPointerLocation(const void *ptr, hypre_MemoryLocation *memory_location)
 
 #else /* #if defined(HYPRE_USING_GPU) */
    *memory_location = hypre_MEMORY_HOST;
+   HYPRE_UNUSED_VAR(ptr);
 #endif
 
    return ierr;
 }
 
-/*--------------------------------------------------------------------------*
- * Memory Pool
+/*--------------------------------------------------------------------------
+ * hypre_HostMemoryGetUsage
+ *
+ * Retrieves various memory usage statistics involving CPU RAM. The function
+ * fills an array with the memory data, converted to gigabytes (GB).
+ * Detailed info is given below:
+ *
+ *    - mem[0]: VmSize
+ *      The current virtual memory size used by the process. This includes
+ *      all memory the process can access, including memory that is swapped
+ *      out and memory allocated but not used.
+ *
+ *    - mem[1]: VmPeak
+ *      The peak virtual memory size used by the process during its lifetime.
+ *
+ *    - mem[2]: VmRSS
+ *      The resident set size, which is the portion of the process' memory
+ *      that is held in CPU RAM. This includes code, data, and stack space
+ *      but excludes swapped-out memory.
+ *
+ *    - mem[3]: VmHWM
+ *      The peak resident set size, which is the maximum amount of memory
+ *      that the process has had in CPU RAM at any point in time, aka.
+ *      high water mark.
+ *
+ *    - mem[4]: free
+ *      The amount of free CPU RAM available in the system.
+ *
+ *    - mem[5]: total
+ *      The total amount of CPU RAM installed in the system.
+ *
+ * This function doesn't return correct memory info for Windows environments.
+ *--------------------------------------------------------------------------*/
+
+HYPRE_Int
+hypre_HostMemoryGetUsage(HYPRE_Real *mem)
+{
+   size_t       vm_size  = 0;
+   size_t       vm_rss   = 0;
+   size_t       vm_hwm   = 0;
+   size_t       vm_peak  = 0;
+   size_t       tot_mem  = 0;
+   size_t       free_mem = 0;
+   HYPRE_Real   b_to_gb  = (HYPRE_Real) (1 << 30);
+
+   /* Sanity check */
+   if (!mem)
+   {
+      hypre_error_w_msg(HYPRE_ERROR_GENERIC, "Mem is a NULL pointer!");
+      return hypre_error_flag;
+   }
+
+   /* Get system memory info */
+#if defined(__APPLE__)
+   struct task_basic_info   t_info;
+   mach_msg_type_number_t   t_info_count = TASK_BASIC_INFO_COUNT;
+   mach_msg_type_number_t   count = HOST_VM_INFO_COUNT;
+   vm_statistics_data_t     vm_stat;
+   hypre_int                mib[2] = {CTL_HW, HW_MEMSIZE};
+   size_t                   length = sizeof(size_t);
+
+   if (sysctl(mib, 2, &tot_mem, &length, NULL, 0))
+   {
+      hypre_error_w_msg(HYPRE_ERROR_GENERIC, "Problem running sysctl!");
+      return hypre_error_flag;
+   }
+
+   if (host_statistics(mach_host_self(), HOST_VM_INFO, (host_info_t)&vm_stat, &count) !=
+       KERN_SUCCESS)
+   {
+      hypre_error_w_msg(HYPRE_ERROR_GENERIC, "Problem running host_statistics!");
+      return hypre_error_flag;
+   }
+
+   free_mem = (size_t) vm_stat.free_count * (size_t) vm_page_size;
+
+   /* Get the task info */
+   if (task_info(mach_task_self(), TASK_BASIC_INFO, (task_info_t)&t_info,
+                 &t_info_count) != KERN_SUCCESS)
+   {
+      hypre_error_w_msg(HYPRE_ERROR_GENERIC, "Problem running task_info!");
+      return hypre_error_flag;
+   }
+
+   /* vm_peak is not directly available, so we set it to vm_size */
+   vm_size = vm_peak = (size_t) t_info.virtual_size;
+
+   /* vm_hwm is not directly available, so we set it to vm_rss */
+   vm_rss = vm_hwm = (size_t) t_info.resident_size;
+
+#elif defined(__linux__)
+   struct sysinfo   info;
+   char             line[512];
+   FILE            *file;
+
+   if (sysinfo(&info) != 0)
+   {
+      hypre_error_w_msg(HYPRE_ERROR_GENERIC, "Problem running sysinfo!");
+      return hypre_error_flag;
+   }
+   tot_mem  = info.totalram * info.mem_unit;
+   free_mem = info.freeram  * info.mem_unit;
+
+   /* Function to get process memory info */
+   file = fopen("/proc/self/status", "r");
+   if (file == NULL)
+   {
+      hypre_error_w_msg(HYPRE_ERROR_GENERIC, "Cannot open /proc/self/status!");
+      return hypre_error_flag;
+   }
+
+   while (fgets(line, sizeof(line), file))
+   {
+      (void) sscanf(line, "VmPeak: %zu kB", &vm_peak);
+      (void) sscanf(line, "VmSize: %zu kB", &vm_size);
+      (void) sscanf(line,  "VmRSS: %zu kB", &vm_rss);
+      (void) sscanf(line,  "VmHWM: %zu kB", &vm_hwm);
+   }
+   fclose(file);
+
+   /* Convert KB to bytes */
+   vm_peak *= 1024;
+   vm_size *= 1024;
+   vm_rss  *= 1024;
+   vm_hwm  *= 1024;
+#endif
+
+   /* Convert data from bytes to GB (HYPRE_Real) */
+   mem[0] = vm_size  / b_to_gb;
+   mem[1] = vm_peak  / b_to_gb;
+   mem[2] = vm_rss   / b_to_gb;
+   mem[3] = vm_hwm   / b_to_gb;
+   mem[4] = free_mem / b_to_gb;
+   mem[5] = tot_mem  / b_to_gb;
+
+   return hypre_error_flag;
+}
+
+/*--------------------------------------------------------------------------
+ * hypre_MemoryPrintUsage
+ *--------------------------------------------------------------------------*/
+
+HYPRE_Int
+hypre_MemoryPrintUsage(MPI_Comm    comm,
+                       HYPRE_Int   log_level,
+                       const char *function,
+                       HYPRE_Int   line)
+{
+#if defined(HYPRE_USING_UMPIRE)
+   HYPRE_Int    ne = 14;
+#else
+   HYPRE_Int    ne = 6;
+#endif
+   HYPRE_Real   lmem[14];
+   HYPRE_Real   min[14];
+   HYPRE_Real   max[14];
+   HYPRE_Real   avg[14];
+   HYPRE_Real   ssq[14];
+   HYPRE_Real   std[14];
+   HYPRE_Real  *gmem = NULL;
+   HYPRE_Int    i, j, myid, nprocs, ndigits;
+   const char  *labels[] = {"Min", "Max", "Avg", "Std"};
+   HYPRE_Real  *data[]   = {min, max, avg, std};
+
+   /* Return if neither the 1st nor 2nd bits of log_level are set */
+   if (!(log_level & 0x3))
+   {
+      return hypre_error_flag;
+   }
+
+   /* Initialize locals */
+   for (j = 0; j < ne; j++)
+   {
+      lmem[j] = 0.0;
+      min[j]  = HYPRE_REAL_MAX;
+      max[j]  = 0.0;
+      avg[j]  = 0.0;
+      ssq[j]  = 0.0;
+      std[j]  = 0.0;
+   }
+
+   /* MPI variables */
+   hypre_MPI_Comm_size(comm, &nprocs);
+   hypre_MPI_Comm_rank(comm, &myid);
+   ndigits = hypre_ndigits(nprocs);
+
+   /* Work space for gathering memory info */
+   if (!myid)
+   {
+      gmem = hypre_CTAlloc(HYPRE_Real, ne * nprocs, HYPRE_MEMORY_HOST);
+   }
+
+   /* Get host memory info */
+   hypre_HostMemoryGetUsage(lmem);
+
+   /* Get umpire memory info */
+#if defined(HYPRE_USING_UMPIRE)
+   hypre_UmpireMemoryGetUsage(&lmem[6]);
+#endif
+
+   /* Gather memory info to rank 0 */
+   hypre_MPI_Gather(lmem, ne, hypre_MPI_REAL, gmem, ne, hypre_MPI_REAL, 0, comm);
+
+   /* Rank 0 computes min/max/avg/stddev statistics */
+   if (!myid && (log_level & 0x2))
+   {
+      for (i = 0; i < nprocs; i++)
+      {
+         for (j = 0; j < ne; j++)
+         {
+            if (gmem[ne * i + j] < min[j]) { min[j] = gmem[ne * i + j]; }
+            if (gmem[ne * i + j] > max[j]) { max[j] = gmem[ne * i + j]; }
+            avg[j] += gmem[ne * i + j];
+         }
+      }
+
+      for (j = 0; j < ne; j++)
+      {
+         avg[j] /= (HYPRE_Real) nprocs;
+      }
+
+      for (i = 0; i < nprocs; i++)
+      {
+         for (j = 0; j < ne; j++)
+         {
+            ssq[j] += hypre_pow(gmem[ne * i + j] - avg[j], 2) / (HYPRE_Real) nprocs;
+         }
+      }
+
+      for (j = 0; j < ne; j++)
+      {
+         std[j] = hypre_sqrt(ssq[j]);
+      }
+   }
+
+   /* Rank 0 prints the data */
+   if (!myid)
+   {
+      /* Local memory usage statistics */
+      if (log_level & 0x1)
+      {
+         for (i = 0; i < nprocs; i++)
+         {
+            if (line > 0)
+            {
+               hypre_printf("[%*d]: %s at line %d", ndigits, i, function, line);
+            }
+            else
+            {
+               hypre_printf("[%*d]: %s", ndigits, i, function);
+            }
+            hypre_printf(" | Vm[Size,RSS]/[Peak,HWM]: (%.2f, %.2f / %.2f, %.2f) GB",
+                         gmem[ne * i + 0], gmem[ne * i + 2],
+                         gmem[ne * i + 1], gmem[ne * i + 3]);
+            hypre_printf(" | Free/Total: (%.2f / %.2f)", gmem[ne * i + 4], gmem[ne * i + 5]);
+#if defined(HYPRE_USING_UMPIRE)
+            if (gmem[ne * i + 7])
+            {
+               hypre_printf(" | UmpHSize/UmpHPeak: (%.2f / %.2f)",
+                            gmem[ne * i + 6], gmem[ne * i + 7]);
+            }
+            if (gmem[ne * i + 9])
+            {
+               hypre_printf(" | UmpDPeak/UmpDPeak: (%.2f / %.2f)",
+                            gmem[ne * i + 8], gmem[ne * i + 9]);
+            }
+            if (gmem[ne * i + 11])
+            {
+               hypre_printf(" | UmpUPeak/UmpUPeak: (%.2f / %.2f)",
+                            gmem[ne * i + 10], gmem[ne * i + 11]);
+            }
+            if (gmem[ne * i + 13])
+            {
+               hypre_printf(" | UmpPSize/UmpPPeak: (%.2f / %.2f)",
+                            gmem[ne * i + 12], gmem[ne * i + 13]);
+            }
+#endif
+            hypre_printf("\n");
+         }
+      }
+
+      /* Global memory usage statistics */
+      if (log_level & 0x2)
+      {
+         hypre_printf("\nMemory usage across ranks - ");
+         if (line > 0)
+         {
+            hypre_printf("%s at line %d\n\n", function, line);
+         }
+         else
+         {
+            hypre_printf("%s\n\n", function);
+         }
+
+         /* Print header */
+         hypre_printf("       | %11s | %11s | %11s | %11s",
+                      "VmSize (GB)", "VmPeak (GB)", "VmRSS (GB)", "VmHWM (GB)");
+#if defined(HYPRE_USING_UMPIRE_HOST)
+         hypre_printf(" | %13s | %13s", "UmpHSize (GB)", "UmpHPeak (GB)");
+#endif
+#if defined(HYPRE_USING_UMPIRE_DEVICE)
+         hypre_printf(" | %13s | %13s", "UmpDSize (GB)", "UmpDPeak (GB)");
+#endif
+#if defined(HYPRE_USING_UMPIRE_UM)
+         hypre_printf(" | %13s | %13s", "UmpUSize (GB)", "UmpUPeak (GB)");
+#endif
+#if defined(HYPRE_USING_UMPIRE_PINNED)
+         hypre_printf(" | %13s | %13s", "UmpPSize (GB)", "UmpPPeak (GB)")
+#endif
+         hypre_printf("\n");
+         hypre_printf("   ----+-------------+-------------+-------------+------------");
+#if defined(HYPRE_USING_UMPIRE_HOST)
+         hypre_printf("-+---------------+--------------");
+#endif
+#if defined(HYPRE_USING_UMPIRE_DEVICE)
+         hypre_printf("-+---------------+--------------");
+#endif
+#if defined(HYPRE_USING_UMPIRE_UM)
+         hypre_printf("-+---------------+--------------");
+#endif
+#if defined(HYPRE_USING_UMPIRE_PINNED)
+         hypre_printf("-+---------------+--------------");
+#endif
+         hypre_printf("\n");
+
+         /* Print table */
+         for (i = 0; i < 4; i++)
+         {
+            hypre_printf("   %-3s", labels[i]);
+            hypre_printf(" | %11.3f | %11.3f | %11.3f | %11.3f",
+                         data[i][0], data[i][1], data[i][2], data[i][3]);
+#if defined(HYPRE_USING_UMPIRE_HOST)
+            hypre_printf(" | %13.3f | %13.3f", data[i][6], data[i][7]);
+#endif
+#if defined(HYPRE_USING_UMPIRE_DEVICE)
+            hypre_printf(" | %13.3f | %13.3f", data[i][8], data[i][9]);
+#endif
+#if defined(HYPRE_USING_UMPIRE_UM)
+            hypre_printf(" | %13.3f | %13.3f", data[i][10], data[i][11]);
+#endif
+#if defined(HYPRE_USING_UMPIRE_PINNED)
+            hypre_printf(" | %13.3f | %13.3f", data[i][12], data[i][13]);
+#endif
+            hypre_printf("\n");
+         }
+      }
+   }
+   hypre_MPI_Barrier(comm);
+
+   hypre_TFree(gmem, HYPRE_MEMORY_HOST);
+
+   return hypre_error_flag;
+}
+
+/*--------------------------------------------------------------------------
+ * hypre_SetCubMemPoolSize
  *--------------------------------------------------------------------------*/
 
 HYPRE_Int
@@ -1200,8 +1601,7 @@ hypre_SetCubMemPoolSize(hypre_uint cub_bin_growth,
                         hypre_uint cub_max_bin,
                         size_t     cub_max_cached_bytes)
 {
-#if defined(HYPRE_USING_CUDA)
-#if defined(HYPRE_USING_DEVICE_POOL)
+#if defined(HYPRE_USING_CUDA) && defined(HYPRE_USING_DEVICE_POOL)
    hypre_HandleCubBinGrowth(hypre_handle())      = cub_bin_growth;
    hypre_HandleCubMinBin(hypre_handle())         = cub_min_bin;
    hypre_HandleCubMaxBin(hypre_handle())         = cub_max_bin;
@@ -1217,11 +1617,19 @@ hypre_SetCubMemPoolSize(hypre_uint cub_bin_growth,
    {
       hypre_HandleCubUvmAllocator(hypre_handle()) -> SetMaxCachedBytes(cub_max_cached_bytes);
    }
-#endif
+#else
+   HYPRE_UNUSED_VAR(cub_bin_growth);
+   HYPRE_UNUSED_VAR(cub_min_bin);
+   HYPRE_UNUSED_VAR(cub_max_bin);
+   HYPRE_UNUSED_VAR(cub_max_cached_bytes);
 #endif
 
    return hypre_error_flag;
 }
+
+/*--------------------------------------------------------------------------
+ * HYPRE_SetGPUMemoryPoolSize
+ *--------------------------------------------------------------------------*/
 
 HYPRE_Int
 HYPRE_SetGPUMemoryPoolSize(HYPRE_Int bin_growth,
@@ -1232,7 +1640,12 @@ HYPRE_SetGPUMemoryPoolSize(HYPRE_Int bin_growth,
    return hypre_SetCubMemPoolSize(bin_growth, min_bin, max_bin, max_cached_bytes);
 }
 
-#if defined(HYPRE_USING_DEVICE_POOL)
+#if defined(HYPRE_USING_DEVICE_POOL) && defined(HYPRE_USING_CUDA)
+
+/*--------------------------------------------------------------------------
+ * hypre_CachingMallocDevice
+ *--------------------------------------------------------------------------*/
+
 cudaError_t
 hypre_CachingMallocDevice(void **ptr, size_t nbytes)
 {
@@ -1251,11 +1664,19 @@ hypre_CachingMallocDevice(void **ptr, size_t nbytes)
    return hypre_HandleCubDevAllocator(hypre_handle()) -> DeviceAllocate(ptr, nbytes);
 }
 
+/*--------------------------------------------------------------------------
+ * hypre_CachingFreeDevice
+ *--------------------------------------------------------------------------*/
+
 cudaError_t
 hypre_CachingFreeDevice(void *ptr)
 {
    return hypre_HandleCubDevAllocator(hypre_handle()) -> DeviceFree(ptr);
 }
+
+/*--------------------------------------------------------------------------
+ * hypre_CachingMallocManaged
+ *--------------------------------------------------------------------------*/
 
 cudaError_t
 hypre_CachingMallocManaged(void **ptr, size_t nbytes)
@@ -1275,11 +1696,19 @@ hypre_CachingMallocManaged(void **ptr, size_t nbytes)
    return hypre_HandleCubUvmAllocator(hypre_handle()) -> DeviceAllocate(ptr, nbytes);
 }
 
+/*--------------------------------------------------------------------------
+ * hypre_CachingFreeManaged
+ *--------------------------------------------------------------------------*/
+
 cudaError_t
 hypre_CachingFreeManaged(void *ptr)
 {
    return hypre_HandleCubUvmAllocator(hypre_handle()) -> DeviceFree(ptr);
 }
+
+/*--------------------------------------------------------------------------
+ * hypre_DeviceDataCubCachingAllocatorCreate
+ *--------------------------------------------------------------------------*/
 
 hypre_cub_CachingDeviceAllocator *
 hypre_DeviceDataCubCachingAllocatorCreate(hypre_uint bin_growth,
@@ -1302,6 +1731,10 @@ hypre_DeviceDataCubCachingAllocatorCreate(hypre_uint bin_growth,
    return allocator;
 }
 
+/*--------------------------------------------------------------------------
+ * hypre_DeviceDataCubCachingAllocatorDestroy
+ *--------------------------------------------------------------------------*/
+
 void
 hypre_DeviceDataCubCachingAllocatorDestroy(hypre_DeviceData *data)
 {
@@ -1309,9 +1742,14 @@ hypre_DeviceDataCubCachingAllocatorDestroy(hypre_DeviceData *data)
    delete hypre_DeviceDataCubUvmAllocator(data);
 }
 
-#endif // #if defined(HYPRE_USING_DEVICE_POOL)
+#endif // #if defined(HYPRE_USING_DEVICE_POOL) && defined(HYPRE_USING_CUDA)
 
 #if defined(HYPRE_USING_UMPIRE_HOST)
+
+/*--------------------------------------------------------------------------
+ * hypre_umpire_host_pooled_allocate
+ *--------------------------------------------------------------------------*/
+
 HYPRE_Int
 hypre_umpire_host_pooled_allocate(void **ptr, size_t nbytes)
 {
@@ -1341,6 +1779,10 @@ hypre_umpire_host_pooled_allocate(void **ptr, size_t nbytes)
    return hypre_error_flag;
 }
 
+/*--------------------------------------------------------------------------
+ * hypre_umpire_host_pooled_free
+ *--------------------------------------------------------------------------*/
+
 HYPRE_Int
 hypre_umpire_host_pooled_free(void *ptr)
 {
@@ -1357,6 +1799,10 @@ hypre_umpire_host_pooled_free(void *ptr)
 
    return hypre_error_flag;
 }
+
+/*--------------------------------------------------------------------------
+ * hypre_umpire_host_pooled_realloc
+ *--------------------------------------------------------------------------*/
 
 void *
 hypre_umpire_host_pooled_realloc(void *ptr, size_t size)
@@ -1377,6 +1823,11 @@ hypre_umpire_host_pooled_realloc(void *ptr, size_t size)
 #endif
 
 #if defined(HYPRE_USING_UMPIRE_DEVICE)
+
+/*--------------------------------------------------------------------------
+ * hypre_umpire_device_pooled_allocate
+ *--------------------------------------------------------------------------*/
+
 HYPRE_Int
 hypre_umpire_device_pooled_allocate(void **ptr, size_t nbytes)
 {
@@ -1410,6 +1861,10 @@ hypre_umpire_device_pooled_allocate(void **ptr, size_t nbytes)
    return hypre_error_flag;
 }
 
+/*--------------------------------------------------------------------------
+ * hypre_umpire_device_pooled_free
+ *--------------------------------------------------------------------------*/
+
 HYPRE_Int
 hypre_umpire_device_pooled_free(void *ptr)
 {
@@ -1429,6 +1884,11 @@ hypre_umpire_device_pooled_free(void *ptr)
 #endif
 
 #if defined(HYPRE_USING_UMPIRE_UM)
+
+/*--------------------------------------------------------------------------
+ * hypre_umpire_um_pooled_allocate
+ *--------------------------------------------------------------------------*/
+
 HYPRE_Int
 hypre_umpire_um_pooled_allocate(void **ptr, size_t nbytes)
 {
@@ -1459,6 +1919,10 @@ hypre_umpire_um_pooled_allocate(void **ptr, size_t nbytes)
    return hypre_error_flag;
 }
 
+/*--------------------------------------------------------------------------
+ * hypre_umpire_um_pooled_free
+ *--------------------------------------------------------------------------*/
+
 HYPRE_Int
 hypre_umpire_um_pooled_free(void *ptr)
 {
@@ -1478,6 +1942,11 @@ hypre_umpire_um_pooled_free(void *ptr)
 #endif
 
 #if defined(HYPRE_USING_UMPIRE_PINNED)
+
+/*--------------------------------------------------------------------------
+ * hypre_umpire_pinned_pooled_allocate
+ *--------------------------------------------------------------------------*/
+
 HYPRE_Int
 hypre_umpire_pinned_pooled_allocate(void **ptr, size_t nbytes)
 {
@@ -1508,6 +1977,10 @@ hypre_umpire_pinned_pooled_allocate(void **ptr, size_t nbytes)
    return hypre_error_flag;
 }
 
+/*--------------------------------------------------------------------------
+ * hypre_umpire_pinned_pooled_free
+ *--------------------------------------------------------------------------*/
+
 HYPRE_Int
 hypre_umpire_pinned_pooled_free(void *ptr)
 {
@@ -1525,3 +1998,281 @@ hypre_umpire_pinned_pooled_free(void *ptr)
    return hypre_error_flag;
 }
 #endif
+
+/******************************************************************************
+ *
+ * hypre Umpire
+ *
+ *****************************************************************************/
+
+#if defined(HYPRE_USING_UMPIRE)
+
+/*--------------------------------------------------------------------------
+ * hypre_UmpireInit
+ *--------------------------------------------------------------------------*/
+
+HYPRE_Int
+hypre_UmpireInit(hypre_Handle *hypre_handle_)
+{
+   umpire_resourcemanager_get_instance(&hypre_HandleUmpireResourceMan(hypre_handle_));
+
+   hypre_HandleUmpireDevicePoolSize(hypre_handle_) = 4LL * (1 << 30); // 4 GB
+   hypre_HandleUmpireUMPoolSize(hypre_handle_)     = 4LL * (1 << 30); // 4 GB
+   hypre_HandleUmpireHostPoolSize(hypre_handle_)   = 4LL * (1 << 30); // 4 GB
+   hypre_HandleUmpirePinnedPoolSize(hypre_handle_) = 4LL * (1 << 30); // 4 GB
+
+   hypre_HandleUmpireBlockSize(hypre_handle_) = 512;
+
+   strcpy(hypre_HandleUmpireDevicePoolName(hypre_handle_), "HYPRE_DEVICE_POOL");
+   strcpy(hypre_HandleUmpireUMPoolName(hypre_handle_),     "HYPRE_UM_POOL");
+   strcpy(hypre_HandleUmpireHostPoolName(hypre_handle_),   "HYPRE_HOST_POOL");
+   strcpy(hypre_HandleUmpirePinnedPoolName(hypre_handle_), "HYPRE_PINNED_POOL");
+
+   hypre_HandleOwnUmpireDevicePool(hypre_handle_) = 0;
+   hypre_HandleOwnUmpireUMPool(hypre_handle_)     = 0;
+   hypre_HandleOwnUmpireHostPool(hypre_handle_)   = 0;
+   hypre_HandleOwnUmpirePinnedPool(hypre_handle_) = 0;
+
+   return hypre_error_flag;
+}
+
+/*--------------------------------------------------------------------------
+ * hypre_UmpireFinalize
+ *--------------------------------------------------------------------------*/
+
+HYPRE_Int
+hypre_UmpireFinalize(hypre_Handle *hypre_handle_)
+{
+   umpire_resourcemanager *rm_ptr = &hypre_HandleUmpireResourceMan(hypre_handle_);
+   umpire_allocator allocator;
+
+#if defined(HYPRE_USING_UMPIRE_HOST)
+   if (hypre_HandleOwnUmpireHostPool(hypre_handle_))
+   {
+      const char *pool_name = hypre_HandleUmpireHostPoolName(hypre_handle_);
+      umpire_resourcemanager_get_allocator_by_name(rm_ptr, pool_name, &allocator);
+      umpire_allocator_release(&allocator);
+   }
+#endif
+
+#if defined(HYPRE_USING_UMPIRE_DEVICE)
+   if (hypre_HandleOwnUmpireDevicePool(hypre_handle_))
+   {
+      const char *pool_name = hypre_HandleUmpireDevicePoolName(hypre_handle_);
+      umpire_resourcemanager_get_allocator_by_name(rm_ptr, pool_name, &allocator);
+      umpire_allocator_release(&allocator);
+   }
+#endif
+
+#if defined(HYPRE_USING_UMPIRE_UM)
+   if (hypre_HandleOwnUmpireUMPool(hypre_handle_))
+   {
+      const char *pool_name = hypre_HandleUmpireUMPoolName(hypre_handle_);
+      umpire_resourcemanager_get_allocator_by_name(rm_ptr, pool_name, &allocator);
+      umpire_allocator_release(&allocator);
+   }
+#endif
+
+#if defined(HYPRE_USING_UMPIRE_PINNED)
+   if (hypre_HandleOwnUmpirePinnedPool(hypre_handle_))
+   {
+      const char *pool_name = hypre_HandleUmpirePinnedPoolName(hypre_handle_);
+      umpire_resourcemanager_get_allocator_by_name(rm_ptr, pool_name, &allocator);
+      umpire_allocator_release(&allocator);
+   }
+#endif
+
+   return hypre_error_flag;
+}
+
+/*--------------------------------------------------------------------------
+ * hypre_UmpireMemoryGetUsage
+ *--------------------------------------------------------------------------*/
+
+HYPRE_Int
+hypre_UmpireMemoryGetUsage(HYPRE_Real *memory)
+{
+   hypre_Handle                 *handle = hypre_handle();
+   umpire_resourcemanager       *rm_ptr = &hypre_HandleUmpireResourceMan(handle);
+   umpire_allocator              allocator;
+
+   size_t                        memoryB[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+   HYPRE_Int                     i;
+
+   /* Sanity check */
+   if (!memory)
+   {
+      hypre_error_w_msg(HYPRE_ERROR_GENERIC, "memory is a NULL pointer!");
+      return hypre_error_flag;
+   }
+
+#if defined(HYPRE_USING_UMPIRE_HOST)
+   if (hypre_HandleOwnUmpireHostPool(handle))
+   {
+      const char *pool_name = hypre_HandleUmpireHostPoolName(handle);
+      umpire_resourcemanager_get_allocator_by_name(rm_ptr, pool_name, &allocator);
+      memoryB[0] = umpire_allocator_get_current_size(&allocator);
+      memoryB[1] = umpire_allocator_get_high_watermark(&allocator);
+   }
+#endif
+
+#if defined(HYPRE_USING_UMPIRE_DEVICE)
+   if (hypre_HandleOwnUmpireDevicePool(handle))
+   {
+      const char *pool_name = hypre_HandleUmpireDevicePoolName(handle);
+      umpire_resourcemanager_get_allocator_by_name(rm_ptr, pool_name, &allocator);
+      memoryB[2] = umpire_allocator_get_current_size(&allocator);
+      memoryB[3] = umpire_allocator_get_high_watermark(&allocator);
+   }
+#endif
+
+#if defined(HYPRE_USING_UMPIRE_UM)
+   if (hypre_HandleOwnUmpireUMPool(handle))
+   {
+      const char *pool_name = hypre_HandleUmpireUMPoolName(handle);
+      umpire_resourcemanager_get_allocator_by_name(rm_ptr, pool_name, &allocator);
+      memoryB[4] = umpire_allocator_get_current_size(&allocator);
+      memoryB[5] = umpire_allocator_get_high_watermark(&allocator);
+   }
+#endif
+
+#if defined(HYPRE_USING_UMPIRE_PINNED)
+   if (hypre_HandleOwnUmpirePinnedPool(handle))
+   {
+      const char *pool_name = hypre_HandleUmpirePinnedPoolName(handle);
+      umpire_resourcemanager_get_allocator_by_name(rm_ptr, pool_name, &allocator);
+      memoryB[6] = umpire_allocator_get_current_size(&allocator);
+      memoryB[7] = umpire_allocator_get_high_watermark(&allocator);
+   }
+#endif
+
+   /* Convert bytes to GB */
+   for (i = 0; i < 8; i++)
+   {
+      memory[i] = ((HYPRE_Real) memoryB[i]) / ((HYPRE_Real) (1 << 30));
+   }
+
+   return hypre_error_flag;
+}
+
+/*--------------------------------------------------------------------------
+ * HYPRE_SetUmpireDevicePoolSize
+ *--------------------------------------------------------------------------*/
+
+HYPRE_Int
+HYPRE_SetUmpireDevicePoolSize(size_t nbytes)
+{
+   hypre_HandleUmpireDevicePoolSize(hypre_handle()) = nbytes;
+
+   return hypre_error_flag;
+}
+
+/*--------------------------------------------------------------------------
+ * HYPRE_SetUmpireUMPoolSize
+ *--------------------------------------------------------------------------*/
+
+HYPRE_Int
+HYPRE_SetUmpireUMPoolSize(size_t nbytes)
+{
+   hypre_HandleUmpireUMPoolSize(hypre_handle()) = nbytes;
+
+   return hypre_error_flag;
+}
+
+/*--------------------------------------------------------------------------
+ * HYPRE_SetUmpireHostPoolSize
+ *--------------------------------------------------------------------------*/
+
+HYPRE_Int
+HYPRE_SetUmpireHostPoolSize(size_t nbytes)
+{
+   hypre_HandleUmpireHostPoolSize(hypre_handle()) = nbytes;
+
+   return hypre_error_flag;
+}
+
+/*--------------------------------------------------------------------------
+ * HYPRE_SetUmpirePinnedPoolSize
+ *--------------------------------------------------------------------------*/
+
+HYPRE_Int
+HYPRE_SetUmpirePinnedPoolSize(size_t nbytes)
+{
+   hypre_HandleUmpirePinnedPoolSize(hypre_handle()) = nbytes;
+
+   return hypre_error_flag;
+}
+
+/*--------------------------------------------------------------------------
+ * HYPRE_SetUmpireDevicePoolName
+ *--------------------------------------------------------------------------*/
+
+HYPRE_Int
+HYPRE_SetUmpireDevicePoolName(const char *pool_name)
+{
+   if (strlen(pool_name) > HYPRE_UMPIRE_POOL_NAME_MAX_LEN)
+   {
+      hypre_error_in_arg(1);
+      return hypre_error_flag;
+   }
+
+   strcpy(hypre_HandleUmpireDevicePoolName(hypre_handle()), pool_name);
+
+   return hypre_error_flag;
+}
+
+/*--------------------------------------------------------------------------
+ * HYPRE_SetUmpireUMPoolName
+ *--------------------------------------------------------------------------*/
+
+HYPRE_Int
+HYPRE_SetUmpireUMPoolName(const char *pool_name)
+{
+   if (strlen(pool_name) > HYPRE_UMPIRE_POOL_NAME_MAX_LEN)
+   {
+      hypre_error_in_arg(1);
+      return hypre_error_flag;
+   }
+
+   strcpy(hypre_HandleUmpireUMPoolName(hypre_handle()), pool_name);
+
+   return hypre_error_flag;
+}
+
+/*--------------------------------------------------------------------------
+ * HYPRE_SetUmpireHostPoolName
+ *--------------------------------------------------------------------------*/
+
+HYPRE_Int
+HYPRE_SetUmpireHostPoolName(const char *pool_name)
+{
+   if (strlen(pool_name) > HYPRE_UMPIRE_POOL_NAME_MAX_LEN)
+   {
+      hypre_error_in_arg(1);
+      return hypre_error_flag;
+   }
+
+   strcpy(hypre_HandleUmpireHostPoolName(hypre_handle()), pool_name);
+
+   return hypre_error_flag;
+}
+
+/*--------------------------------------------------------------------------
+ * HYPRE_SetUmpirePinnedPoolName
+ *--------------------------------------------------------------------------*/
+
+HYPRE_Int
+HYPRE_SetUmpirePinnedPoolName(const char *pool_name)
+{
+   if (strlen(pool_name) > HYPRE_UMPIRE_POOL_NAME_MAX_LEN)
+   {
+      hypre_error_in_arg(1);
+      return hypre_error_flag;
+   }
+
+   strcpy(hypre_HandleUmpirePinnedPoolName(hypre_handle()), pool_name);
+
+   return hypre_error_flag;
+}
+
+#endif /* #if defined(HYPRE_USING_UMPIRE) */

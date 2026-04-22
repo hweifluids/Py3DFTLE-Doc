@@ -20,23 +20,23 @@ c-----------------------------------------------------------------------
 
       real err(2)
       save err
-      COMMON /NRSSCPTR/ nrs_scptr(1)
-      integer*8         nrs_scptr
 
       real  wrk(lx1,ly1,lz1,lelt,3)
 
-      nrs_scptr(1) = loc(err(1))
+      call nekrs_registerPtr('errors', err)
 
       nv = nx1*ny1*nz1*nelv
       nt = nx1*ny1*nz1*nelt
 
+      ifldt = 2
+
       call copy(wrk(1,1,1,1,1),vx,nv)
       call copy(wrk(1,1,1,1,2),vy,nv)
-      call copy(wrk(1,1,1,1,3), t,nt)
+      call copy(wrk(1,1,1,1,3), t(1,1,1,1,ifldt),nt)
 c      call load_fld('nekSolution.fld')
 c      call sub2(wrk(1,1,1,1,1),vx,nv)
 c      call sub2(wrk(1,1,1,1,2),vy,nv)
-c      call sub2(wrk(1,1,1,1,3), t,nt)
+c      call sub2(wrk(1,1,1,1,3), t(1,1,1,1,ifldt,nt)
 
       err_inf = glamax(wrk(1,1,1,1,1),nv)
       err_l2  = glsc3(wrk(1,1,1,1,1),bm1,wrk(1,1,1,1,1),nv)
@@ -52,28 +52,6 @@ c      if(nid.eq.0) write(6,*) 'inf/L2 error vy:', err_inf, sqrt(err_l2)
       err(2) = sqrt(err_l2)
 c      if(nid.eq.0) write(6,*) 'inf/L2 error t:', err_inf, sqrt(err_l2)
 
-      return
-      end
-c-----------------------------------------------------------------------
-      subroutine useric (ix,iy,iz,ieg)
-
-C     Set initial conditions
-
-      include 'SIZE'
-      include 'TOTAL'
-      include 'NEKUSE'
-
-      ux   = 4.0*y*(1. - y)
-      uy   = 0.0
-      uz   = 0.0
-      temp = 0.0
-
-      return
-      end
-c-----------------------------------------------------------------------
-      subroutine usrdat
-      include 'SIZE'
-      include 'TOTAL'
       return
       end
 c-----------------------------------------------------------------------
@@ -98,10 +76,6 @@ c-----------------------------------------------------------------------
       enddo
       enddo
 
-      return
-      end
-c-----------------------------------------------------------------------
-      subroutine usrdat3
       return
       end
 c-----------------------------------------------------------------------

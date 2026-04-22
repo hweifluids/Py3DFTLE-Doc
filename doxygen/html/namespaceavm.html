@@ -70,25 +70,59 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">avm Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5d2e11974f48648c8f6cf2ff8aaee808" id="r_a5d2e11974f48648c8f6cf2ff8aaee808"><td class="memItemLeft" align="right" valign="top"><a id="a5d2e11974f48648c8f6cf2ff8aaee808" name="a5d2e11974f48648c8f6cf2ff8aaee808"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setup</b> (<a class="el" href="structcds__t.html">cds_t</a> *cds)</td></tr>
-<tr class="separator:a5d2e11974f48648c8f6cf2ff8aaee808"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a969c243a20b7ab7d9f3a62ae0f0f0b60" id="r_a969c243a20b7ab7d9f3a62ae0f0f0b60"><td class="memItemLeft" align="right" valign="top"><a id="a969c243a20b7ab7d9f3a62ae0f0f0b60" name="a969c243a20b7ab7d9f3a62ae0f0f0b60"></a>
-occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>computeEps</b> (<a class="el" href="structnrs__t.html">nrs_t</a> *nrs, const dfloat time, const dlong scalarIndex, occa::memory o_S)</td></tr>
-<tr class="separator:a969c243a20b7ab7d9f3a62ae0f0f0b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9ad4d539b1bdd53b4db195c17f8dc64" id="r_aa9ad4d539b1bdd53b4db195c17f8dc64"><td class="memItemLeft" align="right" valign="top"><a id="aa9ad4d539b1bdd53b4db195c17f8dc64" name="aa9ad4d539b1bdd53b4db195c17f8dc64"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>apply</b> (<a class="el" href="structnrs__t.html">nrs_t</a> *nrs, const dfloat time, const dlong scalarIndex, occa::memory o_S)</td></tr>
-<tr class="separator:aa9ad4d539b1bdd53b4db195c17f8dc64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a759cbb021aa44412cd5c76c3be232e08" id="r_a759cbb021aa44412cd5c76c3be232e08"><td class="memItemLeft" align="right" valign="top"><a id="a759cbb021aa44412cd5c76c3be232e08" name="a759cbb021aa44412cd5c76c3be232e08"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setup</b> (<a class="el" href="structmesh__t.html">mesh_t</a> *mesh_)</td></tr>
+<tr class="separator:a759cbb021aa44412cd5c76c3be232e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f45943198e3f7b0aa936a49cae712ea" id="r_a3f45943198e3f7b0aa936a49cae712ea"><td class="memItemLeft" align="right" valign="top"><a id="a3f45943198e3f7b0aa936a49cae712ea" name="a3f45943198e3f7b0aa936a49cae712ea"></a>
+occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>viscosity</b> (dlong UFieldOffset, const occa::memory &amp;o_U, const occa::memory &amp;o_S, dfloat absTol, dfloat scalingCoeff, dfloat logS0, dfloat kappa, bool makeCont)</td></tr>
+<tr class="separator:a3f45943198e3f7b0aa936a49cae712ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac35cb1a98a322de9131d2de22cf85493" id="r_ac35cb1a98a322de9131d2de22cf85493"><td class="memItemLeft" align="right" valign="top"><a id="ac35cb1a98a322de9131d2de22cf85493" name="ac35cb1a98a322de9131d2de22cf85493"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>viscosity</b> (dlong UFieldOffset, const occa::memory &amp;o_U, const occa::memory &amp;o_S, occa::memory &amp;o_nu, dfloat absTol, dfloat scalingCoeff, dfloat logS0, dfloat kappa, bool C0)</td></tr>
+<tr class="separator:ac35cb1a98a322de9131d2de22cf85493"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a7ac57d46362acb8bcee500a6847c12e7" id="r_a7ac57d46362acb8bcee500a6847c12e7"><td class="memItemLeft" align="right" valign="top"><a id="a7ac57d46362acb8bcee500a6847c12e7" name="a7ac57d46362acb8bcee500a6847c12e7"></a>
+occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_vertexIds</b></td></tr>
+<tr class="separator:a7ac57d46362acb8bcee500a6847c12e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85c77179802a2fcbecff88e44a957041" id="r_a85c77179802a2fcbecff88e44a957041"><td class="memItemLeft" align="right" valign="top"><a id="a85c77179802a2fcbecff88e44a957041" name="a85c77179802a2fcbecff88e44a957041"></a>
+occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_r</b></td></tr>
+<tr class="separator:a85c77179802a2fcbecff88e44a957041"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6e49b75b2974731aff76ee258960a23" id="r_ae6e49b75b2974731aff76ee258960a23"><td class="memItemLeft" align="right" valign="top"><a id="ae6e49b75b2974731aff76ee258960a23" name="ae6e49b75b2974731aff76ee258960a23"></a>
+occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_s</b></td></tr>
+<tr class="separator:ae6e49b75b2974731aff76ee258960a23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9af543704a4ea9f24c1bf461e3920069" id="r_a9af543704a4ea9f24c1bf461e3920069"><td class="memItemLeft" align="right" valign="top"><a id="a9af543704a4ea9f24c1bf461e3920069" name="a9af543704a4ea9f24c1bf461e3920069"></a>
+occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_t</b></td></tr>
+<tr class="separator:a9af543704a4ea9f24c1bf461e3920069"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9d957e206a3c9b342af6ad4e170b577" id="r_aa9d957e206a3c9b342af6ad4e170b577"><td class="memItemLeft" align="right" valign="top"><a id="aa9d957e206a3c9b342af6ad4e170b577" name="aa9d957e206a3c9b342af6ad4e170b577"></a>
+occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_modeMap</b></td></tr>
+<tr class="separator:aa9d957e206a3c9b342af6ad4e170b577"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a399eeeefec06f06c0484924843113b9a" id="r_a399eeeefec06f06c0484924843113b9a"><td class="memItemLeft" align="right" valign="top"><a id="a399eeeefec06f06c0484924843113b9a" name="a399eeeefec06f06c0484924843113b9a"></a>
+occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_leastSquares1D</b></td></tr>
+<tr class="separator:a399eeeefec06f06c0484924843113b9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab248cb4bcff0d07213f090ca927c8ef3" id="r_ab248cb4bcff0d07213f090ca927c8ef3"><td class="memItemLeft" align="right" valign="top"><a id="ab248cb4bcff0d07213f090ca927c8ef3" name="ab248cb4bcff0d07213f090ca927c8ef3"></a>
+occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_baseLineDecay</b></td></tr>
+<tr class="separator:ab248cb4bcff0d07213f090ca927c8ef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e62f8f479327279a3c2e94634c8e9ab" id="r_a6e62f8f479327279a3c2e94634c8e9ab"><td class="memItemLeft" align="right" valign="top"><a id="a6e62f8f479327279a3c2e94634c8e9ab" name="a6e62f8f479327279a3c2e94634c8e9ab"></a>
+occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_invVT</b></td></tr>
+<tr class="separator:a6e62f8f479327279a3c2e94634c8e9ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af13b79fc28a03523fbf600d5f9054b24" id="r_af13b79fc28a03523fbf600d5f9054b24"><td class="memItemLeft" align="right" valign="top"><a id="af13b79fc28a03523fbf600d5f9054b24" name="af13b79fc28a03523fbf600d5f9054b24"></a>
+<a class="el" href="structoogs__t.html">oogs_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>gsh</b> = nullptr</td></tr>
+<tr class="separator:af13b79fc28a03523fbf600d5f9054b24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af464112ab2d0f44614e13929d7fcd9a5" id="r_af464112ab2d0f44614e13929d7fcd9a5"><td class="memItemLeft" align="right" valign="top"><a id="af464112ab2d0f44614e13929d7fcd9a5" name="af464112ab2d0f44614e13929d7fcd9a5"></a>
+<a class="el" href="structmesh__t.html">mesh_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>mesh</b> = nullptr</td></tr>
+<tr class="separator:af464112ab2d0f44614e13929d7fcd9a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Persson's artificial viscosity method (<a href="http://persson.berkeley.edu/pub/persson06shock.pdf">http://persson.berkeley.edu/pub/persson06shock.pdf</a>) with P1 </p>
+<div class="textblock"><p>Persson's artificial viscosity method (<a href="http://persson.berkeley.edu/pub/persson06shock.pdf">http://persson.berkeley.edu/pub/persson06shock.pdf</a>) with P1 and <a href="https://www.mmnp-journal.org/articles/mmnp/pdf/2011/03/mmnp201163p57.pdf">https://www.mmnp-journal.org/articles/mmnp/pdf/2011/03/mmnp201163p57.pdf</a> </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

@@ -1,7 +1,6 @@
-#ifndef MEM_H
-#define MEM_H
+#ifndef GS_MEM_H
+#define GS_MEM_H
 
-#include <stddef.h>
 /* requires:
      <stddef.h> for size_t, offsetof
      <stdlib.h> for malloc, calloc, realloc, free
@@ -10,11 +9,8 @@
      "fail.h"
 */
 
-#if !defined(C99_H) || !defined(FAIL_H)
+#if !defined(GS_C99_H) || !defined(GS_FAIL_H)
 #error "mem.h" requires "c99.h" and "fail.h"
-#endif
-#ifdef __cplusplus
-#include <string.h>
 #endif
 
 /* 
@@ -35,8 +31,8 @@
 #else
 #  include <stdio.h>
 #  ifndef comm_gbl_id
-#    define comm_gbl_id PREFIXED_NAME(comm_gbl_id)
-#    define comm_gbl_np PREFIXED_NAME(comm_gbl_np)
+#    define comm_gbl_id GS_PREFIXED_NAME(comm_gbl_id)
+#    define comm_gbl_np GS_PREFIXED_NAME(comm_gbl_np)
 #    include "types.h"
      extern uint comm_gbl_id, comm_gbl_np;
 #  endif
@@ -164,7 +160,7 @@ typedef struct array buffer;
 /*--------------------------------------------------------------------------
    Alignment routines
   --------------------------------------------------------------------------*/
-#ifdef __cplusplus
+#if __cplusplus >= 201103L 
 #define ALIGNOF(T) alignof(T)
 #else
 #define ALIGNOF(T) offsetof(struct { char c; T x; }, x)

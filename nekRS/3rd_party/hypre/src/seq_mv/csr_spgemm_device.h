@@ -10,7 +10,7 @@
 
 #include "_hypre_utilities.hpp"
 
-#if defined(HYPRE_USING_CUDA) || defined(HYPRE_USING_HIP) || defined(HYPRE_USING_SYCL)
+#if defined(HYPRE_USING_GPU)
 
 #define COHEN_USE_SHMEM 0
 
@@ -359,11 +359,7 @@ HYPRE_Int HashFunc(HYPRE_Int key, HYPRE_Int i, HYPRE_Int prev)
 }
 
 template<typename T>
-#if defined(HYPRE_USING_SYCL)
 struct spgemm_bin_op
-#else
-struct spgemm_bin_op : public thrust::unary_function<T, char>
-#endif
 {
    char s, t, u; /* s: base size of bins; t: lowest bin; u: highest bin */
 
@@ -471,6 +467,6 @@ hypre_spgemm_get_num_groups_per_block()
 #define HYPRE_SPGEMM_PRINT(...)
 #endif
 
-#endif /* HYPRE_USING_CUDA || defined(HYPRE_USING_HIP) || defined(HYPRE_USING_SYCL) */
+#endif /* defined(HYPRE_USING_GPU) */
 #endif /* #ifndef CSR_SPGEMM_DEVICE_H */
 

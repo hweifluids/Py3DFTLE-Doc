@@ -152,7 +152,8 @@ C
          idpss(i) = -1
       enddo 
 
-      meshPartitioner=3 ! HYBRID (RSB+RCB)
+      fluid_partitioner=0 ! RSB
+      solid_partitioner=1 ! RCB
       connectivityTol=0.2
 
       ifprojfld(0) = .false. 
@@ -167,6 +168,11 @@ C
       enddo
       do i=1,lbid
         cbc_imap(i)=i !sequential IDs as default
+      enddo
+
+      nhref = 0
+      do i=1,lhref
+        hrefcuts(i) = 0 ! h-refinement schedule
       enddo
 
       ifflow    = .false.
@@ -885,13 +891,29 @@ c set partitioner options
       call finiparser_getString(c_out,'mesh:partitioner',ifnd)
       call capit(c_out,132)
       if(index(c_out,'RSB').eq.1) then
-         meshPartitioner=1
-      else if (index(c_out,'RCBRSB').eq.1) then
-         meshPartitioner=3
-      else if(index(c_out,'RCB').eq.1) then
-         meshPartitioner=2
-      else if (index(c_out,'METIS').eq.1) then
-         meshPartitioner=4
+         fluid_partitioner=0
+         solid_partitioner=0
+      else if (index(c_out,'RCB').eq.1) then
+         fluid_partitioner=1
+         solid_partitioner=1
+      endif
+
+c set partitioner options
+      call finiparser_getString(c_out,'mesh:fluidpartitioner',ifnd)
+      call capit(c_out,132)
+      if(index(c_out,'RSB').eq.1) then
+         fluid_partitioner=0
+      else if (index(c_out,'RCB').eq.1) then
+         fluid_partitioner=1
+      endif
+
+c set partitioner options
+      call finiparser_getString(c_out,'mesh:solidpartitioner',ifnd)
+      call capit(c_out,132)
+      if(index(c_out,'RSB').eq.1) then
+         solid_partitioner=0
+      else if (index(c_out,'RCB').eq.1) then
+         solid_partitioner=1
       endif
 
 c set connectivity tolerance
@@ -912,6 +934,32 @@ c read BoundaryID map
           call finiparser_getToken(c_out,i)
           read(c_out,'(i132)') cbc_imap(i)
         enddo
+      endif
+
+c read h-refinement schedule
+      call finiparser_findTokens('mesh:hrefine', ',' ,ifnd)
+      if(ifnd.gt.lhref) then
+        write(6,'(a)')"Too many h-refine layers specified in par"
+        write(6,'(a,i3)')"  Nek5000 only supports up to ",lnref
+        write(6,'(a)')"  Increase the value if needed"
+        ierr = 1
+        ifnd = 0
+      else if(ifnd.ge.1) then
+        nhref = ifnd
+        do i = 1,ifnd
+          call finiparser_getToken(c_out,i)
+          read(c_out,'(i132)') hrefcuts(i)
+        enddo
+
+        ncut = 1 ! quick check
+        do i = 1,nhref
+          ncut = ncut * hrefcuts(i)
+        enddo
+        if (ncut.lt.2) then
+          write(6,'(a,i3)')"Invalid h-refine schedule: ncut_total=",ncut
+          nhref = 0
+          call izero(hrefcuts,lhref)
+        endif
       endif
 
 c read BC map for velocity
@@ -1099,7 +1147,8 @@ C
 
       call bcast(idpss    ,  ldimt*isize)
 
-      call bcast(meshPartitioner,isize)
+      call bcast(fluid_partitioner,isize)
+      call bcast(solid_partitioner,isize)
       call bcast(connectivityTol,wdsize)
 
       call bcast(iftmsh   , (ldimt1+1)*lsize)
@@ -1119,6 +1168,9 @@ C
       call bcast(ifbmap,         ldimt1*lsize)
       call bcast(cbc_imap,  lbid*       isize)
       call bcast(cbc_bmap,3*lbid*ldimt1*csize)
+
+      call bcast(nhref,          isize)
+      call bcast(hrefcuts, lhref*isize)
 
       call bcast(timeioe,sizeof(timeioe))
 

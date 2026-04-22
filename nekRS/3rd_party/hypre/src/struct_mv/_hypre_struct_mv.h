@@ -211,6 +211,11 @@ if (hypre__num_blocks > 0)\
 {\
    hypre__div = hypre__tot / hypre__num_blocks;\
    hypre__mod = hypre__tot % hypre__num_blocks;\
+}\
+else\
+{\
+   hypre__div = 0;\
+   hypre__mod = 0;\
 }
 
 #define zypre_BoxLoopInitK(k, dboxk, startk, stridek, ik) \
@@ -408,7 +413,6 @@ for (I = 0; I < n[0]; I++)
 
 #endif
 #endif /* #ifndef hypre_BOX_HEADER */
-
 /******************************************************************************
  * Copyright (c) 1998 Lawrence Livermore National Security, LLC and other
  * HYPRE Project Developers. See the top-level COPYRIGHT file for details.
@@ -2355,7 +2359,7 @@ hypre__J = hypre__thread;  i1 = i2 = 0; \
 #define HYPRE_BOX_REDUCTION
 #define HYPRE_OMP_CLAUSE
 #if defined(WIN32) && defined(_MSC_VER)
-#define Pragma(x) __pragma(HYPRE_XSTR(x))
+#define Pragma(x) __pragma(x)
 #else
 #define Pragma(x) _Pragma(HYPRE_XSTR(x))
 #endif

@@ -14,7 +14,7 @@
 #undef SORT_SUFFIX
 #undef T
 
-#if defined(USE_LONG) || defined(GLOBAL_LONG)
+#if defined(GSLIB_USE_LONG) || defined(GSLIB_USE_GLOBAL_LONG)
 #  define T unsigned long
 #  define SORT_SUFFIX _ul
 #  include "sort_imp.h"
@@ -22,10 +22,24 @@
 #  undef T
 #endif
 
-#if defined(USE_LONG_LONG) || defined(GLOBAL_LONG_LONG)
+#if defined(GSLIB_USE_LONG_LONG) || defined(GSLIB_USE_GLOBAL_LONG_LONG)
 #  define T unsigned long long
 #  define SORT_SUFFIX _ull
 #  include "sort_imp.h"
 #  undef SORT_SUFFIX
 #  undef T
 #endif
+
+#define REALSORT
+#  define T double
+#  define SORT_SUFFIX _double
+#  include "sort_imp.h"
+#  undef SORT_SUFFIX
+#  undef T
+
+#  define T float
+#  define SORT_SUFFIX _float
+#  include "sort_imp.h"
+#  undef SORT_SUFFIX
+#  undef T
+#undef REALSORT

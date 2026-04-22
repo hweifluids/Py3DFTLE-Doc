@@ -1,13 +1,13 @@
 CC ?= mpicc
-CFLAGS ?=
+CFLAGS ?= -Wall -Wextra -Wpedantic -Wno-unused-function -Wno-unused-parameter -std=c99 -g
 LDFLAGS ?=
 DEBUG ?= 0
-MPI ?= 1
 UNDERSCORE ?= 1
 SYNC_BY_REDUCTION ?= 1
 BLAS ?= 0
 BLASDIR ?=
 BLASFLAGS ?= -lblas -llapack
+GSLIBPATH ?=
 
 ########################## Don't touch what follows ###########################
 ifeq ($(GSLIBPATH),)
@@ -19,9 +19,10 @@ SRCROOT := $(realpath $(patsubst %/,%,$(dir $(MKFILEPATH))))
 SRCDIR = $(SRCROOT)/src
 EXAMPLEDIR = $(SRCROOT)/examples
 BUILDROOT = $(SRCROOT)/build
-INSTALLROOT = $(BUILDROOT)/install
-ifneq ($(strip $(DESTDIR)),)
-  INSTALLROOT = $(realpath $(DESTDIR))
+ifneq (,$(strip $(DESTDIR)))
+INSTALLROOT = $(DESTDIR)
+else
+INSTALLROOT = $(SRCROOT)/install
 endif
 
 SRCS = $(wildcard $(SRCDIR)/*.c)
@@ -38,9 +39,7 @@ else
   CFLAGS += -O2
 endif
 
-ifneq ($(MPI),0)
-  PP += -DMPI
-endif
+PP += -DPARRSB_MPI
 
 ifneq ($(UNDERSCORE),0)
   PP += -DPARRSB_UNDERSCORE

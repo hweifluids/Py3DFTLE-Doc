@@ -45,7 +45,8 @@ hypre_ParCSRMaxEigEstimateHost( hypre_ParCSRMatrix *A,       /* matrix to relax 
    HYPRE_Real *A_offd_data = hypre_CSRMatrixData(hypre_ParCSRMatrixOffd(A));
    HYPRE_Real *diag        = NULL;
    HYPRE_Int   i, j;
-   HYPRE_Real  e_max, e_min;
+   HYPRE_Real  e_max = 0.0;
+   HYPRE_Real  e_min = 0.0;
    HYPRE_Real  send_buf[2], recv_buf[2];
 
    HYPRE_MemoryLocation memory_location = hypre_ParCSRMatrixMemoryLocation(A);
@@ -138,11 +139,9 @@ hypre_ParCSRMaxEigEstimate(hypre_ParCSRMatrix *A, /* matrix to relax with */
                            HYPRE_Real *max_eig,
                            HYPRE_Real *min_eig)
 {
-#if defined(HYPRE_USING_CUDA) || defined(HYPRE_USING_HIP)
    hypre_GpuProfilingPushRange("ParCSRMaxEigEstimate");
-#endif
    HYPRE_Int ierr = 0;
-#if defined(HYPRE_USING_CUDA) || defined(HYPRE_USING_HIP)
+#if defined(HYPRE_USING_GPU)
    HYPRE_ExecutionPolicy exec = hypre_GetExecPolicy1( hypre_ParCSRMatrixMemoryLocation(A) );
    if (exec == HYPRE_EXEC_DEVICE)
    {
@@ -153,9 +152,7 @@ hypre_ParCSRMaxEigEstimate(hypre_ParCSRMatrix *A, /* matrix to relax with */
    {
       ierr = hypre_ParCSRMaxEigEstimateHost(A, scale, max_eig, min_eig);
    }
-#if defined(HYPRE_USING_CUDA) || defined(HYPRE_USING_HIP)
    hypre_GpuProfilingPopRange();
-#endif
    return ierr;
 }
 
@@ -176,11 +173,9 @@ hypre_ParCSRMaxEigEstimateCG(hypre_ParCSRMatrix *A,     /* matrix to relax with 
                              HYPRE_Real         *max_eig,
                              HYPRE_Real         *min_eig)
 {
-#if defined(HYPRE_USING_CUDA) || defined(HYPRE_USING_HIP)
    hypre_GpuProfilingPushRange("ParCSRMaxEigEstimateCG");
-#endif
    HYPRE_Int             ierr = 0;
-#if defined(HYPRE_USING_CUDA) || defined(HYPRE_USING_HIP)
+#if defined(HYPRE_USING_GPU)
    HYPRE_ExecutionPolicy exec = hypre_GetExecPolicy1(hypre_ParCSRMatrixMemoryLocation(A));
    if (exec == HYPRE_EXEC_DEVICE)
    {
@@ -191,9 +186,7 @@ hypre_ParCSRMaxEigEstimateCG(hypre_ParCSRMatrix *A,     /* matrix to relax with 
    {
       ierr = hypre_ParCSRMaxEigEstimateCGHost(A, scale, max_iter, max_eig, min_eig);
    }
-#if defined(HYPRE_USING_CUDA) || defined(HYPRE_USING_HIP)
    hypre_GpuProfilingPopRange();
-#endif
    return ierr;
 }
 

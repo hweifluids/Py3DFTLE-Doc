@@ -513,6 +513,9 @@ c use old reader (for ASCII + old binary support)
 
       do 6000 ifile=1,nfiles
         call sioflag(ndumps,fname,initc(ifile))
+         if (nhrefrs.gt.0) then
+            call exitti('href rs only supports p67=6$',nhrefrs)
+         endif
         ierr = 0
         if (nid.eq.0) then
 
@@ -855,8 +858,10 @@ C
                   enddo
                  endif
                endif
+#if LDIMT>1
                if (ifaxis.and.ifgett) 
      $            call copy(t(1,1,1,1,2),sdmp2(1,1),ntott)
+#endif
             elseif (ifpert.and.ifile.ge.2) then
                j=ifile-1  ! pointer to perturbation field
                if (ifgetu) call copy(vxp(1,j),sdump(1,4),ntotv)
@@ -1008,6 +1013,13 @@ C
       ifgtim=.true.
       ndumps=0
       ifgfldr=.false.
+
+c     href restart
+      nhrefrs = 0
+      do iref=1,lhref
+         hrefcutsrs(iref) = 0
+      enddo
+
 C
 C     Check for default case - just a filename given, no i/o options specified
 C
@@ -1846,36 +1858,7 @@ c
       CALL SETINVM
       CALL SETDEF
       CALL SFASTAX
-c
-      do ie = 1,nelt
-         ! x
-         xc(1,ie) = XM1(1  ,1  ,1  ,ie)
-         xc(2,ie) = XM1(lx1,1  ,1  ,ie)
-         xc(3,ie) = XM1(lx1,ly1,1  ,ie)
-         xc(4,ie) = XM1(1  ,ly1,1  ,ie)
-         xc(5,ie) = XM1(1  ,1  ,lz1,ie)
-         xc(6,ie) = XM1(lx1,1  ,lz1,ie)
-         xc(7,ie) = XM1(lx1,ly1,lz1,ie)
-         xc(8,ie) = XM1(1  ,ly1,lz1,ie)
-         ! y
-         yc(1,ie) = YM1(1  ,1  ,1  ,ie)
-         yc(2,ie) = YM1(lx1,1  ,1  ,ie)
-         yc(3,ie) = YM1(lx1,ly1,1  ,ie)
-         yc(4,ie) = YM1(1  ,ly1,1  ,ie)
-         yc(5,ie) = YM1(1  ,1  ,lz1,ie)
-         yc(6,ie) = YM1(lx1,1  ,lz1,ie)
-         yc(7,ie) = YM1(lx1,ly1,lz1,ie)
-         yc(8,ie) = YM1(1  ,ly1,lz1,ie)
-         ! z 
-         zc(1,ie) = ZM1(1  ,1  ,1  ,ie)
-         zc(2,ie) = ZM1(lx1,1  ,1  ,ie)
-         zc(3,ie) = ZM1(lx1,ly1,1  ,ie)
-         zc(4,ie) = ZM1(1  ,ly1,1  ,ie)
-         zc(5,ie) = ZM1(1  ,1  ,lz1,ie)
-         zc(6,ie) = ZM1(lx1,1  ,lz1,ie)
-         zc(7,ie) = ZM1(lx1,ly1,lz1,ie)
-         zc(8,ie) = ZM1(1  ,ly1,lz1,ie)
-      enddo
+      CALL XM1TOXC
 
       if(nio.eq.0) then
         write(6,*) 'done :: regenerate geometry data',icall
@@ -1932,28 +1915,33 @@ c
 c-----------------------------------------------------------------------
       subroutine mfi_gets(u,wk,lwk,iskip)
 
+      include 'mpif.h'
       include 'SIZE'
       include 'INPUT'
       include 'PARALLEL'
       include 'RESTART'
 
-
       real u(lx1*ly1*lz1,1)
 
       real*4 wk(2*lwk) ! message buffer
-      parameter(lrbs=20*lx1*ly1*lz1*lelt)
+      real*4 wkg(2*lwk) ! storage buffer
+
+      parameter(lrbs_loc=20*lx1*ly1*lz1)
+      parameter(lrbs=lrbs_loc*lelt)
       common /vrthov/ w2(lrbs) ! read buffer
       real*4 w2
 
-      integer e,ei,eg,msg_id(lelt)
+      integer vi(2+lrbs_loc,lelt) ! [nid,iel,(data real*8)] x nelt
+      real*8 etime0,dnekclock_sync
+
+      integer e,ei
       logical iskip
       integer*8 i8tmp
 
-      call nekgsync() ! clear outstanding message queues.
+      integer*8 disp
 
       nxyzr  = nxr*nyr*nzr  
       dnxyzr = nxyzr 
-      len    = nxyzr*wdsizr  ! message length
       if (wdsizr.eq.8) nxyzr = 2*nxyzr
 
       ! check message buffer wk
@@ -1971,15 +1959,10 @@ c-----------------------------------------------------------------------
       endif
       call bcast(nelrr,4)
       call lim_chk(nxyzr*nelrr,lrbs,'     ','     ','mfi_gets b')
+      if (ifcrrs)
+     $  call lim_chk(nxyzr,lrbs_loc,'     ','     ','mfi_gets c')
 
-      ! pre-post recieves
-      if (np.gt.1) then
-         l = 1
-         do e=1,nelt
-            msg_id(e) = irecv(e,wk(l),len)
-            l = l+nxyzr
-         enddo
-      endif
+      call nekgsync()
 
       ierr = 0
       if (nid.eq.pid0r.and.np.gt.1) then ! only i/o nodes will read
@@ -1992,34 +1975,116 @@ c-----------------------------------------------------------------------
             endif
             
             if(ierr.eq.0) then
+              etime0 = dnekclock_sync()
               if(ifmpiio) then
                 call byte_read_mpi(w2,nxyzr*nelrr,-1,ifh_mbyte,ierr)
               else
                 call byte_read (w2,nxyzr*nelrr,ierr)
               endif
+              rst_etime(1) = rst_etime(1) + dnekclock_sync() - etime0
             endif
 
-            ! distribute data across target processors
-            l = 1
-            do e = k+1,k+nelrr
-               jnid = gllnid(er(e))                ! where is er(e) now?
-               jeln = gllel(er(e))
-               if(ierr.ne.0) call rzero(w2(l),len)
-               call csend(jeln,w2(l),len,jnid,0)  ! blocking send
-               l = l+nxyzr
-            enddo
+#ifdef MPI
+            nbatch = (nelt - 1) / lbrst + 1
+            nbatch = iglmax(nbatch, 1)
+
+            do ibatch = 1,nbatch
+
+              ! range for jeln in this batch
+              jeln1 = (ibatch-1)*lbrst+1
+              jeln2 = ibatch*lbrst
+
+              ! redistribute data based on the current el-proc map
+              if (ifcrrs) then
+                etime0 = dnekclock_sync()
+                ! pack buffer
+                l = 1
+                iloc = 1
+                do e = k+1,k+nelrr
+                  jeln = gllel(er(e))
+                  if (jeln.ge.jeln1.AND.jeln.le.jeln2) then
+                    vi(1,iloc) = gllnid(er(e))
+                    vi(2,iloc) = er(e)
+                    call icopy(vi(3,iloc),w2(l),nxyzr)
+                    iloc = iloc+1
+                  endif
+                  l = l+nxyzr
+                enddo
+                rst_etime(2) = rst_etime(2) + dnekclock_sync() - etime0
+
+                ! crystal route nr real items of size lrs to rank vi(key,1:nr)
+                nrmax = lbrst
+                n = iloc - 1
+                li = 2+lrbs_loc ! offset
+                key = 1
+                etime0 = dnekclock_sync()
+                call fgslib_crystal_tuple_transfer(cr_mfi,n,nrmax,vi,li,
+     &                   vl,0,vr,0,key)
+                rst_etime(3) = rst_etime(3) + dnekclock_sync() - etime0
+
+                ! unpack buffer
+                etime0 = dnekclock_sync()
+                ierr = 0
+                if (n.gt.nrmax) then
+                  ierr = 1
+                  goto 100
+                endif
+                do iloc = 1,n
+                  iel = gllel(vi(2,iloc))
+                  l = (iel-1) * nxyzr + 1
+                  call icopy (wkg(l),vi(3,iloc),nxyzr)
+                enddo
+                call nekgsync()
+                rst_etime(4) = rst_etime(4) + dnekclock_sync() - etime0
+
+              else
+
+                etime0 = dnekclock_sync()
+                l = 1
+                call MPI_Win_lock_all(0,rsH,ierr)
+                do e = k+1,k+nelrr
+                  jnid = gllnid(er(e))                ! where is er(e) now?
+                  jeln = gllel(er(e))
+
+                  if (jeln.ge.jeln1.AND.jeln.le.jeln2) then
+                    disp = (jeln-jeln1) * int(nxyzr,8)
+                    call MPI_Put(w2(l),nxyzr,MPI_REAL4,jnid,
+     $                           disp,nxyzr,MPI_REAL4,rsH,ierr)
+                  endif
+                  l = l+nxyzr
+                enddo
+                call MPI_Win_unlock_all(rsH,ierr)
+                call nekgsync()
+                rst_etime(3) = rst_etime(3) + dnekclock_sync() - etime0
+
+                etime0 = dnekclock_sync()
+                l = 1
+                do e = jeln1,jeln2
+                  lg = (e-1) * nxyzr + 1
+                  call icopy (wkg(lg),wk(l),nxyzr)
+                  l = l+nxyzr
+                enddo
+                rst_etime(4) = rst_etime(4) + dnekclock_sync() - etime0
+
+              endif
+
+            enddo ! batches
+#endif
             k  = k + nelrr
          enddo
       elseif (np.eq.1) then
+         etime0 = dnekclock_sync()
          if(ifmpiio) then
-           call byte_read_mpi(wk,nxyzr*nelr,-1,ifh_mbyte,ierr)
+           call byte_read_mpi(wkg,nxyzr*nelr,-1,ifh_mbyte,ierr)
          else
-           call byte_read(wk,nxyzr*nelr,ierr)
+           call byte_read(wkg,nxyzr*nelr,ierr)
          endif
+         rst_etime(1) = rst_etime(1) + dnekclock_sync() - etime0
       endif
 
+      call nekgsync() ! completed both at the origin and at the target when the call returns 
+
       if (iskip) then
-         call nekgsync() ! clear outstanding message queues.
          goto 100     ! don't use the data
       endif
 
@@ -2031,34 +2096,32 @@ c-----------------------------------------------------------------------
       l = 1
       do e=1,nelt
          if (np.gt.1) then
-            call msgwait(msg_id(e))
             ei = e
          elseif(np.eq.1) then
             ei = er(e)
          endif
          if (if_byte_sw) then
             if(wdsizr.eq.8) then
-              call byte_reverse8(wk(l),nxyzv*2,ierr)
+              call byte_reverse8(wkg(l),nxyzv*2,ierr)
             else
-              call byte_reverse(wk(l),nxyzv,ierr)
+              call byte_reverse(wkg(l),nxyzv,ierr)
             endif
          endif
          if (nxr.eq.lx1.and.nyr.eq.ly1.and.nzr.eq.lz1) then
             if (wdsizr.eq.4) then         ! COPY
-               call copy4r(u(1,ei),wk(l        ),nxyzr)
+               call copy4r(u(1,ei),wkg(l        ),nxyzr)
             else
-               call copy  (u(1,ei),wk(l        ),nxyzr)
+               call copy  (u(1,ei),wkg(l        ),nxyzr)
             endif
          else                             ! INTERPOLATE
             if (wdsizr.eq.4) then
-               call mapab4r(u(1,ei),wk(l        ),nxr,1)
+               call mapab4r(u(1,ei),wkg(l        ),nxr,1)
             else
-               call mapab  (u(1,ei),wk(l        ),nxr,1)
+               call mapab  (u(1,ei),wkg(l        ),nxr,1)
             endif
          endif
          l = l+nxyzw
       enddo
-
 
  100  call err_chk(ierr,'Error reading restart data,in gets.$')
       return
@@ -2066,6 +2129,7 @@ c-----------------------------------------------------------------------
 c-----------------------------------------------------------------------
       subroutine mfi_getv(u,v,w,wk,lwk,iskip)
 
+      include 'mpif.h'
       include 'SIZE'
       include 'INPUT'
       include 'PARALLEL'
@@ -2075,17 +2139,21 @@ c-----------------------------------------------------------------------
       logical iskip
 
       real*4 wk(2*lwk) ! message buffer
-      parameter(lrbs=20*lx1*ly1*lz1*lelt)
+      real*4 wkg(2*lwk) ! storage buffer
+      parameter(lrbs_loc=20*lx1*ly1*lz1)
+      parameter(lrbs=lrbs_loc*lelt)
       common /vrthov/ w2(lrbs) ! read buffer
       real*4 w2
 
-      integer e,ei,eg,msg_id(lelt)
+      integer vi(2+lrbs_loc,lelt) ! [nid,iel,(data real*8)] x nelt
+      real*8 etime0,dnekclock_sync
+
+      integer e,ei
       integer*8 i8tmp
- 
-      call nekgsync() ! clear outstanding message queues.
+
+      integer*8 disp
 
       nxyzr  = ldim*nxr*nyr*nzr
-      len    = nxyzr*wdsizr             ! message length in bytes
       if (wdsizr.eq.8) nxyzr = 2*nxyzr
 
       ! check message buffer wk
@@ -2103,16 +2171,10 @@ c-----------------------------------------------------------------------
       endif
       call bcast(nelrr,4)
       call lim_chk(nxyzr*nelrr,lrbs,'     ','     ','mfi_getv b')
+      if (ifcrrs)
+     $  call lim_chk(nxyzr,lrbs_loc,'     ','     ','mfi_getv c')
 
-      ! pre-post recieves (one mesg per element)
-      ! this assumes we never pre post more messages than supported
-      if (np.gt.1) then
-         l = 1
-         do e=1,nelt
-            msg_id(e) = irecv(e,wk(l),len)
-            l = l+nxyzr
-         enddo
-      endif
+      call nekgsync()
 
       ierr = 0
       if (nid.eq.pid0r .and. np.gt.1) then ! only i/o nodes
@@ -2124,34 +2186,115 @@ c-----------------------------------------------------------------------
             endif
 
             if(ierr.eq.0) then
+              etime0 = dnekclock_sync()
               if(ifmpiio) then 
                 call byte_read_mpi(w2,nxyzr*nelrr,-1,ifh_mbyte,ierr)
               else
                 call byte_read (w2,nxyzr*nelrr,ierr)
               endif
+              rst_etime(1) = rst_etime(1) + dnekclock_sync() - etime0
             endif
 
-            ! redistribute data based on the current el-proc map
-            l = 1
-            do e = k+1,k+nelrr
-               jnid = gllnid(er(e))                ! where is er(e) now?
-               jeln = gllel(er(e))
-               if(ierr.ne.0) call rzero(w2(l),len)
-               call csend(jeln,w2(l),len,jnid,0)  ! blocking send
-               l = l+nxyzr
-            enddo
+#ifdef MPI
+            nbatch = (nelt - 1) / lbrst + 1
+            nbatch = iglmax(nbatch, 1)
+
+            do ibatch = 1,nbatch
+
+              ! range for jeln in this batch, it's ok if it's out of nelrr
+              jeln1 = (ibatch-1)*lbrst+1
+              jeln2 = ibatch*lbrst
+              ! redistribute data based on the current el-proc map
+              if (ifcrrs) then
+                etime0 = dnekclock_sync()
+                ! pack buffer
+                l = 1
+                iloc = 1
+                do e = k+1,k+nelrr
+                  jeln = gllel(er(e))
+                  if (jeln.ge.jeln1.AND.jeln.le.jeln2) then
+                    vi(1,iloc) = gllnid(er(e))
+                    vi(2,iloc) = er(e)
+                    call icopy(vi(3,iloc),w2(l),nxyzr)
+                    iloc = iloc+1
+                  endif
+                  l = l+nxyzr
+                enddo
+                rst_etime(2) = rst_etime(2) + dnekclock_sync() - etime0
+
+                ! crystal route nr real items of size lrs to rank vi(key,1:nr)
+                nrmax = lbrst
+                n = iloc - 1
+                li = 2+lrbs_loc ! offset
+                key = 1
+                etime0 = dnekclock_sync()
+                call fgslib_crystal_tuple_transfer(cr_mfi,n,nrmax,vi,li,
+     &                   vl,0,vr,0,key)
+                rst_etime(3) = rst_etime(3) + dnekclock_sync() - etime0
+
+                ! unpack buffer
+                etime0 = dnekclock_sync()
+                ierr = 0
+                if (n.gt.nrmax) then
+                  ierr = 1
+                  goto 100
+                endif
+                do iloc = 1,n
+                  iel = gllel(vi(2,iloc))
+                  l = (iel-1) * nxyzr + 1
+                  call icopy (wkg(l),vi(3,iloc),nxyzr)
+                enddo
+                call nekgsync()
+                rst_etime(4) = rst_etime(4) + dnekclock_sync() - etime0
+
+              else
+
+                etime0 = dnekclock_sync()
+                l = 1
+                call MPI_Win_lock_all(0,rsH,ierr)
+                do e = k+1,k+nelrr
+                  jnid = gllnid(er(e))                ! where is er(e) now?
+                  jeln = gllel(er(e))
+
+                  if (jeln.ge.jeln1.AND.jeln.le.jeln2) then
+                    disp = (jeln-jeln1) * int(nxyzr,8)
+                    call MPI_Put(w2(l),nxyzr,MPI_REAL4,jnid,
+     $                           disp,nxyzr,MPI_REAL4,rsH,ierr)
+                  endif
+                  l = l+nxyzr
+                enddo
+                call MPI_Win_unlock_all(rsH,ierr)
+                call nekgsync()
+                rst_etime(3) = rst_etime(3) + dnekclock_sync() - etime0
+
+                etime0 = dnekclock_sync()
+                l = 1
+                do e = jeln1,jeln2
+                  lg = (e-1) * nxyzr + 1
+                  call icopy (wkg(lg),wk(l),nxyzr)
+                  l = l+nxyzr
+                enddo
+                rst_etime(4) = rst_etime(4) + dnekclock_sync() - etime0
+
+              endif
+
+            enddo ! batches
+#endif
             k  = k + nelrr
          enddo
       elseif (np.eq.1) then
+         etime0 = dnekclock_sync()
          if(ifmpiio) then 
-           call byte_read_mpi(wk,nxyzr*nelr,-1,ifh_mbyte,ierr)
+           call byte_read_mpi(wkg,nxyzr*nelr,-1,ifh_mbyte,ierr)
          else
-           call byte_read(wk,nxyzr*nelr,ierr)
+           call byte_read(wkg,nxyzr*nelr,ierr)
          endif
+         rst_etime(1) = rst_etime(1) + dnekclock_sync() - etime0
       endif
 
+      call nekgsync() ! completed both at the origin and at the target when the call returns 
+
       if (iskip) then
-         call nekgsync() ! clear outstanding message queues.
          goto 100     ! don't assign the data we just read
       endif
 
@@ -2163,47 +2306,49 @@ c-----------------------------------------------------------------------
       l = 1
       do e=1,nelt
          if (np.gt.1) then
-            call msgwait(msg_id(e))
             ei = e
          else if(np.eq.1) then
             ei = er(e) 
          endif
+
          if (if_byte_sw) then
             if(wdsizr.eq.8) then
-               call byte_reverse8(wk(l),nxyzv*2,ierr)
+               call byte_reverse8(wkg(l),nxyzv*2,ierr)
             else
-               call byte_reverse(wk(l),nxyzv,ierr)
+               call byte_reverse(wkg(l),nxyzv,ierr)
             endif
          endif
+
          if (nxr.eq.lx1.and.nyr.eq.ly1.and.nzr.eq.lz1) then
             if (wdsizr.eq.4) then         ! COPY
-               call copy4r(u(1,ei),wk(l        ),nxyzr)
-               call copy4r(v(1,ei),wk(l+  nxyzw),nxyzr)
+               call copy4r(u(1,ei),wkg(l        ),nxyzr)
+               call copy4r(v(1,ei),wkg(l+  nxyzw),nxyzr)
                if (if3d) 
-     $         call copy4r(w(1,ei),wk(l+2*nxyzw),nxyzr)
+     $         call copy4r(w(1,ei),wkg(l+2*nxyzw),nxyzr)
             else
-               call copy  (u(1,ei),wk(l        ),nxyzr)
-               call copy  (v(1,ei),wk(l+  nxyzw),nxyzr)
+               call copy  (u(1,ei),wkg(l        ),nxyzr)
+               call copy  (v(1,ei),wkg(l+  nxyzw),nxyzr)
                if (if3d) 
-     $         call copy  (w(1,ei),wk(l+2*nxyzw),nxyzr)
+     $         call copy  (w(1,ei),wkg(l+2*nxyzw),nxyzr)
             endif
          else                             ! INTERPOLATE
             if (wdsizr.eq.4) then
-               call mapab4r(u(1,ei),wk(l        ),nxr,1)
-               call mapab4r(v(1,ei),wk(l+  nxyzw),nxr,1)
+               call mapab4r(u(1,ei),wkg(l        ),nxr,1)
+               call mapab4r(v(1,ei),wkg(l+  nxyzw),nxr,1)
                if (if3d) 
-     $         call mapab4r(w(1,ei),wk(l+2*nxyzw),nxr,1)
+     $         call mapab4r(w(1,ei),wkg(l+2*nxyzw),nxr,1)
             else
-               call mapab  (u(1,ei),wk(l        ),nxr,1)
-               call mapab  (v(1,ei),wk(l+  nxyzw),nxr,1)
+               call mapab  (u(1,ei),wkg(l        ),nxr,1)
+               call mapab  (v(1,ei),wkg(l+  nxyzw),nxr,1)
                if (if3d) 
-     $         call mapab  (w(1,ei),wk(l+2*nxyzw),nxr,1)
+     $         call mapab  (w(1,ei),wkg(l+2*nxyzw),nxr,1)
             endif
          endif
          l = l+ldim*nxyzw
       enddo
 
  100  call err_chk(ierr,'Error reading restart data, in getv.$')
+
       return
       end
 c-----------------------------------------------------------------------
@@ -2234,16 +2379,27 @@ c-----------------------------------------------------------------------
 
       character*132 hdr
       character*4 dummy
+      character*4 chrefcutsrs ! hrefine
       logical if_press_mesh
 
       p0thr = -1
       if_press_mesh = .false.
+      chrefcutsrs = '    '    ! read hrefine schedule
 
       read(hdr,*,iostat=ierr) dummy
      $         ,  wdsizr,nxr,nyr,nzr,nelr,nelgr,timer,istpr
      $         ,  ifiler,nfiler
      $         ,  rdcode      ! 74+20=94
+     $         ,  p0thr, if_press_mesh ! +1+13 + 2 = 110
+     $         ,  chrefcutsrs ! +1+4
+
+      if (ierr.gt.0) then ! try again without hrefine
+        read(hdr,*,iostat=ierr) dummy
+     $         ,  wdsizr,nxr,nyr,nzr,nelr,nelgr,timer,istpr
+     $         ,  ifiler,nfiler
+     $         ,  rdcode      ! 74+20=94
      $         ,  p0thr, if_press_mesh
+      endif
 
       if (ierr.gt.0) then ! try again without pressure format flag
         read(hdr,*,iostat=ierr) dummy
@@ -2263,6 +2419,8 @@ c-----------------------------------------------------------------------
 c     set if_full_pres flag
       if_full_pres = .false.
       if (.not.ifsplit) if_full_pres = if_press_mesh
+
+      call hrefcuts_c2i(chrefcutsrs) ! decode h-refine schedule
 
 c      ifgtim  = .true.  ! always get time
       ifgetxr = .false.
@@ -2377,9 +2535,11 @@ c     ii.  For MHD and perturbation cases, 1st file is for U,P,T;
 c          subsequent files are for B-field or perturbation fields
 c
 c
+      include 'mpif.h'
       include 'SIZE'
       include 'TOTAL'
       include 'RESTART'
+
       character*132  hdr
       character*132  fname_in
 
@@ -2395,6 +2555,44 @@ c
       integer e
 
       integer*8 offs0,offs,nbyte,stride,strideB,nxyzr8
+
+      common /nekmpi/ nid_,np_,nekcomm,nekgroup,nekreal
+
+      real*8 etime0,dnekclock_sync
+
+      integer   disp_unit
+      integer*8 win_size
+
+#ifdef MPI
+      lbrst = min(lbrst, lelt)
+      if (lbrst.lt.nelt) then
+        if(nio.eq.0) write(*,*)'Batched restart with lbrst',lbrst,nelt
+      endif
+
+      call rzero(rst_etime,4) ! mpiio / pack / transfer / unpack
+
+      if (ifcrrs) then
+        call fgslib_crystal_setup(cr_mfi,nekcomm,np)
+      else
+        disp_unit = 4
+        win_size = int(disp_unit,8)*size(wk)
+        if (lbrst.lt.nelt) then
+          win_size = int(disp_unit,8)*(7*lx1*ly1*lz1*lbrst)*(wdsize/4)
+        endif
+
+        if (commrs .eq. MPI_COMM_NULL) then
+          call mpi_comm_dup(nekcomm,commrs,ierr)
+          call MPI_Win_create(wk,
+     $                        win_size,
+     $                        disp_unit,
+     $                        MPI_INFO_NULL,
+     $                        commrs,rsH,ierr)
+
+          if (ierr .ne. 0 ) call exitti('MPI_Win_allocate failed!$',0)
+          call rzero(wk,lwk) ! avoid unexpected FE_INVALID
+        endif
+      endif
+#endif
 
       tiostart=dnekclock()
 
@@ -2412,9 +2610,19 @@ c
       endif
 
       call mfi_prepare(fname)       ! determine reader nodes +
-                                    ! read hdr + element mapping 
+                                    ! read hdr + element mapping
 
-      offs0   = iHeadersize + 4 + isize*nelgr
+      nid_r = 0
+      if(.not. ifmpiio) nid_r = pid0r
+      if(nid.eq.nid_r) write(6,*) '      FILE:', fname
+
+      call hrefcuts_chkdiff         ! chk and set h-refine restart schedule
+      if (nhrefrs.gt.0) then
+         call h_refine_remap_elem(hrefcutsrs,nhrefrs)
+      endif
+
+      offs0   = nelgr ! cast to int*8
+      offs0   = iHeadersize + 4 + isize*offs0
       nxyzr8  = nxr*nyr*nzr
       strideB = nelBr* nxyzr8*wdsizr
       stride  = nelgr* nxyzr8*wdsizr
@@ -2504,6 +2712,22 @@ c               if(nid.eq.0) write(6,'(A,I2,A)') ' Reading ps',k,' field'
       nbyte = glsum(dnbyte,1)
       nbyte = nbyte + iHeaderSize + 4 + isize*nelgr
 
+      if (nhrefrs.gt.0) then
+         if (if_full_pres) then ! skip pr to avoid extra interp
+            ifgetp = .false.
+            if (nio.eq.0) write(6,32) if_full_pres
+         endif
+         k = 1
+         if (ldimt.gt.1) k = 2
+         if (ifmhd.and.ifile.eq.2) then
+            call h_refine_readfld(xm1,ym1,zm1,bx,by,bz
+     $                           ,pm1,t,t(1,1,1,1,k),hrefcutsrs,nhrefrs)
+         else
+            call h_refine_readfld(xm1,ym1,zm1,vx,vy,vz
+     $                           ,pm1,t,t(1,1,1,1,k),hrefcutsrs,nhrefrs)
+         endif
+      endif
+
       if (tio.eq.0) tio=1
       if (nio.eq.0) write(6,7) istep,time,
      &             nbyte/tio/1e9/10,
@@ -2515,6 +2739,18 @@ c               if(nid.eq.0) write(6,'(A,I2,A)') ' Reading ps',k,' field'
 
       if (ifaxis) call axis_interp_ic(pm1)      ! Interpolate to axi mesh
       if (ifgetp) call map_pm1_to_pr(pm1,ifile) ! Interpolate pressure
+
+#ifdef MPI
+      if (ifcrrs) then
+        call fgslib_crystal_free(cr_mfi)
+      endif
+
+      etime0 = rst_etime(1)+rst_etime(2)+rst_etime(3)+rst_etime(4)
+      if(nio.eq.0) write(6,31) (rst_etime(i),i=1,4),etime0
+#endif
+
+  31  format(3x,'mfi:rd/pk/xfer/unpk/tot:',5(1e9.2))
+  32  format(3x,'mfi:href skip pr when pnpn-2 and if_full_pres',L2)
 
       return
       end
@@ -2565,6 +2801,7 @@ c-----------------------------------------------------------------------
 
       integer*8 offs0,offs
 
+
       ierr = 0
       ! rank0 (i/o master) will do a pre-read to get some infos 
       ! we need to have in advance
@@ -2612,7 +2849,6 @@ c-----------------------------------------------------------------------
            call blank(hdr,iHeaderSize)
 
            call addfid(hname,fid0r)
-           if(nid.eq.pid0r) write(6,*) '      FILE:',hname
            call byte_open(hname,ierr)
 
            if(ierr.ne.0) goto 102
@@ -2646,10 +2882,10 @@ c-----------------------------------------------------------------------
            if(i.eq.nid) nelr = nelr + 1
         enddo
         nelBr = igl_running_sum(nelr) - nelr 
-        offs = offs0 + nelBr*isize
+        offs = nelBr ! cast to int*8
+        offs = offs0 + offs*isize
 
         call addfid(hname,fid0r)
-        if(nio.eq.0) write(6,*) '      FILE:',hname
         call byte_open_mpi(hname,ifh_mbyte,.true.,ierr)
 
         if(ierr.ne.0) goto 102

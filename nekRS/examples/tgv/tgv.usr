@@ -9,28 +9,14 @@ C     - userf  : local acceleration term for fluid
 C     - userq  : local source term for scalars
 C     - userchk: general purpose routine for checking errors etc.
 C
-C-----------------------------------------------------------------------
-      subroutine useric(ix,iy,iz,eg) ! set up initial conditions
-
-      integer ix,iy,iz,eg
+c-----------------------------------------------------------------------
+      subroutine usrdat0()
 
       include 'SIZE'
-      include 'TOTAL'
-      include 'NEKUSE'
+      real P_EPS
+      common /cbcase/ P_EPS
 
-      ux   = 0.0
-      uy   = 0.0
-      uz   = 0.0
-      temp = 0.0
-
-      return
-      end
-C-----------------------------------------------------------------------
-      subroutine userchk()
-      include 'SIZE'
-      include 'TOTAL'
-
-      call lambda2(t(1,1,1,1,1))
+      call nekrs_registerPtr('eps', P_EPS)
 
       return
       end
@@ -39,11 +25,8 @@ c-----------------------------------------------------------------------
       include 'SIZE'
       include 'TOTAL'
 
-      COMMON /SCNRS/ sc_nrs(10)
-      real           sc_nrs
       real P_EPS
-
-      P_EPS = sc_nrs(1)
+      common /cbcase/ P_EPS
 
       epsy = P_EPS
       epsz = P_EPS
@@ -78,13 +61,6 @@ c-----------------------------------------------------------------------
       call rescale_x(xm1,a,b)
       call rescale_x(ym1,a,b)
       call rescale_x(zm1,a,b)
-
-      return
-      end
-c-----------------------------------------------------------------------
-      subroutine usrdat3()
-      include 'SIZE'
-      include 'TOTAL'
 
       return
       end

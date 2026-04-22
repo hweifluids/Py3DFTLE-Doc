@@ -52,6 +52,35 @@ namespace occa {
       return ss.str();
     }
 
+    void getDeviceArchVersion(CUdevice device,
+                              int& archMajorVersion,
+                              int& archMinorVersion) {
+#if CUDA_VERSION < 5000
+      OCCA_CUDA_ERROR("Device: Getting CUDA device arch",
+                      cuDeviceComputeCapability(&archMajorVersion,
+                                                &archMinorVersion,
+                                                device));
+#else
+      OCCA_CUDA_ERROR("Device: Getting CUDA device major version",
+                      cuDeviceGetAttribute(&archMajorVersion,
+                                           CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MAJOR,
+                                           device));
+      OCCA_CUDA_ERROR("Device: Getting CUDA device minor version",
+                      cuDeviceGetAttribute(&archMinorVersion,
+                                           CU_DEVICE_ATTRIBUTE_COMPUTE_CAPABILITY_MINOR,
+                                           device));
+#endif
+    }
+
+    std::string getDeviceArch(CUdevice device) {
+      int archMajorVersion=0, archMinorVersion=0;
+      getDeviceArchVersion(device, archMajorVersion, archMinorVersion);
+      std::string arch = std::string("sm_");
+      arch += std::to_string(archMajorVersion);
+      arch += std::to_string(archMinorVersion);
+      return arch;
+    }
+
     void enablePeerToPeer(CUcontext context) {
 #if CUDA_VERSION >= 4000
       OCCA_CUDA_ERROR("Enabling Peer-to-Peer",
@@ -150,12 +179,18 @@ namespace occa {
     }
 
     void advise(occa::memory mem, advice_t advice, const dim_t bytes, occa::device device) {
-#if CUDA_VERSION >= 8000
       udim_t bytes_ = ((bytes == -1) ? mem.size() : bytes);
       CUdevice cuDevice = ((device.mode() == "CUDA")
                            ? ((cuda::device*) device.getModeDevice())->cuDevice
                            : CU_DEVICE_CPU);
 
+#if CUDA_VERSION >= 13000
+      OCCA_CUDA_ERROR("Advising about unified memory",
+                      cuMemAdvise(((cuda::memory*) mem.getModeMemory())->cuPtr,
+                                  (size_t) bytes_,
+                                  advice,
+                                  CUmemLocation{ CU_MEM_LOCATION_TYPE_DEVICE, cuDevice }) );
+#elif CUDA_VERSION >= 8000
       OCCA_CUDA_ERROR("Advising about unified memory",
                       cuMemAdvise(((cuda::memory*) mem.getModeMemory())->cuPtr,
                                   (size_t) bytes_,
@@ -179,18 +214,25 @@ namespace occa {
     void prefetch(occa::memory mem, const dim_t bytes, occa::device device) {
       OCCA_ERROR("Memory allocated with mode [" << mem.mode() << "], not [CUDA]",
                  mem.mode() == "CUDA");
-
-#if CUDA_VERSION >= 8000
       udim_t bytes_ = ((bytes == -1) ? mem.size() : bytes);
       CUdevice cuDevice = ((device.mode() == "CUDA")
                            ? ((cuda::device*) device.getModeDevice())->cuDevice
                            : CU_DEVICE_CPU);
       occa::stream stream = device.getStream();
+
+#if CUDA_VERSION >= 12020 // CUDA 12.2+
       OCCA_CUDA_ERROR("Prefetching unified memory",
-                      cuMemPrefetchAsync(((cuda::memory*) mem.getModeMemory())->cuPtr,
-                                         (size_t) bytes_,
-                                         cuDevice,
-                                         *((CUstream*) stream.getModeStream())) );
+      cuMemPrefetchAsync_v2(((cuda::memory*) mem.getModeMemory())->cuPtr,
+                           (size_t) bytes_,
+                           CUmemLocation{ CU_MEM_LOCATION_TYPE_DEVICE, cuDevice },
+                           0,
+                           *((CUstream*) stream.getModeStream())) );
+#elif CUDA_VERSION >= 8000
+      OCCA_CUDA_ERROR("Prefetching unified memory",
+      cuMemPrefetchAsync(((cuda::memory*)mem.getModeMemory())->cuPtr,
+                         (size_t)bytes_,
+                         cuDevice,
+                         *((CUstream*)stream.getModeStream())));
 #else
       OCCA_FORCE_ERROR("CUDA version ["
                        << cuda::getVersion()

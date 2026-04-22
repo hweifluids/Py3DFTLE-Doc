@@ -92,15 +92,21 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4ec0c005af5b69525c80ae50a73774ae" id="r_a4ec0c005af5b69525c80ae50a73774ae"><td class="memItemLeft" align="right" valign="top"><a id="a4ec0c005af5b69525c80ae50a73774ae" name="a4ec0c005af5b69525c80ae50a73774ae"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MGSolver_t</b> (occa::device otherdevice, MPI_Comm othercomm, <a class="el" href="classsetupAide.html">setupAide</a> otheroptions)</td></tr>
-<tr class="separator:a4ec0c005af5b69525c80ae50a73774ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2af033d5a7d348c7d1002eb897431351" id="r_a2af033d5a7d348c7d1002eb897431351"><td class="memItemLeft" align="right" valign="top"><a id="a2af033d5a7d348c7d1002eb897431351" name="a2af033d5a7d348c7d1002eb897431351"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MGSolver_t</b> (const std::string &amp;name, occa::device otherdevice, MPI_Comm othercomm, <a class="el" href="classsetupAide.html">setupAide</a> otheroptions)</td></tr>
+<tr class="separator:a2af033d5a7d348c7d1002eb897431351"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fb758aa0a60ed560f8231b3843d3be3" id="r_a6fb758aa0a60ed560f8231b3843d3be3"><td class="memItemLeft" align="right" valign="top"><a id="a6fb758aa0a60ed560f8231b3843d3be3" name="a6fb758aa0a60ed560f8231b3843d3be3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Run</b> (occa::memory o_rhs, occa::memory o_x)</td></tr>
 <tr class="separator:a6fb758aa0a60ed560f8231b3843d3be3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ab21e010c84c8f826f0c321bef21b6a" id="r_a5ab21e010c84c8f826f0c321bef21b6a"><td class="memItemLeft" align="right" valign="top"><a id="a5ab21e010c84c8f826f0c321bef21b6a" name="a5ab21e010c84c8f826f0c321bef21b6a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Report</b> ()</td></tr>
 <tr class="separator:a5ab21e010c84c8f826f0c321bef21b6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a569afa938534a601e1b0f63d9493ea0b" id="r_a569afa938534a601e1b0f63d9493ea0b"><td class="memItemLeft" align="right" valign="top"><a id="a569afa938534a601e1b0f63d9493ea0b" name="a569afa938534a601e1b0f63d9493ea0b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>allocateWorkStorage</b> ()</td></tr>
+<tr class="separator:a569afa938534a601e1b0f63d9493ea0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a053b1e419fd43fafe3d91fbb653db6fa" id="r_a053b1e419fd43fafe3d91fbb653db6fa"><td class="memItemLeft" align="right" valign="top"><a id="a053b1e419fd43fafe3d91fbb653db6fa" name="a053b1e419fd43fafe3d91fbb653db6fa"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>freeWorkStorage</b> ()</td></tr>
+<tr class="separator:a053b1e419fd43fafe3d91fbb653db6fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -113,6 +119,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>rank</b></td></tr>
 <tr class="memitem:afffebb474e4878f233f4caf388b7f767" id="r_afffebb474e4878f233f4caf388b7f767"><td class="memItemLeft" align="right" valign="top"><a id="afffebb474e4878f233f4caf388b7f767" name="afffebb474e4878f233f4caf388b7f767"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>size</b></td></tr>
 <tr class="separator:afffebb474e4878f233f4caf388b7f767"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44a38b6be7bf8693eb16c377441e88e8" id="r_a44a38b6be7bf8693eb16c377441e88e8"><td class="memItemLeft" align="right" valign="top"><a id="a44a38b6be7bf8693eb16c377441e88e8" name="a44a38b6be7bf8693eb16c377441e88e8"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
+<tr class="separator:a44a38b6be7bf8693eb16c377441e88e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19cd632bb6ed9885c87195d66afca5d7" id="r_a19cd632bb6ed9885c87195d66afca5d7"><td class="memItemLeft" align="right" valign="top"><a id="a19cd632bb6ed9885c87195d66afca5d7" name="a19cd632bb6ed9885c87195d66afca5d7"></a>
 occa::device&#160;</td><td class="memItemRight" valign="bottom"><b>device</b></td></tr>
 <tr class="separator:a19cd632bb6ed9885c87195d66afca5d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,8 +157,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>overlapCrsGridSolve</
 <tr class="separator:aed5b6bc3c6cbeaa23d797f06c8cf71c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>solvers/elliptic/MG/<a class="el" href="MGSolver_8hpp_source.html">MGSolver.hpp</a></li>
-<li>solvers/elliptic/MG/<b>MGSolver.cpp</b></li>
+<li>core/elliptic/MG/<a class="el" href="MGSolver_8hpp_source.html">MGSolver.hpp</a></li>
+<li>core/elliptic/MG/<b>MGSolver.cpp</b></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

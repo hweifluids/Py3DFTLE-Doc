@@ -1,22 +1,24 @@
+userSections = CASEDATA
+
 [GENERAL]
 polynomialOrder = 7
 stopAt = numSteps
 numSteps = 100
 dt = 1e-03
 timeStepper = tombo2
-subcyclingSteps = 2
+advectionSubCyclingSteps = 2
 
-writeControl = steps
-writeInterval = 100
+checkpointControl = steps
+checkpointInterval = 100
 
-[PRESSURE]
+[FLUID PRESSURE]
 residualTol = 1e-08
 
-[VELOCITY]
-boundaryTypeMap = shl, sym
+[FLUID VELOCITY]
+boundaryTypeMap = zeroDirichletN/udfNeumann, zeroDirichletN/zeroNeumann 
 residualTol = 1e-12
-density = 1.0
-viscosity = -100.0
+rho = 1.0
+viscosity = 1/100.0
 
 [CASEDATA]
 P_ROT = 0.5

@@ -1,3 +1,5 @@
+userSections = CASEDATA
+
 [GENERAL]
 polynomialOrder = 7
 cubaturePolynomialOrder = 9 
@@ -13,29 +15,25 @@ dt = 3e-3
 #dt = targetCFL=2.5 + max=3e-3
 #subcyclingSteps = 1
 
-writeControl = simulationTime 
-writeInterval = 0
+checkpointControl = simulationTime 
+checkpointInterval = 0
 
 regularization = hpfrt + nModes=1 + scalingCoeff=1
 
-[PRESSURE]
+[FLUID PRESSURE]
 residualTol = 1e-04
-
-#solver = pfgmres
+#solver = gmres+flexbile
 #smootherType = RAS+OptFourthChebyshev 
 #pMGSchedule = p=7+degree=2, p=3+degree=2, p=1, p=3+degree=2, p=7+degree=2
 
-solver = pfcg 
+solver = cg+flexible 
 smootherType = Jac+Cheby
 
-[VELOCITY]
+[FLUID VELOCITY]
 boundaryTypeMap = none
-density = 1.0
-viscosity = -1600
+rho = 1.0
+viscosity = 1/1600
 residualTol = 1e-06
-
-[SCALAR00] #lambda2
-solver = none
 
 [CASEDATA]
 eps = 1.0
@@ -48,7 +46,7 @@ W0 = 0
 #V0 = 2.0
 #W0 = 2.0
 
-[BOOMERAMG]
+[FLUID PRESSURE BOOMERAMG]
 #smootherType = 18
 iterations = 1
 chebyshevRelaxOrder = 1

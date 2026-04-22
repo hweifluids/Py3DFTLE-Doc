@@ -70,7 +70,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
@@ -82,51 +81,87 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aa145c5ee1d0162c7d5a53a5fa11192be" id="r_aa145c5ee1d0162c7d5a53a5fa11192be"><td class="memItemLeft" align="right" valign="top"><a id="aa145c5ee1d0162c7d5a53a5fa11192be" name="aa145c5ee1d0162c7d5a53a5fa11192be"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>userRHS_t</b> = std::function&lt; void(<a class="el" href="structnrs__t.html">nrs_t</a> *nrs, dfloat time, dfloat t0, occa::memory o_y, occa::memory o_ydot)&gt;</td></tr>
-<tr class="separator:aa145c5ee1d0162c7d5a53a5fa11192be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cd9198078c84fbcf332a1e3097ee15d" id="r_a0cd9198078c84fbcf332a1e3097ee15d"><td class="memItemLeft" align="right" valign="top"><a id="a0cd9198078c84fbcf332a1e3097ee15d" name="a0cd9198078c84fbcf332a1e3097ee15d"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>userJacobian_t</b> = std::function&lt; void(<a class="el" href="structnrs__t.html">nrs_t</a> *nrs, dfloat time, dfloat t0, occa::memory o_y, occa::memory o_ydot)&gt;</td></tr>
-<tr class="separator:a0cd9198078c84fbcf332a1e3097ee15d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7e9b19c0712b1e61c508dfea01bfbf8" id="r_ae7e9b19c0712b1e61c508dfea01bfbf8"><td class="memItemLeft" align="right" valign="top"><a id="ae7e9b19c0712b1e61c508dfea01bfbf8" name="ae7e9b19c0712b1e61c508dfea01bfbf8"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>userLocalPointSource_t</b> = std::function&lt; void(<a class="el" href="structnrs__t.html">nrs_t</a> *nrs, dlong LFieldOffset, occa::memory o_y, occa::memory o_ydot)&gt;</td></tr>
-<tr class="separator:ae7e9b19c0712b1e61c508dfea01bfbf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad73013114b228767d5a630c5843af769" id="r_ad73013114b228767d5a630c5843af769"><td class="memItemLeft" align="right" valign="top"><a id="ad73013114b228767d5a630c5843af769" name="ad73013114b228767d5a630c5843af769"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>userPostNrsToCv_t</b> = std::function&lt; void(<a class="el" href="structnrs__t.html">nrs_t</a> *nrs, occa::memory o_LField)&gt;</td></tr>
-<tr class="separator:ad73013114b228767d5a630c5843af769"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2dfd8d30f8120a2e88a1296ea12eaa1" id="r_ac2dfd8d30f8120a2e88a1296ea12eaa1"><td class="memItemLeft" align="right" valign="top"><a id="ac2dfd8d30f8120a2e88a1296ea12eaa1" name="ac2dfd8d30f8120a2e88a1296ea12eaa1"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>userPostCvToNrs_t</b> = std::function&lt; void(<a class="el" href="structnrs__t.html">nrs_t</a> *nrs, occa::memory o_EField)&gt;</td></tr>
-<tr class="separator:ac2dfd8d30f8120a2e88a1296ea12eaa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a443ff6dfa818bbaceaf2da63d5ef67dc" id="r_a443ff6dfa818bbaceaf2da63d5ef67dc"><td class="memItemLeft" align="right" valign="top"><a id="a443ff6dfa818bbaceaf2da63d5ef67dc" name="a443ff6dfa818bbaceaf2da63d5ef67dc"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>userRHS_t</b> = std::function&lt; void(double time, double t0, const <a class="el" href="classLVector__t.html">LVector_t</a>&lt; dfloat &gt; &amp;o_y, <a class="el" href="classLVector__t.html">LVector_t</a>&lt; dfloat &gt; &amp;o_ydot)&gt;</td></tr>
+<tr class="separator:a443ff6dfa818bbaceaf2da63d5ef67dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada93004e9e0825d1b195b857bfe0e20e" id="r_ada93004e9e0825d1b195b857bfe0e20e"><td class="memItemLeft" align="right" valign="top"><a id="ada93004e9e0825d1b195b857bfe0e20e" name="ada93004e9e0825d1b195b857bfe0e20e"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>userJacobian_t</b> = std::function&lt; void(double time, double t0, const <a class="el" href="classLVector__t.html">LVector_t</a>&lt; dfloat &gt; &amp;o_y, <a class="el" href="classLVector__t.html">LVector_t</a>&lt; dfloat &gt; &amp;o_ydot)&gt;</td></tr>
+<tr class="separator:ada93004e9e0825d1b195b857bfe0e20e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15438eab83a61d9b1ab2c433f1e21624" id="r_a15438eab83a61d9b1ab2c433f1e21624"><td class="memItemLeft" align="right" valign="top"><a id="a15438eab83a61d9b1ab2c433f1e21624" name="a15438eab83a61d9b1ab2c433f1e21624"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>userLocalPointSourceL_t</b> = std::function&lt; void(double time, const <a class="el" href="classLVector__t.html">LVector_t</a>&lt; dfloat &gt; &amp;o_y, <a class="el" href="classLVector__t.html">LVector_t</a>&lt; dfloat &gt; &amp;o_ydot)&gt;</td></tr>
+<tr class="separator:a15438eab83a61d9b1ab2c433f1e21624"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6615c962a8cd567a06b718633a55530e" id="r_a6615c962a8cd567a06b718633a55530e"><td class="memItemLeft" align="right" valign="top"><a id="a6615c962a8cd567a06b718633a55530e" name="a6615c962a8cd567a06b718633a55530e"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>userLocalPointSourceE_t</b> = std::function&lt; void(double time, const <a class="el" href="classdeviceMemory.html">deviceMemory</a>&lt; dfloat &gt; &amp;o_y, <a class="el" href="classdeviceMemory.html">deviceMemory</a>&lt; dfloat &gt; &amp;_ydot)&gt;</td></tr>
+<tr class="separator:a6615c962a8cd567a06b718633a55530e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbb19986aaa6453586be98deb813e564" id="r_acbb19986aaa6453586be98deb813e564"><td class="memItemLeft" align="right" valign="top"><a id="acbb19986aaa6453586be98deb813e564" name="acbb19986aaa6453586be98deb813e564"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>userPostNrsToCv_t</b> = std::function&lt; void(<a class="el" href="classLVector__t.html">LVector_t</a>&lt; dfloat &gt; &amp;o_LField, bool isYdot)&gt;</td></tr>
+<tr class="separator:acbb19986aaa6453586be98deb813e564"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae67d41046d6ec796c34b936e20b81cd" id="r_aae67d41046d6ec796c34b936e20b81cd"><td class="memItemLeft" align="right" valign="top"><a id="aae67d41046d6ec796c34b936e20b81cd" name="aae67d41046d6ec796c34b936e20b81cd"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>userPostCvToNrs_t</b> = std::function&lt; void(<a class="el" href="classdeviceMemory.html">deviceMemory</a>&lt; dfloat &gt; &amp;o_EField, bool isYdot)&gt;</td></tr>
+<tr class="separator:aae67d41046d6ec796c34b936e20b81cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb6c1cf2b434c2c645aef8880714eb74" id="r_acb6c1cf2b434c2c645aef8880714eb74"><td class="memItemLeft" align="right" valign="top"><a id="acb6c1cf2b434c2c645aef8880714eb74" name="acb6c1cf2b434c2c645aef8880714eb74"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>userMakeq_t</b> = std::function&lt; void(double time)&gt;</td></tr>
+<tr class="separator:acb6c1cf2b434c2c645aef8880714eb74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaecde5aba7f9c4475f434b25c8b910b3" id="r_aaecde5aba7f9c4475f434b25c8b910b3"><td class="memItemLeft" align="right" valign="top"><a id="aaecde5aba7f9c4475f434b25c8b910b3" name="aaecde5aba7f9c4475f434b25c8b910b3"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>userPreSolve_t</b> = std::function&lt; void()&gt;</td></tr>
+<tr class="separator:aaecde5aba7f9c4475f434b25c8b910b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcb086e2c71748e75c8f98e7ecf3380b" id="r_abcb086e2c71748e75c8f98e7ecf3380b"><td class="memItemLeft" align="right" valign="top"><a id="abcb086e2c71748e75c8f98e7ecf3380b" name="abcb086e2c71748e75c8f98e7ecf3380b"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>userPostSolve_t</b> = std::function&lt; void()&gt;</td></tr>
+<tr class="separator:abcb086e2c71748e75c8f98e7ecf3380b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50e32c706746c8d10307603d32e24159" id="r_a50e32c706746c8d10307603d32e24159"><td class="memItemLeft" align="right" valign="top"><a id="a50e32c706746c8d10307603d32e24159" name="a50e32c706746c8d10307603d32e24159"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>evaluateProperties_t</b> = std::function&lt; void(double)&gt;</td></tr>
+<tr class="separator:a50e32c706746c8d10307603d32e24159"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4d4582fdaf8b6256bc8ab7bb6e29fec" id="r_ad4d4582fdaf8b6256bc8ab7bb6e29fec"><td class="memItemLeft" align="right" valign="top"><a id="ad4d4582fdaf8b6256bc8ab7bb6e29fec" name="ad4d4582fdaf8b6256bc8ab7bb6e29fec"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>evaluateDivergence_t</b> = std::function&lt; void(double)&gt;</td></tr>
+<tr class="separator:ad4d4582fdaf8b6256bc8ab7bb6e29fec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab6d2bafecebc1cae0107923d147a5861" id="r_ab6d2bafecebc1cae0107923d147a5861"><td class="memItemLeft" align="right" valign="top"><a id="ab6d2bafecebc1cae0107923d147a5861" name="ab6d2bafecebc1cae0107923d147a5861"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>cvode_t</b> (<a class="el" href="structnrs__t.html">nrs_t</a> *nrs)</td></tr>
-<tr class="separator:ab6d2bafecebc1cae0107923d147a5861"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae047fc2237da2cb97a65b19e03bd045d" id="r_ae047fc2237da2cb97a65b19e03bd045d"><td class="memItemLeft" align="right" valign="top"><a id="ae047fc2237da2cb97a65b19e03bd045d" name="ae047fc2237da2cb97a65b19e03bd045d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>cvode_t</b> (<a class="el" href="classscalar__t.html">scalar_t</a> *scalar)</td></tr>
+<tr class="separator:ae047fc2237da2cb97a65b19e03bd045d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d6d9054948faeb583d7b3401ad23e35" id="r_a0d6d9054948faeb583d7b3401ad23e35"><td class="memItemLeft" align="right" valign="top"><a id="a0d6d9054948faeb583d7b3401ad23e35" name="a0d6d9054948faeb583d7b3401ad23e35"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> ()</td></tr>
 <tr class="separator:a0d6d9054948faeb583d7b3401ad23e35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c7697625357fab075e9276b14cc6439" id="r_a2c7697625357fab075e9276b14cc6439"><td class="memItemLeft" align="right" valign="top"><a id="a2c7697625357fab075e9276b14cc6439" name="a2c7697625357fab075e9276b14cc6439"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>solve</b> (dfloat t0, dfloat t1, int tstep)</td></tr>
-<tr class="separator:a2c7697625357fab075e9276b14cc6439"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3e011cd05475a8c8ade9f891661e22d" id="r_aa3e011cd05475a8c8ade9f891661e22d"><td class="memItemLeft" align="right" valign="top"><a id="aa3e011cd05475a8c8ade9f891661e22d" name="aa3e011cd05475a8c8ade9f891661e22d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>solve</b> (double t0, double t1, int tstep)</td></tr>
+<tr class="separator:aa3e011cd05475a8c8ade9f891661e22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8216ba35123dcaaf491d6ab268922121" id="r_a8216ba35123dcaaf491d6ab268922121"><td class="memItemLeft" align="right" valign="top"><a id="a8216ba35123dcaaf491d6ab268922121" name="a8216ba35123dcaaf491d6ab268922121"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setRHS</b> (userRHS_t _userRHS)</td></tr>
 <tr class="separator:a8216ba35123dcaaf491d6ab268922121"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f8f541b3af88bae058a98ef15482a67" id="r_a6f8f541b3af88bae058a98ef15482a67"><td class="memItemLeft" align="right" valign="top"><a id="a6f8f541b3af88bae058a98ef15482a67" name="a6f8f541b3af88bae058a98ef15482a67"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setJacobian</b> (userJacobian_t _userJacobian)</td></tr>
 <tr class="separator:a6f8f541b3af88bae058a98ef15482a67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61e252a6cec1854f8696e511cfee40eb" id="r_a61e252a6cec1854f8696e511cfee40eb"><td class="memItemLeft" align="right" valign="top"><a id="a61e252a6cec1854f8696e511cfee40eb" name="a61e252a6cec1854f8696e511cfee40eb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setLocalPointSource</b> (userLocalPointSource_t _userLocalPointSource)</td></tr>
-<tr class="separator:a61e252a6cec1854f8696e511cfee40eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ad2bfa1013a4158dbcfaa09ed721180" id="r_a1ad2bfa1013a4158dbcfaa09ed721180"><td class="memItemLeft" align="right" valign="top"><a id="a1ad2bfa1013a4158dbcfaa09ed721180" name="a1ad2bfa1013a4158dbcfaa09ed721180"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setLocalPointSource</b> (userLocalPointSourceL_t _userLocalPointSource)</td></tr>
+<tr class="separator:a1ad2bfa1013a4158dbcfaa09ed721180"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83296c90c89442e99c429672666dd6b0" id="r_a83296c90c89442e99c429672666dd6b0"><td class="memItemLeft" align="right" valign="top"><a id="a83296c90c89442e99c429672666dd6b0" name="a83296c90c89442e99c429672666dd6b0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setLocalPointSource</b> (userLocalPointSourceE_t _userLocalPointSource)</td></tr>
+<tr class="separator:a83296c90c89442e99c429672666dd6b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab757f85915f4256e9089c5ecf557ff59" id="r_ab757f85915f4256e9089c5ecf557ff59"><td class="memItemLeft" align="right" valign="top"><a id="ab757f85915f4256e9089c5ecf557ff59" name="ab757f85915f4256e9089c5ecf557ff59"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setUserPostCvToNrs</b> (userPostCvToNrs_t _userPostCvToNrs)</td></tr>
 <tr class="separator:ab757f85915f4256e9089c5ecf557ff59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13f97430296867ae1ab590da5de03f94" id="r_a13f97430296867ae1ab590da5de03f94"><td class="memItemLeft" align="right" valign="top"><a id="a13f97430296867ae1ab590da5de03f94" name="a13f97430296867ae1ab590da5de03f94"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setUserPostNrsToCv</b> (userPostCvToNrs_t _userPostNrsToCv)</td></tr>
-<tr class="separator:a13f97430296867ae1ab590da5de03f94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af83abe6d9b8607eea20d28290651f2cd" id="r_af83abe6d9b8607eea20d28290651f2cd"><td class="memItemLeft" align="right" valign="top"><a id="af83abe6d9b8607eea20d28290651f2cd" name="af83abe6d9b8607eea20d28290651f2cd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>printInfo</b> (bool printVerboseInfo) const</td></tr>
-<tr class="separator:af83abe6d9b8607eea20d28290651f2cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab40ba72620c0c3441c861c0d72b0b200" id="r_ab40ba72620c0c3441c861c0d72b0b200"><td class="memItemLeft" align="right" valign="top"><a id="ab40ba72620c0c3441c861c0d72b0b200" name="ab40ba72620c0c3441c861c0d72b0b200"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setUserPostNrsToCv</b> (userPostNrsToCv_t _userPostNrsToCv)</td></tr>
+<tr class="separator:ab40ba72620c0c3441c861c0d72b0b200"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a088b138855514c85509bd736c72a30a0" id="r_a088b138855514c85509bd736c72a30a0"><td class="memItemLeft" align="right" valign="top"><a id="a088b138855514c85509bd736c72a30a0" name="a088b138855514c85509bd736c72a30a0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setUserMakeq</b> (userMakeq_t _userMakeq)</td></tr>
+<tr class="separator:a088b138855514c85509bd736c72a30a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac80c2d3208a1adf5b48dc757c7fd3fd4" id="r_ac80c2d3208a1adf5b48dc757c7fd3fd4"><td class="memItemLeft" align="right" valign="top"><a id="ac80c2d3208a1adf5b48dc757c7fd3fd4" name="ac80c2d3208a1adf5b48dc757c7fd3fd4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setUserPreSolve</b> (userPreSolve_t _userPreSolve)</td></tr>
+<tr class="separator:ac80c2d3208a1adf5b48dc757c7fd3fd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa66ed70d92cd53e01c2038a49402137b" id="r_aa66ed70d92cd53e01c2038a49402137b"><td class="memItemLeft" align="right" valign="top"><a id="aa66ed70d92cd53e01c2038a49402137b" name="aa66ed70d92cd53e01c2038a49402137b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setUserPostSolve</b> (userPostSolve_t _userPostSolve)</td></tr>
+<tr class="separator:aa66ed70d92cd53e01c2038a49402137b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba64b72cd873ff85764ad093794f3c33" id="r_aba64b72cd873ff85764ad093794f3c33"><td class="memItemLeft" align="right" valign="top"><a id="aba64b72cd873ff85764ad093794f3c33" name="aba64b72cd873ff85764ad093794f3c33"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setEvaluateProperties</b> (evaluateProperties_t _evaluateProperties)</td></tr>
+<tr class="separator:aba64b72cd873ff85764ad093794f3c33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a91205767c2d40bd56917ecf665a9a8" id="r_a8a91205767c2d40bd56917ecf665a9a8"><td class="memItemLeft" align="right" valign="top"><a id="a8a91205767c2d40bd56917ecf665a9a8" name="a8a91205767c2d40bd56917ecf665a9a8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setEvaluateDivergence</b> (evaluateDivergence_t _evaluateDivergence)</td></tr>
+<tr class="separator:a8a91205767c2d40bd56917ecf665a9a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5102e121d9bb2cf2ffe427e3b8b9d2e" id="r_aa5102e121d9bb2cf2ffe427e3b8b9d2e"><td class="memItemLeft" align="right" valign="top"><a id="aa5102e121d9bb2cf2ffe427e3b8b9d2e" name="aa5102e121d9bb2cf2ffe427e3b8b9d2e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>printInfo</b> (bool printVerboseInfo)</td></tr>
+<tr class="separator:aa5102e121d9bb2cf2ffe427e3b8b9d2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec3b898c869a112f76848974f5279807" id="r_aec3b898c869a112f76848974f5279807"><td class="memItemLeft" align="right" valign="top"><a id="aec3b898c869a112f76848974f5279807" name="aec3b898c869a112f76848974f5279807"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isRhsEvaluation</b> () const</td></tr>
 <tr class="separator:aec3b898c869a112f76848974f5279807"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,27 +189,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setTimeStep</b> (int 
 <tr class="memitem:a6e967352042d642f5252bf14bbdd3788" id="r_a6e967352042d642f5252bf14bbdd3788"><td class="memItemLeft" align="right" valign="top"><a id="a6e967352042d642f5252bf14bbdd3788" name="a6e967352042d642f5252bf14bbdd3788"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>time</b> () const</td></tr>
 <tr class="separator:a6e967352042d642f5252bf14bbdd3788"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6364829e6399a312608369e19c8c3eb7" id="r_a6364829e6399a312608369e19c8c3eb7"><td class="memItemLeft" align="right" valign="top"><a id="a6364829e6399a312608369e19c8c3eb7" name="a6364829e6399a312608369e19c8c3eb7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>rhs</b> (dfloat time, occa::memory o_y, occa::memory o_ydot)</td></tr>
-<tr class="separator:a6364829e6399a312608369e19c8c3eb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac91333dff5db4357ec3849764860af5e" id="r_ac91333dff5db4357ec3849764860af5e"><td class="memItemLeft" align="right" valign="top"><a id="ac91333dff5db4357ec3849764860af5e" name="ac91333dff5db4357ec3849764860af5e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>jtvRHS</b> (dfloat time, occa::memory o_y, occa::memory o_ydot)</td></tr>
-<tr class="separator:ac91333dff5db4357ec3849764860af5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8daafcefd650bb3f156f009c31d669df" id="r_a8daafcefd650bb3f156f009c31d669df"><td class="memItemLeft" align="right" valign="top"><a id="a8daafcefd650bb3f156f009c31d669df" name="a8daafcefd650bb3f156f009c31d669df"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>rhs</b> (double time, const <a class="el" href="classLVector__t.html">LVector_t</a>&lt; dfloat &gt; &amp;o_y, <a class="el" href="classLVector__t.html">LVector_t</a>&lt; dfloat &gt; &amp;o_ydot)</td></tr>
+<tr class="separator:a8daafcefd650bb3f156f009c31d669df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a114d8a4a3fb2b35c5621ad547b578fb8" id="r_a114d8a4a3fb2b35c5621ad547b578fb8"><td class="memItemLeft" align="right" valign="top"><a id="a114d8a4a3fb2b35c5621ad547b578fb8" name="a114d8a4a3fb2b35c5621ad547b578fb8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>jtvRhs</b> (double time, const <a class="el" href="classLVector__t.html">LVector_t</a>&lt; dfloat &gt; &amp;o_y, <a class="el" href="classLVector__t.html">LVector_t</a>&lt; dfloat &gt; &amp;o_ydot)</td></tr>
+<tr class="separator:a114d8a4a3fb2b35c5621ad547b578fb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c204d152bce921f225ffcac34d7fb90" id="r_a8c204d152bce921f225ffcac34d7fb90"><td class="memItemLeft" align="right" valign="top"><a id="a8c204d152bce921f225ffcac34d7fb90" name="a8c204d152bce921f225ffcac34d7fb90"></a>
 dlong&#160;</td><td class="memItemRight" valign="bottom"><b>numEquations</b> () const</td></tr>
 <tr class="separator:a8c204d152bce921f225ffcac34d7fb90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b7df692289a8aca4107044e874e8848" id="r_a6b7df692289a8aca4107044e874e8848"><td class="memItemLeft" align="right" valign="top"><a id="a6b7df692289a8aca4107044e874e8848" name="a6b7df692289a8aca4107044e874e8848"></a>
-void *&#160;</td><td class="memItemRight" valign="bottom"><b>getCvodeMem</b> ()</td></tr>
-<tr class="separator:a6b7df692289a8aca4107044e874e8848"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a236844c0622f09dc66a8b1b1a62763c5" id="r_a236844c0622f09dc66a8b1b1a62763c5"><td class="memItemLeft" align="right" valign="top"><a id="a236844c0622f09dc66a8b1b1a62763c5" name="a236844c0622f09dc66a8b1b1a62763c5"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>sigmaScale</b> () const</td></tr>
-<tr class="separator:a236844c0622f09dc66a8b1b1a62763c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b93cf48fd90ed8a98b64096037dc069" id="r_a4b93cf48fd90ed8a98b64096037dc069"><td class="memItemLeft" align="right" valign="top"><a id="a4b93cf48fd90ed8a98b64096037dc069" name="a4b93cf48fd90ed8a98b64096037dc069"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>numScalars</b> () const</td></tr>
+<tr class="separator:a4b93cf48fd90ed8a98b64096037dc069"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58ea08ad396570bfff2c7aa29c653e58" id="r_a58ea08ad396570bfff2c7aa29c653e58"><td class="memItemLeft" align="right" valign="top"><a id="a58ea08ad396570bfff2c7aa29c653e58" name="a58ea08ad396570bfff2c7aa29c653e58"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>mixedPrecisionJtv</b> () const</td></tr>
 <tr class="separator:a58ea08ad396570bfff2c7aa29c653e58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a533e6e31597d3d315f04e98c00d0369d" id="r_a533e6e31597d3d315f04e98c00d0369d"><td class="memItemLeft" align="right" valign="top"><a id="a533e6e31597d3d315f04e98c00d0369d" name="a533e6e31597d3d315f04e98c00d0369d"></a>
-occa::memory &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>Lpoints</b> ()</td></tr>
-<tr class="separator:a533e6e31597d3d315f04e98c00d0369d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8229ff45b34ffdaf20f4b0c20e75bd0" id="r_af8229ff45b34ffdaf20f4b0c20e75bd0"><td class="memItemLeft" align="right" valign="top"><a id="af8229ff45b34ffdaf20f4b0c20e75bd0" name="af8229ff45b34ffdaf20f4b0c20e75bd0"></a>
 dfloat &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>g0</b> ()</td></tr>
 <tr class="separator:af8229ff45b34ffdaf20f4b0c20e75bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,9 +216,12 @@ dfloat *&#160;</td><td class="memItemRight" valign="bottom"><b>coeffBDF</b> ()</
 <tr class="memitem:a92ceb60bfe87de3d115ff2d948ae3633" id="r_a92ceb60bfe87de3d115ff2d948ae3633"><td class="memItemLeft" align="right" valign="top"><a id="a92ceb60bfe87de3d115ff2d948ae3633" name="a92ceb60bfe87de3d115ff2d948ae3633"></a>
 dfloat *&#160;</td><td class="memItemRight" valign="bottom"><b>coeffEXT</b> ()</td></tr>
 <tr class="separator:a92ceb60bfe87de3d115ff2d948ae3633"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ad9fa1b5c5278bd39f9d8ecf6c8a4ae" id="r_a4ad9fa1b5c5278bd39f9d8ecf6c8a4ae"><td class="memItemLeft" align="right" valign="top"><a id="a4ad9fa1b5c5278bd39f9d8ecf6c8a4ae" name="a4ad9fa1b5c5278bd39f9d8ecf6c8a4ae"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>computeErrorWeight</b> (occa::memory o_y, occa::memory o_ewt)</td></tr>
-<tr class="separator:a4ad9fa1b5c5278bd39f9d8ecf6c8a4ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63e0760e11a16dec6646f03a8fdefe79" id="r_a63e0760e11a16dec6646f03a8fdefe79"><td class="memItemLeft" align="right" valign="top"><a id="a63e0760e11a16dec6646f03a8fdefe79" name="a63e0760e11a16dec6646f03a8fdefe79"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updateCounters</b> ()</td></tr>
+<tr class="separator:a63e0760e11a16dec6646f03a8fdefe79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2afd1b330d79471e1d7c49109169d5cb" id="r_a2afd1b330d79471e1d7c49109169d5cb"><td class="memItemLeft" align="right" valign="top"><a id="a2afd1b330d79471e1d7c49109169d5cb" name="a2afd1b330d79471e1d7c49109169d5cb"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>resetCounters</b> ()</td></tr>
+<tr class="separator:a2afd1b330d79471e1d7c49109169d5cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad1d8f4cd6215e146bb756fc22d812b6b" id="r_ad1d8f4cd6215e146bb756fc22d812b6b"><td class="memItemLeft" align="right" valign="top"><a id="ad1d8f4cd6215e146bb756fc22d812b6b" name="ad1d8f4cd6215e146bb756fc22d812b6b"></a>
 long&#160;</td><td class="memItemRight" valign="bottom"><b>numSteps</b> () const</td></tr>
 <tr class="separator:ad1d8f4cd6215e146bb756fc22d812b6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,15 +234,6 @@ long&#160;</td><td class="memItemRight" valign="bottom"><b>numNonlinSolveIters</
 <tr class="memitem:ada0e5a954c7d14422a4005e89888283a" id="r_ada0e5a954c7d14422a4005e89888283a"><td class="memItemLeft" align="right" valign="top"><a id="ada0e5a954c7d14422a4005e89888283a" name="ada0e5a954c7d14422a4005e89888283a"></a>
 long&#160;</td><td class="memItemRight" valign="bottom"><b>numLinIters</b> () const</td></tr>
 <tr class="separator:ada0e5a954c7d14422a4005e89888283a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d3910f79bce040ffc10c117b9b26f39" id="r_a8d3910f79bce040ffc10c117b9b26f39"><td class="memItemLeft" align="right" valign="top"><a id="a8d3910f79bce040ffc10c117b9b26f39" name="a8d3910f79bce040ffc10c117b9b26f39"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>nrsToCv</b> (occa::memory o_EFeild, occa::memory o_LField)</td></tr>
-<tr class="separator:a8d3910f79bce040ffc10c117b9b26f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a50e9fb4322d42e39c42e719da49bfcce" id="r_a50e9fb4322d42e39c42e719da49bfcce"><td class="memItemLeft" align="right" valign="top"><a id="a50e9fb4322d42e39c42e719da49bfcce" name="a50e9fb4322d42e39c42e719da49bfcce"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>cvToNrs</b> (occa::memory o_LField, occa::memory o_EField)</td></tr>
-<tr class="separator:a50e9fb4322d42e39c42e719da49bfcce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7b7e6324b872bd5a2588a9457418bee" id="r_ad7b7e6324b872bd5a2588a9457418bee"><td class="memItemLeft" align="right" valign="top"><a id="ad7b7e6324b872bd5a2588a9457418bee" name="ad7b7e6324b872bd5a2588a9457418bee"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>defaultRHS</b> (dfloat time, dfloat t0, occa::memory o_y, occa::memory o_ydot)</td></tr>
-<tr class="separator:ad7b7e6324b872bd5a2588a9457418bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e311a31ff8de7239fe93e87c3c458b1" id="r_a4e311a31ff8de7239fe93e87c3c458b1"><td class="memItemLeft" align="right" valign="top"><a id="a4e311a31ff8de7239fe93e87c3c458b1" name="a4e311a31ff8de7239fe93e87c3c458b1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>printTimers</b> ()</td></tr>
 <tr class="separator:a4e311a31ff8de7239fe93e87c3c458b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -240,8 +263,8 @@ static constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><b>enab
 <tr class="separator:a5b69eb20ad12d731f6d3c80b1b6dbc48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>solvers/cvode/<a class="el" href="cvode_8hpp_source.html">cvode.hpp</a></li>
-<li>solvers/cvode/<b>cvode.cpp</b></li>
+<li>solver/scalar/cvode/<a class="el" href="cvode_8hpp_source.html">cvode.hpp</a></li>
+<li>solver/scalar/cvode/<b>cvode.cpp</b></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

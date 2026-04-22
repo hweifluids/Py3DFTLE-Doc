@@ -3,8 +3,9 @@
 #include "pointInterpolation.hpp"
 
 static int ciMode = 0;
+double numCVODERHS = 0;
 
-#define EPS 1e-3
+#define EPS 5e-3
 
 void ciSetup(MPI_Comm comm, setupAide &options)
 {
@@ -18,8 +19,8 @@ void ciSetup(MPI_Comm comm, setupAide &options)
   }
   options.setArgs("BDF ORDER", "2");
   options.setArgs("ADVECTION TYPE", "CONVECTIVE+CUBATURE");
-  options.setArgs("VELOCITY SOLVER TOLERANCE", std::string("1e-06"));
-  options.setArgs("PRESSURE SOLVER TOLERANCE", std::string("1e-04"));
+  options.setArgs("FLUID VELOCITY SOLVER TOLERANCE", std::string("1e-06"));
+  options.setArgs("FLUID PRESSURE SOLVER TOLERANCE", std::string("1e-04"));
   options.setArgs("SCALAR01 SOLVER TOLERANCE", std::string("1e-06"));
   options.setArgs("VARIABLEPROPERTIES", "TRUE");
 
@@ -45,79 +46,91 @@ void ciSetup(MPI_Comm comm, setupAide &options)
   }
 }
 
-void ciTestPointInterpolation(nrs_t *nrs, dfloat time, int tstep)
+void ciTestPointInterpolation(nrs_t *nrs, double time, int tstep)
 {
-  if(ciMode != 1) return;
+  if (ciMode != 1) {
+    return;
+  }
 
-  auto interp = pointInterpolation_t(nrs);
+  auto& scalar = nrs->scalar;
+  auto interp = pointInterpolation_t(scalar->mesh(1), platform->comm.mpiComm());
 
   std::vector<dfloat> x = {4, 4, 4};
   std::vector<dfloat> y = {-0.25, 0.25, 1.0};
   std::vector<dfloat> z = {0.5, 0.5, 0.5};
-  
+
   int nPoints = x.size();
-  interp.setPoints(nPoints, x.data(), y.data(), z.data());
+  interp.setPoints(x, y, z);
   const auto verbosity = pointInterpolation_t::VerbosityLevel::Basic;
   interp.find(verbosity);
-  
-  auto o_Tint = platform->device.malloc(nPoints * sizeof(dfloat));
-  interp.eval(1, nrs->fieldOffset, nrs->cds->o_S, nPoints, o_Tint);
+
+  auto o_Tint = platform->device.malloc<dfloat>(nPoints);
+  interp.eval(1, scalar->fieldOffset(), scalar->o_solution("temperature"), nPoints, o_Tint);
   std::vector<dfloat> Tint(nPoints);
-  o_Tint.copyTo(Tint.data(), nPoints * sizeof(dfloat));
+  o_Tint.copyTo(Tint.data(), nPoints);
 
   std::vector<dfloat> Texpected = {13.921, 0.00133, 9.62969};
 
-  const auto tol = 1e-4;
-  bool pass = true;
+  dfloat relError = 0;
   for (int i = 0; i < nPoints; ++i) {
-    pass &= std::abs(Tint[i] - Texpected[i]) < tol;
+    relError = std::max(relError, std::abs(Tint[i] - Texpected[i]));
   }
+  if (platform->comm.mpiRank() == 0) {
+    std::cout << "Point interpolation relErr=" << relError << std::endl;
+  } 
 
-  if(!pass){
-    if(platform->comm.mpiRank == 0){
+  const auto tol = 5e-4;
+  if (relError > tol) {
+    if (platform->comm.mpiRank() == 0) {
       std::cout << "Point interpolation test failed" << std::endl;
-      std::cout << "Expected: ";
-      for (int i = 0; i < nPoints; ++i) {
-        std::cout << Texpected[i] << " ";
-      }
-      std::cout << std::endl;
-      std::cout << "Got: ";
-      for (int i = 0; i < nPoints; ++i) {
-        std::cout << Tint[i] << " ";
-      }
-      std::cout << std::endl;
     }
-    
-    // Test failed -- exit
-    CIFAIL;
-    if (platform->exitValue) {
-      nrsFinalize(nrs);
-      exit(platform->exitValue);
-    }
-  }
 
+    CiFailTest();
+    nekrsCheck(platform->exitValue, platform->comm.mpiComm(), EXIT_FAILURE, "%s", "");
+  }
 }
 
-void ciTestErrors(nrs_t *nrs, dfloat time, int tstep)
+void ciTestErrors(nrs_t *nrs, double time, int tstep)
 {
-  if (!nrs->lastStep) return;
+  auto& scalar = nrs->scalar;
+
+  if (scalar->cvode) {
+    numCVODERHS += scalar->cvode->numRHSEvals();
+    numCVODERHS += scalar->cvode->numLinIters();
+  }
+
+  if (!nrs->lastStep) {
+    return;
+  }
+
+  numCVODERHS /= tstep;
 
   ciTestPointInterpolation(nrs, time, tstep);
- 
-  const int rank = platform->comm.mpiRank;
 
-  nek::ocopyToNek(time, tstep);
+  const int rank = platform->comm.mpiRank();
+
+  nrs->copyToNek(time, tstep);
   nek::userchk();
 
-  double *err = (double *)nek::scPtr(1);
+  auto err = nek::ptr<double>("errors");
   double vxErr, sErr;
 
-  vxErr = abs((err[0] - 2.06559)/err[0]);
-  sErr  = abs((err[1] - 5.16746)/err[1]);
+  vxErr = abs((err[0] - 2.06559) / err[0]);
+  sErr = abs((err[1] - 5.16746) / err[1]);
 
   if (rank == 0) {
     printf("relative error to target: vx=%g s=%g\n", vxErr, sErr);
   }
 
-  (vxErr < EPS && sErr < EPS) ? (CIPASS) : (CIFAIL);
+  (vxErr < EPS && sErr < EPS) ? (CiPassTest()) : (CiFailTest());
+
+  if (scalar->cvode) {
+    dfloat expectedCVODERHS = 13.11;
+    if (rank == 0) {
+      printf("CVODE RHS evaluations per timestep: expected = %g, actual = %g\n",
+             expectedCVODERHS,
+             numCVODERHS);
+    }
+    numCVODERHS > 1.1 * expectedCVODERHS ? (CiFailTest()) : (CiPassTest());
+  }
 }

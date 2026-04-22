@@ -150,7 +150,7 @@ HYPRE_SStructVectorInitialize( HYPRE_SStructVector vector )
    HYPRE_MemoryLocation    memory_location = hypre_HandleMemoryLocation(hypre_handle());
 
    /* GEC0902 addition of variables for ilower and iupper   */
-   HYPRE_Int               ilower, iupper;
+   HYPRE_BigInt            ilower, iupper;
    hypre_ParVector        *par_vector;
    hypre_Vector           *parlocal_vector;
 
@@ -204,11 +204,15 @@ HYPRE_SStructVectorInitialize( HYPRE_SStructVector vector )
       ilower = hypre_SStructGridStartRank(grid);
       iupper = ilower + hypre_SStructGridLocalSize(grid) - 1;
    }
-
-   if (vector_type == HYPRE_SSTRUCT || vector_type == HYPRE_STRUCT)
+   else if (vector_type == HYPRE_SSTRUCT || vector_type == HYPRE_STRUCT)
    {
       ilower = hypre_SStructGridGhstartRank(grid);
       iupper = ilower + hypre_SStructGridGhlocalSize(grid) - 1;
+   }
+   else
+   {
+      hypre_error_w_msg(HYPRE_ERROR_GENERIC, "Invalid vector type!\n");
+      return hypre_error_flag;
    }
 
    HYPRE_IJVectorCreate(comm, ilower, iupper,
@@ -597,7 +601,7 @@ HYPRE_SStructVectorAddFEMBoxValues(HYPRE_SStructVector  vector,
          viupper[d] = iupper[d] + hypre_IndexD(fem_offsets[i], d);
       }
 
-#if defined(HYPRE_USING_CUDA) || defined(HYPRE_USING_HIP) || defined(HYPRE_USING_SYCL)
+#if defined(HYPRE_USING_GPU)
       if (hypre_GetExecPolicy1(memory_location) == HYPRE_EXEC_DEVICE)
       {
          hypreDevice_ComplexStridedCopy(nelts, fem_nvars, values + i, tvalues);

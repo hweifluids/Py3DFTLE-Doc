@@ -10,13 +10,13 @@
 #include "mem.h"
 #include "poly.h"
 
-#define lob_bnd_setup  PREFIXED_NAME(lob_bnd_setup)
-#define lob_bnd_lin_1  PREFIXED_NAME(lob_bnd_lin_1)
-#define lob_bnd_lin_2  PREFIXED_NAME(lob_bnd_lin_2)
-#define lob_bnd_lin_3  PREFIXED_NAME(lob_bnd_lin_3)
-#define lob_bnd_1      PREFIXED_NAME(lob_bnd_1    )
-#define lob_bnd_2      PREFIXED_NAME(lob_bnd_2    )
-#define lob_bnd_3      PREFIXED_NAME(lob_bnd_3    )
+#define lob_bnd_setup  GS_PREFIXED_NAME(lob_bnd_setup)
+#define lob_bnd_lin_1  GS_PREFIXED_NAME(lob_bnd_lin_1)
+#define lob_bnd_lin_2  GS_PREFIXED_NAME(lob_bnd_lin_2)
+#define lob_bnd_lin_3  GS_PREFIXED_NAME(lob_bnd_lin_3)
+#define lob_bnd_1      GS_PREFIXED_NAME(lob_bnd_1    )
+#define lob_bnd_2      GS_PREFIXED_NAME(lob_bnd_2    )
+#define lob_bnd_3      GS_PREFIXED_NAME(lob_bnd_3    )
 
 struct dbl_range { double min,max; };
 
@@ -150,38 +150,47 @@ static void lob_bnd_ext(
   const double *restrict br_, unsigned mr,
   double *restrict a)
 {
-  const double *restrict br = br_;
-  double *restrict b = b_;
   unsigned i,j,k;
   for(i=0;i<mr;++i) a[2*i+1]=a[2*i+0]=0;
-  for(j=0;j<n;++j) {
-    double t, q0 = Q[2*j], q1 = Q[2*j+1];
-    for(i=0;i<mr;++i) t=(br[0]+br[1])/2, br+=2, a[2*i]+=q0*t, a[2*i+1]+=q1*t;
-  }
-  for(i=0;i<mr;++i) {
-    double a0=a[2*i],a1=a[2*i+1];
-    for(k=0;k<m;++k) b[1]=b[0]=a0+a1*h[k], b+=2;
-  }
-  br=br_;
-  for(j=0;j<n;++j,lbnp+=4*m) {
-    double zj = z[j];
-    b = b_;
+
+  {
+    const double *restrict br = br_;
+    for(j=0;j<n;++j) {
+      double t, q0 = Q[2*j], q1 = Q[2*j+1];
+      for(i=0;i<mr;++i) t=(br[0]+br[1])/2, br+=2, a[2*i]+=q0*t, a[2*i+1]+=q1*t;
+    }
+  } 
+
+  {
+    double *restrict b = b_;
     for(i=0;i<mr;++i) {
-      double t = a[2*i] + a[2*i+1]*zj;
-      double w0 = *br++ - t;
-      double w1 = *br++ - t;
-      if(w0>=0)      /* 0  <= w0 <= w1 */
-        for(k=0;k<m;++k)
-          *b++ += w0 * lbnp[4*k+1] + w1 * lbnp[4*k+0],
-          *b++ += w1 * lbnp[4*k+3] + w0 * lbnp[4*k+2];
-      else if(w1<=0) /* w0 <= w1 <= 0  */
-        for(k=0;k<m;++k)
-          *b++ += w0 * lbnp[4*k+3] + w1 * lbnp[4*k+2],
-          *b++ += w1 * lbnp[4*k+1] + w0 * lbnp[4*k+0];
-      else           /* w0 <  0  <  w1 */
-        for(k=0;k<m;++k)
-          *b++ += w0 * lbnp[4*k+3] + w1 * lbnp[4*k+0],
-          *b++ += w1 * lbnp[4*k+3] + w0 * lbnp[4*k+0];
+      double a0=a[2*i],a1=a[2*i+1];
+      for(k=0;k<m;++k) b[1]=b[0]=a0+a1*h[k], b+=2;
+    }
+  }
+
+  {
+    const double *restrict br = br_;
+    for(j=0;j<n;++j,lbnp+=4*m) {
+      double zj = z[j];
+      double *restrict b = b_; 
+      for(i=0;i<mr;++i) {
+        double t = a[2*i] + a[2*i+1]*zj;
+        double w0 = *br++ - t;
+        double w1 = *br++ - t;
+        if(w0>=0)      /* 0  <= w0 <= w1 */
+          for(k=0;k<m;++k)
+            *b++ += w0 * lbnp[4*k+1] + w1 * lbnp[4*k+0],
+            *b++ += w1 * lbnp[4*k+3] + w0 * lbnp[4*k+2];
+        else if(w1<=0) /* w0 <= w1 <= 0  */
+          for(k=0;k<m;++k)
+            *b++ += w0 * lbnp[4*k+3] + w1 * lbnp[4*k+2],
+            *b++ += w1 * lbnp[4*k+1] + w0 * lbnp[4*k+0];
+        else           /* w0 <  0  <  w1 */
+          for(k=0;k<m;++k)
+            *b++ += w0 * lbnp[4*k+3] + w1 * lbnp[4*k+0],
+            *b++ += w1 * lbnp[4*k+3] + w0 * lbnp[4*k+0];
+      }
     }
   }
 }

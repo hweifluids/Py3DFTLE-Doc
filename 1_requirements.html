@@ -6,21 +6,21 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Requirements and Quickstart &mdash; PyFTLE3D 0.1 documentation</title>
+  <title>Requirements and Quickstart &mdash; Streamcenter+ 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=2709fde1"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Theory of FTLE and LCS" href="2_theory.html" />
-    <link rel="prev" title="PyFTLE3D: 3D LCS Research Toolkit with GUI" href="index.html" /> 
+    <link rel="prev" title="Streamcenter+: Native CUDA/Qt Toolkit for FTLE and LCS" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -32,7 +32,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            PyFTLE3D
+            Streamcenter+
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -66,7 +66,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">PyFTLE3D</a>
+          <a href="index.html">Streamcenter+</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -103,7 +103,7 @@
 </section>
 <section id="basic-environment">
 <h2>Basic Environment<a class="headerlink" href="#basic-environment" title="Link to this heading"></a></h2>
-<p>This page summarizes the system requirements and dependencies of <code class="docutils literal notranslate"><span class="pre">PyFTLE3D</span></code>.</p>
+<p>This page summarizes the system requirements and dependencies of <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code>.</p>
 <p>Firstly, the following packages are supposed to be installed on your computer manually in advance.</p>
 <ol class="arabic simple">
 <li><p><a class="reference external" href="https://www.python.org/">Python</a> version 3.13. Later version than 3.8 till 3.13 should work properly, but was not fully tested. The official download could be found at <a class="reference external" href="https://www.python.org/downloads/release/python-3130/?featured_on=pythonbytes">here</a>. Please select Python installer according to your system framework.</p></li>
@@ -130,13 +130,13 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="o">./</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
 </div>
-<p>When it does not work, consider if your current dir is incorrect. It should be run from the project root of <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code> when undergoing configurations and under <a class="reference internal" href="7_command.html#command"><span class="std std-ref">command-line</span></a> mode. Please feel free about such thing under GUI mode.</p>
+<p>When it does not work, consider if your current dir is incorrect. It should be run from the project root of <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code> when undergoing configurations and under <a class="reference internal" href="7_command.html#command"><span class="std std-ref">command-line</span></a> mode. Please feel free about such thing under GUI mode.</p>
 </section>
 <section id="add-on-libs-optional">
 <h2>Add-on Libs (Optional)<a class="headerlink" href="#add-on-libs-optional" title="Link to this heading"></a></h2>
 <p><strong>1. ParaView</strong> is a powerful beloved open-source visualization platform based on <em>vtk</em> that can be used to visualize the results of 3D FTLE computations. We also integrated the ParaView entrance into our GUI, so you can directly open ParaView from it.
 The ParaView installation-free package (v6.0) can be downloaded from <a class="reference external" href="https://www.paraview.org/paraview-downloads/download.php?submit=Download&amp;version=v6.0&amp;type=binary&amp;os=Windows&amp;downloadFile=ParaView-6.0.0-RC1-MPI-Windows-Python3.12-msvc2017-AMD64.zip">official</a>.
-For already-installed ParaView, set environment variable <code class="docutils literal notranslate"><span class="pre">PARAVIEW_PATH</span></code> pointing to the root dir of ParaView to enable integration from GUI of <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code>.</p>
+For already-installed ParaView, set environment variable <code class="docutils literal notranslate"><span class="pre">PARAVIEW_PATH</span></code> pointing to the root dir of ParaView to enable integration from GUI of <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code>.</p>
 </section>
 <section id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h2>
@@ -150,7 +150,7 @@ The dataset can be downloaded from <a class="reference external" href="https://n
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="PyFTLE3D: 3D LCS Research Toolkit with GUI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Streamcenter+: Native CUDA/Qt Toolkit for FTLE and LCS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="2_theory.html" class="btn btn-neutral float-right" title="Theory of FTLE and LCS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>nekRS: bench/axHelm/benchmarkAx.hpp Source File</title>
+<title>nekRS: core/elliptic/axHelm/benchmarkAx.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -74,7 +74,7 @@ $(document).ready(function() { init_codefold(0); });
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_a36c4719283424f51e58ca3678e5dea3.html">bench</a></li><li class="navelem"><a class="el" href="dir_615afcd0fdbe2b458d9a30d607e3f0b5.html">axHelm</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_4270bfced15e0e73154b13468c7c9ad9.html">core</a></li><li class="navelem"><a class="el" href="dir_6fd56ce5ae9a08b4770a961721dbfe55.html">elliptic</a></li><li class="navelem"><a class="el" href="dir_4a78ceeee73f604169bbc426b37bfd91.html">axHelm</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -83,20 +83,19 @@ $(document).ready(function() { init_codefold(0); });
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;occa.hpp&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> TGeo&gt;</div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span>occa::kernel benchmarkAx(<span class="keywordtype">int</span> Nelements,</div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>                         <span class="keywordtype">int</span> Nq,</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>                         <span class="keywordtype">int</span> Ng,</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>                         <span class="keywordtype">bool</span> constCoeff,</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>                         <span class="keywordtype">bool</span> poisson,</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>                         <span class="keywordtype">bool</span> computeGeom,</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>                         <span class="keywordtype">size_t</span> wordSize,</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>                         <span class="keywordtype">int</span> Ndim,</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>                         <span class="keywordtype">bool</span> stressForm,</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                         <span class="keywordtype">int</span> verbosity,</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                         T NtestsOrTargetTime,</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                         <span class="keywordtype">bool</span> requiresBenchmark,</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                         std::string suffix);</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>                         <span class="keywordtype">int</span> Ndim,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>                         <span class="keywordtype">bool</span> stressForm,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>                         <span class="keywordtype">int</span> verbosity,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                         <span class="keywordtype">double</span> targetTime,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                         <span class="keywordtype">bool</span> requiresBenchmark,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                         std::string suffix = <span class="stringliteral">&quot;&quot;</span>);</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

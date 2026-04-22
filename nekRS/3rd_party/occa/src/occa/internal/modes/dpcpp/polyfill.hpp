@@ -4,8 +4,9 @@
 #define OCCA_MODES_DPCPP_POLYFILL_HEADER
 
 #if OCCA_DPCPP_ENABLED
-#include <sycl.hpp>
+#include <sycl/sycl.hpp>
 #else
+#include <cstdint>
 #include <vector>
 namespace sycl {
 

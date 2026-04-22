@@ -5,8 +5,8 @@ References
 
 .. .. rubric:: References
 
-Cited and Suggested by ``Py3DFTLE``
-------------------------------------
+Cited and Suggested by ``Streamcenter+``
+----------------------------------------
 
 .. [Lekien2005] Lekien, F., Marsden, J. "Tricubic interpolation in three dimensions," *International Journal for Numerical Methods in Engineering* **63** (2005). `link <https://doi.org/10.1002/nme.1296>`__
 
@@ -18,12 +18,12 @@ Cited and Suggested by ``Py3DFTLE``
 
 
 
-Papers Who Uses ``Py3DFTLE``
------------------------------
+Papers Who Uses ``Streamcenter+``
+---------------------------------
 
 Currently NO. ``(QwQ)``
 
-Related Papers Who Cited ``Py3DFTLE``
-----------------------------------------
+Related Papers Who Cited ``Streamcenter+``
+------------------------------------------
 
 Currently NO. ``(QwQ)``

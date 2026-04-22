@@ -743,8 +743,8 @@ hypre_NodeRelax(  void                 *relax_vdata,
                   HYPRE_Int vi, vj, err;
                   //HYPRE_Real *A_loc = tA_loc + hypre_BoxLoopBlock() * nvars * nvars;
                   //HYPRE_Real *x_loc = tx_loc + hypre_BoxLoopBlock() * nvars;
-                  HYPRE_Real A_loc[HYPRE_MAXVARS * HYPRE_MAXVARS];
-                  HYPRE_Real x_loc[HYPRE_MAXVARS];
+                  HYPRE_Real A_loc[HYPRE_MAXVARS * HYPRE_MAXVARS] = {0};
+                  HYPRE_Real x_loc[HYPRE_MAXVARS] = {0};
                   /*------------------------------------------------
                    * Copy rhs and matrix for diagonal coupling
                    * (intra-nodal) into local storage.
@@ -764,6 +764,9 @@ hypre_NodeRelax(  void                 *relax_vdata,
                    * Invert intra-nodal coupling
                    *----------------------------------------------*/
                   hypre_gselim(A_loc, x_loc, nvars, err);
+                  (void) err;
+                  /* TODO (VPM): need a way to check error codes on device */
+
                   /*------------------------------------------------
                    * Copy solution from local storage.
                    *----------------------------------------------*/
@@ -945,8 +948,8 @@ hypre_NodeRelax(  void                 *relax_vdata,
                   HYPRE_Real *A_loc = tA_loc + hypre_BoxLoopBlock() * nvars * nvars;
                   HYPRE_Real *x_loc = tx_loc + hypre_BoxLoopBlock() * nvars;
                   */
-                  HYPRE_Real A_loc[HYPRE_MAXVARS * HYPRE_MAXVARS];
-                  HYPRE_Real x_loc[HYPRE_MAXVARS];
+                  HYPRE_Real A_loc[HYPRE_MAXVARS * HYPRE_MAXVARS] = {0};
+                  HYPRE_Real x_loc[HYPRE_MAXVARS] = {0};
 
                   /*------------------------------------------------
                    * Copy rhs and matrix for diagonal coupling
@@ -967,6 +970,8 @@ hypre_NodeRelax(  void                 *relax_vdata,
                    * Invert intra-nodal coupling
                    *----------------------------------------------*/
                   hypre_gselim(A_loc, x_loc, nvars, err);
+                  (void) err;
+
                   /*------------------------------------------------
                    * Copy solution from local storage.
                    *----------------------------------------------*/
@@ -1162,4 +1167,3 @@ hypre_NodeRelaxSetTempVec( void                 *relax_vdata,
 
    return hypre_error_flag;
 }
-

@@ -132,10 +132,7 @@ namespace occa {
   }
 
   udim_t memory::size() const {
-    if (modeMemory == NULL) {
-      return 0;
-    }
-    return modeMemory->size;
+    return length();
   }
 
   udim_t memory::length() const {
@@ -143,6 +140,11 @@ namespace occa {
       return 0;
     }
     return modeMemory->size / modeMemory->dtype_->bytes();
+  }
+
+  udim_t memory::byte_size() const {
+    if (modeMemory == NULL) return 0;
+    else return modeMemory->size;
   }
 
   bool memory::operator == (const occa::memory &other) const {
@@ -172,12 +174,12 @@ namespace occa {
                                       ? (length() - offset)
                                       : count);
 
-    OCCA_ERROR("Trying to allocate negative bytes (" << bytes << ")",
+    OCCA_ERROR("Trying to allocate negative elements (" << count << ")",
                bytes >= 0);
 
-    OCCA_ERROR("Cannot have offset and bytes greater than the memory size ("
-               << offset_ << " + " << bytes << " > " << size() << ")",
-               (offset_ + (dim_t) bytes) <= (dim_t) size());
+    OCCA_ERROR("Memory size is less than offset + count ("
+                << size() << " <" << offset << " + " << count << ")",
+               (offset + (dim_t) count) <= (dim_t) size());
 
     occa::memory m(modeMemory->slice(offset_, bytes));
     m.setDtype(dtype());
@@ -186,105 +188,115 @@ namespace occa {
   }
 
   void memory::copyFrom(const void *src,
-                        const dim_t bytes,
+                        const dim_t count,
                         const dim_t offset,
                         const occa::json &props) {
     if (!isInitialized()) return;
 
-    udim_t bytes_ = ((bytes == -1) ? modeMemory->size : bytes);
+    const int dtypeSize = modeMemory->dtype_->bytes();
+    const dim_t bytes  = dtypeSize * ((count == -1) ? length() : count);
+    const dim_t offset_ = dtypeSize * offset;
 
     OCCA_ERROR("Trying to allocate negative bytes (" << bytes << ")",
                bytes >= -1);
 
-    OCCA_ERROR("Cannot have a negative offset (" << offset << ")",
-               offset >= 0);
+    OCCA_ERROR("Cannot have a negative offset (" << offset_ << ")",
+               offset_ >= 0);
 
     OCCA_ERROR("Destination memory has size [" << modeMemory->size << "],"
-               << " trying to access [" << offset << ", " << (offset + bytes_) << "]",
-               (bytes_ + offset) <= modeMemory->size);
+               << " trying to access [" << offset_ << ", " << (offset_ + bytes) << "]",
+               udim_t(bytes + offset_) <= modeMemory->size);
 
-    modeMemory->copyFrom(src, bytes_, offset, props);
+    modeMemory->copyFrom(src, bytes, offset_, props);
   }
 
   void memory::copyFrom(const memory src,
-                        const dim_t bytes,
+                        const dim_t count,
                         const dim_t destOffset,
                         const dim_t srcOffset,
                         const occa::json &props) {
-    if (!isInitialized() && !src.isInitialized()) return;
+   if (!isInitialized() && !src.isInitialized()) return;
     assertInitialized();
 
-    udim_t bytes_ = ((bytes == -1) ? modeMemory->size : bytes);
+    const int dtypeSize = modeMemory->dtype_->bytes();
+    const dim_t bytes  = dtypeSize * ((count == -1) ? length() : count);
+    const dim_t destOffset_ = dtypeSize * destOffset;
+    const dim_t srcOffset_ = src.modeMemory->dtype_->bytes() * srcOffset;
 
     OCCA_ERROR("Trying to allocate negative bytes (" << bytes << ")",
                bytes >= -1);
 
-    OCCA_ERROR("Cannot have a negative offset (" << destOffset << ")",
-               destOffset >= 0);
+    OCCA_ERROR("Cannot have a negative offset (" << destOffset_ << ")",
+               destOffset_ >= 0);
 
-    OCCA_ERROR("Cannot have a negative offset (" << srcOffset << ")",
-               srcOffset >= 0);
+    OCCA_ERROR("Cannot have a negative offset (" << srcOffset_ << ")",
+               srcOffset_ >= 0);
 
     OCCA_ERROR("Source memory has size [" << src.modeMemory->size << "],"
-               << " trying to access [" << srcOffset << ", " << (srcOffset + bytes_) << "]",
-               (bytes_ + srcOffset) <= src.modeMemory->size);
+               << " trying to access [" << srcOffset_ << ", " << (srcOffset_ + bytes) << "]",
+               udim_t(bytes + srcOffset_) <= src.modeMemory->size);
 
     OCCA_ERROR("Destination memory has size [" << modeMemory->size << "],"
-               << " trying to access [" << destOffset << ", " << (destOffset + bytes_) << "]",
-               (bytes_ + destOffset) <= modeMemory->size);
+               << " trying to access [" << destOffset_ << ", " << (destOffset_ + bytes) << "]",
+               udim_t(bytes + destOffset_) <= modeMemory->size);
 
-    modeMemory->copyFrom(src.modeMemory, bytes_, destOffset, srcOffset, props);
+    modeMemory->copyFrom(src.modeMemory, bytes, destOffset_, srcOffset_, props);
   }
 
   void memory::copyTo(void *dest,
-                      const dim_t bytes,
+                      const dim_t count,
                       const dim_t offset,
                       const occa::json &props) const {
     if (!isInitialized()) return;
 
-    udim_t bytes_ = ((bytes == -1) ? modeMemory->size : bytes);
+    const int dtypeSize = modeMemory->dtype_->bytes();
+    const dim_t bytes  = dtypeSize * ((count == -1) ? length() : count);
+    const dim_t offset_ = dtypeSize * offset;
 
     OCCA_ERROR("Trying to allocate negative bytes (" << bytes << ")",
                bytes >= -1);
 
-    OCCA_ERROR("Cannot have a negative offset (" << offset << ")",
-               offset >= 0);
+    OCCA_ERROR("Cannot have a negative offset (" << offset_ << ")",
+               offset_ >= 0);
 
     OCCA_ERROR("Source memory has size [" << modeMemory->size << "],"
-               << " trying to access [" << offset << ", " << (offset + bytes_) << "]",
-               (bytes_ + offset) <= modeMemory->size);
+               << " trying to access [" << offset_ << ", " << (offset_ + bytes) << "]",
+               udim_t(bytes + offset_) <= modeMemory->size);
 
-    modeMemory->copyTo(dest, bytes_, offset, props);
+    modeMemory->copyTo(dest, bytes, offset_, props);
   }
 
   void memory::copyTo(memory dest,
-                      const dim_t bytes,
+                      const dim_t count,
                       const dim_t destOffset,
                       const dim_t srcOffset,
                       const occa::json &props) const {
     if (!isInitialized() && !dest.isInitialized()) return;
     assertInitialized();
 
-    udim_t bytes_ = ((bytes == -1) ? modeMemory->size : bytes);
+    const int dtypeSize = modeMemory->dtype_->bytes();
+    const dim_t bytes  = dtypeSize * ((count == -1) ? length() : count);
+    const dim_t destOffset_ = dest.modeMemory->dtype_->bytes() * destOffset;
+    const dim_t srcOffset_ = dtypeSize * srcOffset;
 
     OCCA_ERROR("Trying to allocate negative bytes (" << bytes << ")",
                bytes >= -1);
 
-    OCCA_ERROR("Cannot have a negative offset (" << destOffset << ")",
-               destOffset >= 0);
+    OCCA_ERROR("Cannot have a negative offset (" << destOffset_ << ")",
+               destOffset_ >= 0);
 
-    OCCA_ERROR("Cannot have a negative offset (" << srcOffset << ")",
-               srcOffset >= 0);
+    OCCA_ERROR("Cannot have a negative offset (" << srcOffset_ << ")",
+               srcOffset_ >= 0);
 
     OCCA_ERROR("Source memory has size [" << modeMemory->size << "],"
-               << " trying to access [" << srcOffset << ", " << (srcOffset + bytes_) << "]",
-               (bytes_ + srcOffset) <= modeMemory->size);
+               << " trying to access [" << srcOffset_ << ", " << (srcOffset_ + bytes) << "]",
+               udim_t(bytes + srcOffset_) <= modeMemory->size);
 
     OCCA_ERROR("Destination memory has size [" << dest.modeMemory->size << "],"
-               << " trying to access [" << destOffset << ", " << (destOffset + bytes_) << "]",
-               (bytes_ + destOffset) <= dest.modeMemory->size);
+               << " trying to access [" << destOffset_ << ", " << (destOffset_ + bytes) << "]",
+               udim_t(bytes + destOffset_) <= dest.modeMemory->size);
 
-    dest.modeMemory->copyFrom(modeMemory, bytes_, destOffset, srcOffset, props);
+    dest.modeMemory->copyFrom(modeMemory, bytes, destOffset_, srcOffset_, props);
   }
 
   void memory::copyFrom(const void *src,
@@ -320,7 +332,7 @@ namespace occa {
 
     occa::memory mem = (
       occa::device(modeMemory->getModeDevice())
-      .malloc(size(), *this, properties())
+      .malloc(byte_size(), *this, properties())
     );
     mem.setDtype(dtype());
 

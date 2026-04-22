@@ -12,9 +12,9 @@ else ()
 endif ()
 
 # The version number.
-set(HYPRE_VERSION 2.28.0)
-set(HYPRE_NUMBER  22800)
-set(HYPRE_DATE    2023/03/17)
+set(HYPRE_VERSION 2.32.0)
+set(HYPRE_NUMBER  23200)
+set(HYPRE_DATE    2024/10/08)
 set(HYPRE_TIME    00:00:00)
 set(HYPRE_BUGS    https://github.com/hypre-space/hypre/issues)
 set(HYPRE_SRCDIR  "${PROJECT_SOURCE_DIR}")
@@ -23,6 +23,9 @@ set(PROJECT_NAME HYPRE)
 project(${PROJECT_NAME}
   VERSION ${HYPRE_VERSION}
   LANGUAGES C)
+
+# We use C99 by default, but users are free to specify any newer standard version
+set(CMAKE_C_STANDARD 99)
 
 if (${HYPRE_SOURCE_DIR} STREQUAL ${HYPRE_BINARY_DIR})
   message(FATAL_ERROR "In-place build not allowed! Please use a separate build directory. See the Users Manual or INSTALL file for details.")
@@ -96,6 +99,7 @@ option(HYPRE_WITH_OPENMP             "Use OpenMP" OFF)
 option(HYPRE_ENABLE_HOPSCOTCH        "Use hopscotch hashing with OpenMP" OFF)
 option(HYPRE_WITH_SUPERLU            "Use TPL SuperLU" OFF)
 option(HYPRE_WITH_DSUPERLU           "Use TPL SuperLU_Dist" OFF)
+option(HYPRE_WITH_MAGMA              "Use TPL MAGMA" OFF)
 option(HYPRE_WITH_CALIPER            "Use Caliper" OFF)
 option(HYPRE_PRINT_ERRORS            "Print HYPRE errors" OFF)
 option(HYPRE_TIMING                  "Use HYPRE timing routines" OFF)
@@ -137,6 +141,8 @@ option(TPL_SUPERLU_LIBRARIES         "List of absolute paths to SuperLU link lib
 option(TPL_SUPERLU_INCLUDE_DIRS      "List of absolute paths to SuperLU include directories [].")
 option(TPL_DSUPERLU_LIBRARIES        "List of absolute paths to SuperLU_Dist link libraries [].")
 option(TPL_DSUPERLU_INCLUDE_DIRS     "List of absolute paths to SuperLU_Dist include directories [].")
+option(TPL_MAGMA_LIBRARIES           "List of absolute paths to MAGMA link libraries [].")
+option(TPL_MAGMA_INCLUDE_DIRS        "List of absolute paths to MAGMA include directories [].")
 option(TPL_BLAS_LIBRARIES            "Optional list of absolute paths to BLAS libraries, otherwise use FindBLAS to locate [].")
 option(TPL_LAPACK_LIBRARIES          "Optional list of absolute paths to LAPACK libraries, otherwise use FindLAPACK to locate [].")
 option(TPL_FEI_INCLUDE_DIRS          "List of absolute paths to FEI include directories [].")
@@ -206,6 +212,10 @@ if (HYPRE_WITH_DSUPERLU)
   set(HYPRE_USING_DSUPERLU ON CACHE BOOL "" FORCE)
   set(HYPRE_USING_HYPRE_BLAS OFF CACHE BOOL "" FORCE)
   set(HYPRE_USING_HYPRE_LAPACK OFF CACHE BOOL "" FORCE)
+endif ()
+
+if (HYPRE_WITH_MAGMA)
+  set(HYPRE_USING_MAGMA ON CACHE BOOL "" FORCE)
 endif ()
 
 if (HYPRE_ENABLE_FEI)
@@ -517,6 +527,28 @@ if (DSUPERLU_FOUND)
   set(HYPRE_USING_DSUPERLU TRUE)
 endif ()
 
+# TODO: Check for case if MAGMA without CUDA/HIP
+# Find MAGMA, if requested
+if (HYPRE_USING_MAGMA)
+  if (NOT TPL_MAGMA_LIBRARIES)
+    message(FATAL_ERROR "TPL_MAGMA_LIBRARIES option should be set for MAGMA support.")
+  endif ()
+
+  if (NOT TPL_MAGMA_INCLUDE_DIRS)
+    message(FATAL_ERROR "TPL_MAGMA_INCLUDE_DIRS option be set for MAGMA support.")
+  endif ()
+
+  foreach (dir ${TPL_MAGMA_INCLUDE_DIRS})
+    if (NOT EXISTS ${dir})
+      message(FATAL_ERROR "MAGMA include directory not found: ${dir}")
+    endif ()
+    set(CMAKE_C_FLAGS "-I${dir} ${CMAKE_C_FLAGS}")
+  endforeach ()
+  message(STATUS "Enabled support for using MAGMA.")
+  target_link_libraries(${PROJECT_NAME} PUBLIC ${TPL_MAGMA_LIBRARIES} stdc++)
+  target_include_directories(${PROJECT_NAME} PUBLIC ${TPL_MAGMA_INCLUDE_DIRS})
+endif (HYPRE_USING_MAGMA)
+
 # Find FEI, if requested
 if (HYPRE_USING_FEI)
   enable_language(CXX)
@@ -600,6 +632,30 @@ if (HYPRE_USING_UMPIRE)
   target_include_directories(${PROJECT_NAME} PUBLIC ${TPL_UMPIRE_INCLUDE_DIRS})
 endif ()
 
+# Set MPI compile flags
+if (NOT HYPRE_SEQUENTIAL)
+  find_program(MPIEXEC_EXECUTABLE NAMES mpiexec mpirun)
+  find_package(MPI REQUIRED)
+  target_link_libraries(${PROJECT_NAME} PUBLIC MPI::MPI_C)
+  set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} MPI::MPI_C)
+
+  # Check if MPI supports the MPI_Comm_f2c function
+  include(CheckCSourceCompiles)
+  check_c_source_compiles("
+    #include <mpi.h>
+    int main() {
+      MPI_Comm c = MPI_Comm_f2c(0);
+      return 0;
+    }
+  " HYPRE_HAVE_MPI_COMM_F2C)
+endif (NOT HYPRE_SEQUENTIAL)
+
+# Set OpenMP compile flags
+if (HYPRE_USING_OPENMP)
+  find_package(OpenMP REQUIRED)
+  target_link_libraries(${PROJECT_NAME} PUBLIC OpenMP::OpenMP_C)
+endif (HYPRE_USING_OPENMP)
+
 # Configure a header file to pass CMake settings to the source code
 configure_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/config/HYPRE_config.h.cmake.in"
@@ -607,7 +663,7 @@ configure_file(
   )
 
 # Headers and sources: remaining subdirectories
-set(HYPRE_DIRS utilities multivector krylov seq_mv parcsr_mv parcsr_block_mv distributed_matrix IJ_mv matrix_matrix distributed_ls parcsr_ls struct_mv struct_ls sstruct_mv sstruct_ls)
+set(HYPRE_DIRS utilities multivector krylov seq_mv seq_block_mv parcsr_mv parcsr_block_mv distributed_matrix IJ_mv matrix_matrix distributed_ls parcsr_ls struct_mv struct_ls sstruct_mv sstruct_ls)
 foreach (DIR IN LISTS HYPRE_DIRS)
   add_subdirectory(${DIR})
   target_include_directories(${PROJECT_NAME} PUBLIC
@@ -630,19 +686,6 @@ endif ()
 if (HYPRE_USING_SYCL)
   set_source_files_properties(${HYPRE_GPU_SOURCES} PROPERTIES LANGUAGE CXX)
 endif ()
-
-# Set MPI compile flags
-if (NOT HYPRE_SEQUENTIAL)
-  find_program(MPIEXEC_EXECUTABLE NAMES mpiexec mpirun)
-  find_package(MPI REQUIRED)
-  target_link_libraries(${PROJECT_NAME} PUBLIC MPI::MPI_C)
-endif (NOT HYPRE_SEQUENTIAL)
-
-# Set OpenMP compile flags
-if (HYPRE_USING_OPENMP)
-  find_package(OpenMP REQUIRED)
-  target_link_libraries(${PROJECT_NAME} PUBLIC OpenMP::OpenMP_C)
-endif (HYPRE_USING_OPENMP)
 
 if (MSVC)
   target_compile_definitions(${PROJECT_NAME} PRIVATE _CRT_SECURE_NO_WARNINGS)

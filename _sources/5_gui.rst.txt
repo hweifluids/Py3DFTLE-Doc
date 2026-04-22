@@ -1,9 +1,9 @@
 .. _gui:
 
 Graphical User Interface (GUI)
-===============
+==============================
 
-This page describes how to use GUI mode of ``PyFTLE3D``, which is friendly for who would like to use the software without command-line operations.
+This page describes how to use GUI mode of ``Streamcenter+``, which is friendly for who would like to use the software without command-line operations.
 The author holds the opinion that coding should not be a barrier for using scientific analysis tools such as ``FTLE``.
 For some peers or even experts and professors, coding is absolutely boring, especially for GPU tasks on such large dataset scale.
 

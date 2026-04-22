@@ -2,27 +2,27 @@
 #error sort_imp.h not meant to be compiled by itself
 #endif
 
-#define sort_data       TOKEN_PASTE(sort_data      ,SORT_SUFFIX)
-#define radix_count     TOKEN_PASTE(radix_count    ,SORT_SUFFIX)
-#define radix_offsets   TOKEN_PASTE(radix_offsets  ,SORT_SUFFIX)
-#define radix_zeros     TOKEN_PASTE(radix_zeros    ,SORT_SUFFIX)
-#define radix_passv     TOKEN_PASTE(radix_passv    ,SORT_SUFFIX)
-#define radix_sortv     TOKEN_PASTE(radix_sortv    ,SORT_SUFFIX)
-#define radix_passp0_b  TOKEN_PASTE(radix_passp0_b ,SORT_SUFFIX)
-#define radix_passp_b   TOKEN_PASTE(radix_passp_b  ,SORT_SUFFIX)
-#define radix_passp_m   TOKEN_PASTE(radix_passp_m  ,SORT_SUFFIX)
-#define radix_passp_e   TOKEN_PASTE(radix_passp_e  ,SORT_SUFFIX)
-#define radix_passp0_be TOKEN_PASTE(radix_passp0_be,SORT_SUFFIX)
-#define radix_passp_be  TOKEN_PASTE(radix_passp_be, SORT_SUFFIX)
-#define radix_sortp     TOKEN_PASTE(radix_sortp    ,SORT_SUFFIX)
-#define merge_sortv     TOKEN_PASTE(merge_sortv    ,SORT_SUFFIX)
-#define merge_copy_perm TOKEN_PASTE(merge_copy_perm,SORT_SUFFIX)
-#define merge_sortp0    TOKEN_PASTE(merge_sortp0   ,SORT_SUFFIX)
-#define merge_sortp     TOKEN_PASTE(merge_sortp    ,SORT_SUFFIX)
-#define heap_sortv      TOKEN_PASTE(heap_sortv     ,SORT_SUFFIX)
+#define sort_data       GS_TOKEN_PASTE(sort_data      ,SORT_SUFFIX)
+#define radix_count     GS_TOKEN_PASTE(radix_count    ,SORT_SUFFIX)
+#define radix_offsets   GS_TOKEN_PASTE(radix_offsets  ,SORT_SUFFIX)
+#define radix_zeros     GS_TOKEN_PASTE(radix_zeros    ,SORT_SUFFIX)
+#define radix_passv     GS_TOKEN_PASTE(radix_passv    ,SORT_SUFFIX)
+#define radix_sortv     GS_TOKEN_PASTE(radix_sortv    ,SORT_SUFFIX)
+#define radix_passp0_b  GS_TOKEN_PASTE(radix_passp0_b ,SORT_SUFFIX)
+#define radix_passp_b   GS_TOKEN_PASTE(radix_passp_b  ,SORT_SUFFIX)
+#define radix_passp_m   GS_TOKEN_PASTE(radix_passp_m  ,SORT_SUFFIX)
+#define radix_passp_e   GS_TOKEN_PASTE(radix_passp_e  ,SORT_SUFFIX)
+#define radix_passp0_be GS_TOKEN_PASTE(radix_passp0_be,SORT_SUFFIX)
+#define radix_passp_be  GS_TOKEN_PASTE(radix_passp_be, SORT_SUFFIX)
+#define radix_sortp     GS_TOKEN_PASTE(radix_sortp    ,SORT_SUFFIX)
+#define merge_sortv     GS_TOKEN_PASTE(merge_sortv    ,SORT_SUFFIX)
+#define merge_copy_perm GS_TOKEN_PASTE(merge_copy_perm,SORT_SUFFIX)
+#define merge_sortp0    GS_TOKEN_PASTE(merge_sortp0   ,SORT_SUFFIX)
+#define merge_sortp     GS_TOKEN_PASTE(merge_sortp    ,SORT_SUFFIX)
+#define heap_sortv      GS_TOKEN_PASTE(heap_sortv     ,SORT_SUFFIX)
 
-#define sortv PREFIXED_NAME(TOKEN_PASTE(sortv,SORT_SUFFIX))
-#define sortp PREFIXED_NAME(TOKEN_PASTE(sortp,SORT_SUFFIX))
+#define sortv GS_PREFIXED_NAME(GS_TOKEN_PASTE(sortv,SORT_SUFFIX))
+#define sortp GS_PREFIXED_NAME(GS_TOKEN_PASTE(sortp,SORT_SUFFIX))
 
 typedef struct { T v; uint i; } sort_data;
 
@@ -50,6 +50,7 @@ typedef struct { T v; uint i; } sort_data;
 
   ----------------------------------------------------------------------------*/
 
+#ifndef REALSORT
 #define STATIC_DIGIT_BUCKETS 1
 
 #define DIGIT_BITS   8
@@ -254,7 +255,7 @@ static void radix_sortp(
     radix_passp_e(src,src+n,shift[d],offsets[d],idx);
   }
 }
-
+#endif
 /*------------------------------------------------------------------------------
   
   Merge Sort
@@ -279,7 +280,7 @@ static void radix_sortp(
 #define MERGE_SORT() \
   do {                                                                 \
     uint i=0, n=An, odd=0, c=0, b=1;                                   \
-    sint base=-n;                                                      \
+    sint  base=-n;                                                     \
     for(;;) {                                                          \
       DATA *restrict p;                                                \
       if((c&1)==0) {                                                   \
@@ -443,7 +444,7 @@ static void heap_sortv(T *const restrict A, unsigned n)
     and the required scratch space
 
   ----------------------------------------------------------------------------*/
-
+#ifndef REALSORT
 void sortv(T *out, const T *A, uint n, unsigned stride, buffer *restrict buf)
 {
   if(n<DIGIT_VALUES) {
@@ -508,6 +509,42 @@ uint *sortp(buffer *restrict buf, int start_perm,
   }  
   return perm;
 }
+#else
+void sortv(T *out, const T *A, uint n, unsigned stride, buffer *restrict buf)
+{
+  if(n<2) {
+    if(n==0) return;
+    *out = *A;
+  } else {
+    if(out==A) {
+      if(stride!=sizeof(T))
+        fail(1,__FILE__,__LINE__,"in-place sort with non-unit stride");
+      heap_sortv(out,n);
+    } else {
+      buffer_reserve(buf,n*sizeof(T));
+      merge_sortv(out, A,n,stride, (T*)buf->ptr);
+    }
+  }
+}
+
+uint *sortp(buffer *restrict buf, int start_perm,
+            const T *restrict A, uint n, unsigned stride)
+{
+  uint *restrict perm;
+  sort_data *restrict work;
+  size_t work_off=align_as(sort_data,n*sizeof(uint));
+  buffer_reserve(buf,work_off+2*n*sizeof(sort_data));
+  perm = buf->ptr;
+  work = (sort_data*)((char*)buf->ptr+work_off);
+  if(n<2) {
+    if(n==1) *perm=0;
+  } else {
+    if(start_perm) merge_sortp (perm, A,n,stride, work);
+    else           merge_sortp0(perm, A,n,stride, work);
+  }
+  return perm;
+}
+#endif
 
 #undef STATIC_DIGIT_BUCKETS
 

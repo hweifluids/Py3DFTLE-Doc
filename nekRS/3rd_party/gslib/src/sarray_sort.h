@@ -1,7 +1,7 @@
-#ifndef SARRAY_SORT_H
-#define SARRAY_SORT_H
+#ifndef GS_SARRAY_SORT_H
+#define GS_SARRAY_SORT_H
 
-#if !defined(SORT_H)
+#if !defined(GS_SORT_H)
 #warning "sarray_sort.h" requires "sort.h"
 #endif
 
@@ -33,8 +33,8 @@
   ----------------------------------------------------------------------------*/
 
 
-#define sarray_permute_     PREFIXED_NAME(sarray_permute_)
-#define sarray_permute_buf_ PREFIXED_NAME(sarray_permute_buf_)
+#define sarray_permute_     GS_PREFIXED_NAME(sarray_permute_)
+#define sarray_permute_buf_ GS_PREFIXED_NAME(sarray_permute_buf_)
 
 void sarray_permute_(size_t size, void *A, size_t n, uint *perm, void *work);
 void sarray_permute_buf_(
@@ -46,10 +46,14 @@ void sarray_permute_buf_(
   sarray_permute_buf_(ALIGNOF(T),sizeof(T),A,n,buf)
 
 #define sarray_sort_field(T,A,n, field,is_long, buf,keep) do { \
-  if(is_long) \
+  if(is_long == 1) \
     sortp_long(buf,keep, (ulong*)((char*)(A)+offsetof(T,field)),n,sizeof(T)); \
-  else \
+  else if(is_long == 0) \
     sortp     (buf,keep, (uint *)((char*)(A)+offsetof(T,field)),n,sizeof(T)); \
+  else if(is_long == 3) \
+    sortp_double(buf,keep, (double *)((char*)(A)+offsetof(T,field)),n,sizeof(T)); \
+  else if(is_long == 2) \
+    sortp_float(buf,keep, (float *)((char*)(A)+offsetof(T,field)),n,sizeof(T)); \
 } while (0)
 
 #define sarray_sort(T,A,n, field,is_long, buf) do { \

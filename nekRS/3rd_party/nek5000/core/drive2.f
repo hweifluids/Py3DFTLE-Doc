@@ -54,6 +54,10 @@ c     Set default logicals
       if (lx1.eq.lx2) ifsplit=.true.
 
       if_full_pres = .false.
+      ifcrrs = .true. ! crystal router restart
+      lbrst = min(1024, lelt) ! batch size for restart
+
+      ifjac0_abort = .true. ! abort if initial mesh (rea/re2) is invalid
 
       CALL RZERO (PARAM,200)
 
@@ -76,6 +80,8 @@ c     Set default logicals
       NTOT=lx2*ly2*lz2*LELT
       CALL RZERO(USRDIV,NTOT)
       CALL RZERO(QTL,NTOT)
+
+      CALL IONE(out_mask, lelt)
 
       NSTEPS = 0
 
@@ -453,10 +459,10 @@ c  24    ierr = 1
 c  23  ENDIF
 c      call err_chk(ierr,' Cannot open SESSION.NAME!$')
 
-      len = ltrunc(path,132)
-      if(indx1(path1(len),'/',1).lt.1) then
-         call chcopy(path1(len+1),'/',1)
-      endif
+c      len = ltrunc(path,132)
+c      if(len.lt.1) then
+c         call chcopy(path1(1),'./',2)
+c      endif
 
 c      call bcast(SESSION,132*CSIZE)
 c      call bcast(PATH,132*CSIZE)

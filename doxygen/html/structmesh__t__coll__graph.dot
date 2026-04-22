@@ -5,5 +5,11 @@ digraph "mesh_t"
   edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
   node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
   Node1 [id="Node000001",label="mesh_t",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip=" "];
-  Node1 -> Node1 [id="edge1_Node000001_Node000001",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" fluid",fontcolor="grey" ];
+  Node2 -> Node1 [id="edge1_Node000001_Node000002",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" ogs",fontcolor="grey" ];
+  Node2 [id="Node000002",label="ogs_t",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$structogs__t.html",tooltip=" "];
+  Node3 -> Node1 [id="edge2_Node000001_Node000003",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" oogs\noogs3",fontcolor="grey" ];
+  Node3 [id="Node000003",label="oogs_t",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$structoogs__t.html",tooltip=" "];
+  Node2 -> Node3 [id="edge3_Node000003_Node000002",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" ogs",fontcolor="grey" ];
+  Node4 -> Node3 [id="edge4_Node000003_Node000004",dir="back",color="darkorchid3",style="dashed",tooltip=" ",label=" nbc",fontcolor="grey" ];
+  Node4 [id="Node000004",label="nbc_t",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",URL="$structnbc__t.html",tooltip=" "];
 }

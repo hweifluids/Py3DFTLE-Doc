@@ -217,7 +217,9 @@ hypre_BoomerAMGDD_FAC_Jacobi( void      *amgdd_vdata,
                               HYPRE_Int  level,
                               HYPRE_Int  cycle_param )
 {
-#if defined(HYPRE_USING_CUDA) || defined(HYPRE_USING_HIP) || defined(HYPRE_USING_SYCL)
+   HYPRE_UNUSED_VAR(cycle_param);
+
+#if defined(HYPRE_USING_GPU)
    hypre_ParAMGDDData      *amgdd_data      = (hypre_ParAMGDDData*) amgdd_vdata;
    hypre_AMGDDCompGrid     *compGrid        = hypre_ParAMGDDDataCompGrid(amgdd_data)[level];
    HYPRE_MemoryLocation     memory_location = hypre_AMGDDCompGridMemoryLocation(compGrid);
@@ -324,6 +326,8 @@ hypre_BoomerAMGDD_FAC_GaussSeidel( void      *amgdd_vdata,
                                    HYPRE_Int  level,
                                    HYPRE_Int  cycle_param )
 {
+   HYPRE_UNUSED_VAR(cycle_param);
+
    hypre_ParAMGDDData    *amgdd_data = (hypre_ParAMGDDData*) amgdd_vdata;
    hypre_AMGDDCompGrid   *compGrid   = hypre_ParAMGDDDataCompGrid(amgdd_data)[level];
 
@@ -425,6 +429,8 @@ hypre_BoomerAMGDD_FAC_OrderedGaussSeidel( void       *amgdd_vdata,
                                           HYPRE_Int   level,
                                           HYPRE_Int   cycle_param )
 {
+   HYPRE_UNUSED_VAR(cycle_param);
+
    hypre_ParAMGDDData         *amgdd_data = (hypre_ParAMGDDData*) amgdd_vdata;
    hypre_AMGDDCompGrid        *compGrid   = hypre_ParAMGDDDataCompGrid(amgdd_data)[level];
 
@@ -558,7 +564,7 @@ hypre_BoomerAMGDD_FAC_CFL1Jacobi( void      *amgdd_vdata,
                                   HYPRE_Int  level,
                                   HYPRE_Int  cycle_param )
 {
-#if defined(HYPRE_USING_CUDA) || defined(HYPRE_USING_HIP) || defined(HYPRE_USING_SYCL)
+#if defined(HYPRE_USING_GPU)
    hypre_ParAMGDDData      *amgdd_data      = (hypre_ParAMGDDData*) amgdd_vdata;
    hypre_AMGDDCompGrid     *compGrid        = hypre_ParAMGDDDataCompGrid(amgdd_data)[level];
    HYPRE_MemoryLocation     memory_location = hypre_AMGDDCompGridMemoryLocation(compGrid);

@@ -1,7 +1,7 @@
 .. _requirements:
 
 Requirements and Quickstart
-========================
+===========================
 
 Hardware and Hardware Requirements
 ----------------------------------
@@ -22,7 +22,7 @@ GPU acceleration is suggested for large dataset computation. Therefore, the requ
 Basic Environment
 -----------------
 
-This page summarizes the system requirements and dependencies of ``PyFTLE3D``.
+This page summarizes the system requirements and dependencies of ``Streamcenter+``.
 
 Firstly, the following packages are supposed to be installed on your computer manually in advance.
 
@@ -53,15 +53,15 @@ You can install them after installing ``pip`` by:
 
   pip install -r ./requirements.txt
 
-When it does not work, consider if your current dir is incorrect. It should be run from the project root of ``Py3DFTLE`` when undergoing configurations and under :ref:`command-line <command>` mode. Please feel free about such thing under GUI mode.
+When it does not work, consider if your current dir is incorrect. It should be run from the project root of ``Streamcenter+`` when undergoing configurations and under :ref:`command-line <command>` mode. Please feel free about such thing under GUI mode.
 
 
 Add-on Libs (Optional)
------------------
+----------------------
 
 **1. ParaView** is a powerful beloved open-source visualization platform based on *vtk* that can be used to visualize the results of 3D FTLE computations. We also integrated the ParaView entrance into our GUI, so you can directly open ParaView from it.
 The ParaView installation-free package (v6.0) can be downloaded from `official <https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v6.0&type=binary&os=Windows&downloadFile=ParaView-6.0.0-RC1-MPI-Windows-Python3.12-msvc2017-AMD64.zip>`__. 
-For already-installed ParaView, set environment variable ``PARAVIEW_PATH`` pointing to the root dir of ParaView to enable integration from GUI of ``Py3DFTLE``.
+For already-installed ParaView, set environment variable ``PARAVIEW_PATH`` pointing to the root dir of ParaView to enable integration from GUI of ``Streamcenter+``.
 
 Quickstart
 -----------------

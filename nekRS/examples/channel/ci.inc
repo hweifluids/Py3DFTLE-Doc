@@ -8,17 +8,17 @@ void ciSetup(MPI_Comm comm, setupAide &options)
 {
   options.setArgs("POLYNOMIAL DEGREE", std::string("7"));
   options.setArgs("SOLUTION OUTPUT INTERVAL", "0");
-  options.setArgs("VISCOSITY", std::string("0.1"));
-  options.setArgs("DENSITY", std::string("1"));
+  options.setArgs("FLUID VISCOSITY", std::string("0.1"));
+  options.setArgs("FLUID DENSITY", std::string("1"));
   options.setArgs("END TIME", std::string("0.1"));
   options.setArgs("DT", std::string("1e-3"));
   options.setArgs("SUBCYCLING STEPS", std::string("0"));
-  options.setArgs("VELOCITY BLOCK SOLVER", "TRUE");
+  options.setArgs("FLUID VELOCITY SOLVER", "CG+BLOCK");
   options.setArgs("BDF ORDER", "3");
   options.setArgs("ADVECTION", "FALSE");
-  options.setArgs("VELOCITY SOLVER TOLERANCE", std::string("1e-12"));
-  options.setArgs("PRESSURE SOLVER TOLERANCE", std::string("1e-08"));
-  options.setArgs("VELOCITY STRESSFORMULATION", "TRUE");
+  options.setArgs("FLUID VELOCITY SOLVER TOLERANCE", std::string("1e-12"));
+  options.setArgs("FLUID PRESSURE SOLVER TOLERANCE", std::string("1e-08"));
+  options.setArgs("FLUID STRESSFORMULATION", "TRUE");
   options.setArgs("ADVECTION TYPE", "CONVECTIVE");
 
   if (ciMode == 1) {
@@ -29,18 +29,18 @@ void ciSetup(MPI_Comm comm, setupAide &options)
   }
 }
 
-void ciTestErrors(nrs_t *nrs, dfloat time, int tstep)
+void ciTestErrors(nrs_t *nrs, double time, int tstep)
 {
   if (!nrs->lastStep) {
     return;
   }
 
-  const int rank = platform->comm.mpiRank;
+  const int rank = platform->comm.mpiRank();
 
-  nek::ocopyToNek(time, tstep);
+  nrs->copyToNek(time, tstep);
   nek::userchk();
 
-  double *err = (double *)nek::scPtr(5);
+  auto err = nek::ptr<double>("errors");
 
   const double vxErr = abs((err[0] - 9.5942E-09) / err[0]);
   const double vyErr = abs((err[1] - 2.3012E-07) / err[1]);
@@ -49,5 +49,5 @@ void ciTestErrors(nrs_t *nrs, dfloat time, int tstep)
     printf("relative error to target: vx=%g vy=%g\n", vxErr, vyErr);
   }
 
-  (vxErr < EPS && vyErr < EPS) ? (CIPASS) : (CIFAIL);
+  (vxErr < EPS && vyErr < EPS) ? (CiPassTest()) : (CiFailTest());
 }

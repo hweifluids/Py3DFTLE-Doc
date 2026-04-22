@@ -177,7 +177,20 @@ c-----------------------------------------------------------------------
       return
       end
 c-----------------------------------------------------------------------
-      subroutine usrdat
+      subroutine usrdat0
+      include 'SIZE'
+      include 'CASEDATA'
+
+      call nekrs_registerPtr('p_u0', P_U0)
+      call nekrs_registerPtr('p_v0', P_V0)
+      call nekrs_registerPtr('p_omega', P_OMEGA)
+      call nekrs_registerPtr('p_visc', P_VISC)
+      call nekrs_registerPtr('p_scale', P_SCALE)
+
+      return
+      end
+c-----------------------------------------------------------------------
+      subroutine usrdat 
       include 'SIZE'
       include 'TOTAL'
       include 'NEKNEK'
@@ -189,22 +202,11 @@ c-----------------------------------------------------------------------
       include 'SIZE'
       include 'TOTAL'
       include 'CASEDATA'
-      
-      common /scnrs/ sc_nrs(10)
-      real               sc_nrs
-
-      P_U0 = sc_nrs(1)
-      P_V0 = sc_nrs(2)
-      P_OMEGA = sc_nrs(3)
-      P_VISC = sc_nrs(4)
-
-      one   = 1.
-      twopi = 8.*atan(one)
-
+     
       n = nx1*ny1*nz1*nelt    !  Rescale mesh to [0,2pi]^2
 
-      call cmult(xm1,twopi,n)
-      call cmult(ym1,twopi,n)
+      call cmult(xm1,P_SCALE,n)
+      call cmult(ym1,P_SCALE,n)
       
       do iel=1,nelt
       do ifc=1,2*ndim

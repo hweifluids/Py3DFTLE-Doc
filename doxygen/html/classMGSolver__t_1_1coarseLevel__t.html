@@ -88,12 +88,15 @@ Collaboration diagram for MGSolver_t::coarseLevel_t:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8228b1b2fcdc3984bd494806c8c4c8c9" id="r_a8228b1b2fcdc3984bd494806c8c4c8c9"><td class="memItemLeft" align="right" valign="top"><a id="a8228b1b2fcdc3984bd494806c8c4c8c9" name="a8228b1b2fcdc3984bd494806c8c4c8c9"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>coarseLevel_t</b> (<a class="el" href="classsetupAide.html">setupAide</a> options, MPI_Comm comm)</td></tr>
-<tr class="separator:a8228b1b2fcdc3984bd494806c8c4c8c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c2149f21e76c01a15647cc6a85c77bc" id="r_a3c2149f21e76c01a15647cc6a85c77bc"><td class="memItemLeft" align="right" valign="top"><a id="a3c2149f21e76c01a15647cc6a85c77bc" name="a3c2149f21e76c01a15647cc6a85c77bc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setupSolver</b> (hlong *globalRowStarts, dlong nnz, hlong *Ai, hlong *Aj, dfloat *Avals, bool nullSpace)</td></tr>
-<tr class="separator:a3c2149f21e76c01a15647cc6a85c77bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37e048463431acec81095fbf98d8096d" id="r_a37e048463431acec81095fbf98d8096d"><td class="memItemLeft" align="right" valign="top"><a id="a37e048463431acec81095fbf98d8096d" name="a37e048463431acec81095fbf98d8096d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>coarseLevel_t</b> (const std::string &amp;name, <a class="el" href="classsetupAide.html">setupAide</a> options, MPI_Comm comm)</td></tr>
+<tr class="separator:a37e048463431acec81095fbf98d8096d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61b44f9472803b7b2bb018cb1125f134" id="r_a61b44f9472803b7b2bb018cb1125f134"><td class="memItemLeft" align="right" valign="top"><a id="a61b44f9472803b7b2bb018cb1125f134" name="a61b44f9472803b7b2bb018cb1125f134"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setupSolver</b> (hlong *globalRowStarts, dlong nnz, hlong *Ai, hlong *Aj, dfloat *Avals, const occa::memory &amp;o_weight, <a class="el" href="structogs__t.html">ogs_t</a> *ogs, bool nullSpace)</td></tr>
+<tr class="separator:a61b44f9472803b7b2bb018cb1125f134"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64a8aacfca0433d04d82a0a7a745189e" id="r_a64a8aacfca0433d04d82a0a7a745189e"><td class="memItemLeft" align="right" valign="top"><a id="a64a8aacfca0433d04d82a0a7a745189e" name="a64a8aacfca0433d04d82a0a7a745189e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>updateMatrix</b> (dlong nnz, hlong *Ai, hlong *Aj, dfloat *Avals)</td></tr>
+<tr class="separator:a64a8aacfca0433d04d82a0a7a745189e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34c06fd64953bd2c546cfc1f90bd8b4f" id="r_a34c06fd64953bd2c546cfc1f90bd8b4f"><td class="memItemLeft" align="right" valign="top"><a id="a34c06fd64953bd2c546cfc1f90bd8b4f" name="a34c06fd64953bd2c546cfc1f90bd8b4f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>solve</b> (occa::memory &amp;o_rhs, occa::memory &amp;o_x)</td></tr>
 <tr class="separator:a34c06fd64953bd2c546cfc1f90bd8b4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -109,18 +112,9 @@ occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>h_xBuffer</b>
 <tr class="memitem:ae9acb5eeb9fd0884d3faf28a4798295e" id="r_ae9acb5eeb9fd0884d3faf28a4798295e"><td class="memItemLeft" align="right" valign="top"><a id="ae9acb5eeb9fd0884d3faf28a4798295e" name="ae9acb5eeb9fd0884d3faf28a4798295e"></a>
 occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_xBuffer</b></td></tr>
 <tr class="separator:ae9acb5eeb9fd0884d3faf28a4798295e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a451fe0478210d5c4f854077d0f1ee401" id="r_a451fe0478210d5c4f854077d0f1ee401"><td class="memItemLeft" align="right" valign="top"><a id="a451fe0478210d5c4f854077d0f1ee401" name="a451fe0478210d5c4f854077d0f1ee401"></a>
-pfloat *&#160;</td><td class="memItemRight" valign="bottom"><b>xBuffer</b></td></tr>
-<tr class="separator:a451fe0478210d5c4f854077d0f1ee401"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab278c22be3dcdf864e8f9c974f9f80a4" id="r_ab278c22be3dcdf864e8f9c974f9f80a4"><td class="memItemLeft" align="right" valign="top"><a id="ab278c22be3dcdf864e8f9c974f9f80a4" name="ab278c22be3dcdf864e8f9c974f9f80a4"></a>
-ogs_t *&#160;</td><td class="memItemRight" valign="bottom"><b>ogs</b></td></tr>
+<a class="el" href="structogs__t.html">ogs_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>ogs</b> = nullptr</td></tr>
 <tr class="separator:ab278c22be3dcdf864e8f9c974f9f80a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21606e239d29cb7ebe386df737574ab5" id="r_a21606e239d29cb7ebe386df737574ab5"><td class="memItemLeft" align="right" valign="top"><a id="a21606e239d29cb7ebe386df737574ab5" name="a21606e239d29cb7ebe386df737574ab5"></a>
-pfloat *&#160;</td><td class="memItemRight" valign="bottom"><b>Gx</b></td></tr>
-<tr class="separator:a21606e239d29cb7ebe386df737574ab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a048fa43d6f1713b223d13d85d540a9bf" id="r_a048fa43d6f1713b223d13d85d540a9bf"><td class="memItemLeft" align="right" valign="top"><a id="a048fa43d6f1713b223d13d85d540a9bf" name="a048fa43d6f1713b223d13d85d540a9bf"></a>
-pfloat *&#160;</td><td class="memItemRight" valign="bottom"><b>Sx</b></td></tr>
-<tr class="separator:a048fa43d6f1713b223d13d85d540a9bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af524364c96eb8537469ac24697aadf83" id="r_af524364c96eb8537469ac24697aadf83"><td class="memItemLeft" align="right" valign="top"><a id="af524364c96eb8537469ac24697aadf83" name="af524364c96eb8537469ac24697aadf83"></a>
 occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>h_Sx</b></td></tr>
 <tr class="separator:af524364c96eb8537469ac24697aadf83"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,12 +127,18 @@ occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_Sx</b></td>
 <tr class="memitem:a01bd2c918124b74c4f9721e91b05dce4" id="r_a01bd2c918124b74c4f9721e91b05dce4"><td class="memItemLeft" align="right" valign="top"><a id="a01bd2c918124b74c4f9721e91b05dce4" name="a01bd2c918124b74c4f9721e91b05dce4"></a>
 occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_Gx</b></td></tr>
 <tr class="separator:a01bd2c918124b74c4f9721e91b05dce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad648d350ebeb7f6ad70c3b4719fa4f4c" id="r_ad648d350ebeb7f6ad70c3b4719fa4f4c"><td class="memItemLeft" align="right" valign="top"><a id="ad648d350ebeb7f6ad70c3b4719fa4f4c" name="ad648d350ebeb7f6ad70c3b4719fa4f4c"></a>
-pfloat *&#160;</td><td class="memItemRight" valign="bottom"><b>weight</b> = NULL</td></tr>
-<tr class="separator:ad648d350ebeb7f6ad70c3b4719fa4f4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd52eec20dffde68ee44ec7a18b7e2ff" id="r_afd52eec20dffde68ee44ec7a18b7e2ff"><td class="memItemLeft" align="right" valign="top"><a id="afd52eec20dffde68ee44ec7a18b7e2ff" name="afd52eec20dffde68ee44ec7a18b7e2ff"></a>
 occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_weight</b></td></tr>
 <tr class="separator:afd52eec20dffde68ee44ec7a18b7e2ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1355c8f22bf82189e42b8b6c1d802506" id="r_a1355c8f22bf82189e42b8b6c1d802506"><td class="memItemLeft" align="right" valign="top"><a id="a1355c8f22bf82189e42b8b6c1d802506" name="a1355c8f22bf82189e42b8b6c1d802506"></a>
+occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>h_weight</b></td></tr>
+<tr class="separator:a1355c8f22bf82189e42b8b6c1d802506"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae320428558130b98a745c396479154ce" id="r_ae320428558130b98a745c396479154ce"><td class="memItemLeft" align="right" valign="top"><a id="ae320428558130b98a745c396479154ce" name="ae320428558130b98a745c396479154ce"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>name</b></td></tr>
+<tr class="separator:ae320428558130b98a745c396479154ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada76aa8be095c58143be04c6a96b9b59" id="r_ada76aa8be095c58143be04c6a96b9b59"><td class="memItemLeft" align="right" valign="top"><a id="ada76aa8be095c58143be04c6a96b9b59" name="ada76aa8be095c58143be04c6a96b9b59"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>solveOnHost</b></td></tr>
+<tr class="separator:ada76aa8be095c58143be04c6a96b9b59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3306db57149ca508b998ecd6dbdc67f6" id="r_a3306db57149ca508b998ecd6dbdc67f6"><td class="memItemLeft" align="right" valign="top"><a id="a3306db57149ca508b998ecd6dbdc67f6" name="a3306db57149ca508b998ecd6dbdc67f6"></a>
 MPI_Comm&#160;</td><td class="memItemRight" valign="bottom"><b>comm</b></td></tr>
 <tr class="separator:a3306db57149ca508b998ecd6dbdc67f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,9 +148,9 @@ occa::device&#160;</td><td class="memItemRight" valign="bottom"><b>device</b></t
 <tr class="memitem:a6b98ca05deb68883380b69ea9c7a29c5" id="r_a6b98ca05deb68883380b69ea9c7a29c5"><td class="memItemLeft" align="right" valign="top"><a id="a6b98ca05deb68883380b69ea9c7a29c5" name="a6b98ca05deb68883380b69ea9c7a29c5"></a>
 <a class="el" href="classsetupAide.html">setupAide</a>&#160;</td><td class="memItemRight" valign="bottom"><b>options</b></td></tr>
 <tr class="separator:a6b98ca05deb68883380b69ea9c7a29c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86280d45f8ec47ab5ea151a0804822c2" id="r_a86280d45f8ec47ab5ea151a0804822c2"><td class="memItemLeft" align="right" valign="top"><a id="a86280d45f8ec47ab5ea151a0804822c2" name="a86280d45f8ec47ab5ea151a0804822c2"></a>
-std::function&lt; void(<a class="el" href="classMGSolver__t_1_1coarseLevel__t.html">coarseLevel_t</a> *, occa::memory &amp;, occa::memory &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>solvePtr</b> = nullptr</td></tr>
-<tr class="separator:a86280d45f8ec47ab5ea151a0804822c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cccae7d408780513ccb872768cea492" id="r_a9cccae7d408780513ccb872768cea492"><td class="memItemLeft" align="right" valign="top"><a id="a9cccae7d408780513ccb872768cea492" name="a9cccae7d408780513ccb872768cea492"></a>
+std::function&lt; void(occa::memory &amp;, occa::memory &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>solvePtr</b> = nullptr</td></tr>
+<tr class="separator:a9cccae7d408780513ccb872768cea492"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fcba891a6a390333c7a476ddbd95e86" id="r_a6fcba891a6a390333c7a476ddbd95e86"><td class="memItemLeft" align="right" valign="top"><a id="a6fcba891a6a390333c7a476ddbd95e86" name="a6fcba891a6a390333c7a476ddbd95e86"></a>
 void *&#160;</td><td class="memItemRight" valign="bottom"><b>boomerAMG</b> = nullptr</td></tr>
 <tr class="separator:a6fcba891a6a390333c7a476ddbd95e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,8 +159,8 @@ void *&#160;</td><td class="memItemRight" valign="bottom"><b>boomerAMG</b> = nul
 <tr class="separator:a5ed07978d735d946db6a27807bf856eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>solvers/elliptic/MG/<a class="el" href="MGSolver_8hpp_source.html">MGSolver.hpp</a></li>
-<li>solvers/elliptic/MG/<b>coarseLevel.cpp</b></li>
+<li>core/elliptic/MG/<a class="el" href="MGSolver_8hpp_source.html">MGSolver.hpp</a></li>
+<li>core/elliptic/MG/<b>coarseLevel.cpp</b></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

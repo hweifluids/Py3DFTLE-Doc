@@ -1,29 +1,31 @@
 [GENERAL] 
-polynomialOrder = 9
+polynomialOrder = 7
 #startFrom = "restart.fld"
 stopAt = endTime
 endTime = 100 
 
 dt = targetCFL=4.0+max=0.05
 timeStepper = tombo2 
-subCyclingSteps = 2
+advectionSubCyclingSteps = 2
 
-writeControl = simulationTime 
-writeInterval = 5
+checkpointControl = simulationTime 
+checkpointInterval = 5
 
 regularization = hpfrt + nModes = 1 + scalingCoeff = 15
 
-[PRESSURE]
+scalars = TEMPERATURE
+
+[FLUID PRESSURE]
 residualTol = 1e-04
 
-[VELOCITY]
-boundaryTypeMap = wall, wall
-density = 1.0
+[FLUID VELOCITY]
+boundaryTypeMap = zeroDirichlet, zeroDirichlet 
+rho = 1.0
 viscosity = sqrt(7/1e8) # sqrt(PRA/RA) 
 residualTol = 1e-06
 
-[TEMPERATURE]
-boundaryTypeMap = inlet, insulated
-conductivity = 1/sqrt(7*1e8) # 1/sqrt(RA*PRA)
-rhoCp = 1.0
+[SCALAR TEMPERATURE]
+boundaryTypeMap = udfDirichlet, zeroNeumann 
+diffusionCoeff = 1/sqrt(7*1e8) # 1/sqrt(RA*PRA)
+transportCoeff = 1.0
 residualTol = 1e-06

@@ -15,7 +15,7 @@
 #include "par_amg.h"
 
 /*--------------------------------------------------------------------------
- * hypre_BoomerAMGCycle
+ * hypre_BoomerAMGCGRelaxWt
  *--------------------------------------------------------------------------*/
 
 HYPRE_Int
@@ -27,7 +27,7 @@ hypre_BoomerAMGCGRelaxWt( void       *amg_vdata,
    hypre_ParAMGData *amg_data = (hypre_ParAMGData*) amg_vdata;
 
    MPI_Comm comm;
-   HYPRE_Solver *smoother;
+   HYPRE_Solver *smoother = NULL;
    /* Data Structure variables */
 
    /* hypre_ParCSRMatrix **A_array = hypre_ParAMGDataAArray(amg_data); */
@@ -35,14 +35,14 @@ hypre_BoomerAMGCGRelaxWt( void       *amg_vdata,
    hypre_ParCSRMatrix *A = hypre_ParAMGDataAArray(amg_data)[level];
    /* hypre_ParVector    **F_array = hypre_ParAMGDataFArray(amg_data); */
    /* hypre_ParVector    **U_array = hypre_ParAMGDataUArray(amg_data); */
-   hypre_ParVector    *Utemp;
+   hypre_ParVector    *Utemp = NULL;
    hypre_ParVector    *Vtemp;
    hypre_ParVector    *Ptemp;
    hypre_ParVector    *Rtemp;
    hypre_ParVector    *Ztemp;
    hypre_ParVector    *Qtemp = NULL;
 
-   HYPRE_Int    *CF_marker = hypre_IntArrayData(hypre_ParAMGDataCFMarkerArray(amg_data)[level]);
+   HYPRE_Int    *CF_marker;
    HYPRE_Real   *Ptemp_data;
    HYPRE_Real   *Ztemp_data;
 
@@ -87,7 +87,7 @@ hypre_BoomerAMGCGRelaxWt( void       *amg_vdata,
    HYPRE_Real   *S_vec;
 #endif
 
-#if !defined(HYPRE_USING_CUDA) && !defined(HYPRE_USING_HIP)
+#if !defined(HYPRE_USING_GPU)
    HYPRE_Int num_threads = hypre_NumThreads();
 #endif
 
@@ -123,16 +123,18 @@ hypre_BoomerAMGCGRelaxWt( void       *amg_vdata,
       l1_norms = hypre_ParAMGDataL1Norms(amg_data)[level];
    }
 
-#if !defined(HYPRE_USING_CUDA) && !defined(HYPRE_USING_HIP)
+#if !defined(HYPRE_USING_GPU)
    if (num_threads > 1)
 #endif
    {
       needQ = 1;
    }
 
-   grid_relax_type     = hypre_ParAMGDataGridRelaxType(amg_data);
-   smooth_type         = hypre_ParAMGDataSmoothType(amg_data);
-   smooth_num_levels   = hypre_ParAMGDataSmoothNumLevels(amg_data);
+   grid_relax_type   = hypre_ParAMGDataGridRelaxType(amg_data);
+   smooth_type       = hypre_ParAMGDataSmoothType(amg_data);
+   smooth_num_levels = hypre_ParAMGDataSmoothNumLevels(amg_data);
+   CF_marker         = (hypre_ParAMGDataCFMarkerArray(amg_data)[level] != NULL) ?
+                       hypre_IntArrayData(hypre_ParAMGDataCFMarkerArray(amg_data)[level]) : NULL;
 
    /* Initialize */
 
@@ -205,43 +207,46 @@ hypre_BoomerAMGCGRelaxWt( void       *amg_vdata,
 
       for (j = 0; j < num_sweeps; j++)
       {
-         if (smooth_option > 6)
+         if (smooth_num_levels > level)
          {
-            hypre_ParVectorCopy(Rtemp, Vtemp);
-            alpha = -1.0;
-            beta = 1.0;
-            hypre_ParCSRMatrixMatvec(alpha, A,
-                                     Ztemp, beta, Vtemp);
-            if (smooth_option == 8)
+            if (smooth_option > 6)
             {
-               HYPRE_ParCSRParaSailsSolve(smoother[level],
-                                          (HYPRE_ParCSRMatrix) A,
-                                          (HYPRE_ParVector) Vtemp,
-                                          (HYPRE_ParVector) Utemp);
+               hypre_ParVectorCopy(Rtemp, Vtemp);
+               alpha = -1.0;
+               beta = 1.0;
+               hypre_ParCSRMatrixMatvec(alpha, A,
+                                        Ztemp, beta, Vtemp);
+               if (smooth_option == 8)
+               {
+                  HYPRE_ParCSRParaSailsSolve(smoother[level],
+                                             (HYPRE_ParCSRMatrix) A,
+                                             (HYPRE_ParVector) Vtemp,
+                                             (HYPRE_ParVector) Utemp);
+               }
+               else if (smooth_option == 7)
+               {
+                  HYPRE_ParCSRPilutSolve(smoother[level],
+                                         (HYPRE_ParCSRMatrix) A,
+                                         (HYPRE_ParVector) Vtemp,
+                                         (HYPRE_ParVector) Utemp);
+                  hypre_ParVectorAxpy(1.0, Utemp, Ztemp);
+               }
+               else if (smooth_option == 9)
+               {
+                  HYPRE_EuclidSolve(smoother[level],
+                                    (HYPRE_ParCSRMatrix) A,
+                                    (HYPRE_ParVector) Vtemp,
+                                    (HYPRE_ParVector) Utemp);
+                  hypre_ParVectorAxpy(1.0, Utemp, Ztemp);
+               }
             }
-            else if (smooth_option == 7)
+            else if (smooth_option == 6)
             {
-               HYPRE_ParCSRPilutSolve(smoother[level],
-                                      (HYPRE_ParCSRMatrix) A,
-                                      (HYPRE_ParVector) Vtemp,
-                                      (HYPRE_ParVector) Utemp);
-               hypre_ParVectorAxpy(1.0, Utemp, Ztemp);
+               HYPRE_SchwarzSolve(smoother[level],
+                                  (HYPRE_ParCSRMatrix) A,
+                                  (HYPRE_ParVector) Rtemp,
+                                  (HYPRE_ParVector) Ztemp);
             }
-            else if (smooth_option == 9)
-            {
-               HYPRE_EuclidSolve(smoother[level],
-                                 (HYPRE_ParCSRMatrix) A,
-                                 (HYPRE_ParVector) Vtemp,
-                                 (HYPRE_ParVector) Utemp);
-               hypre_ParVectorAxpy(1.0, Utemp, Ztemp);
-            }
-         }
-         else if (smooth_option == 6)
-         {
-            HYPRE_SchwarzSolve(smoother[level],
-                               (HYPRE_ParCSRMatrix) A,
-                               (HYPRE_ParVector) Rtemp,
-                               (HYPRE_ParVector) Ztemp);
          }
          else
          {

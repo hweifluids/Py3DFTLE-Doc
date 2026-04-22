@@ -6,17 +6,17 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Numerical Methods &mdash; PyFTLE3D 0.1 documentation</title>
+  <title>Numerical Methods &mdash; Streamcenter+ 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=2709fde1"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -33,7 +33,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            PyFTLE3D
+            Streamcenter+
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -79,7 +79,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">PyFTLE3D</a>
+          <a href="index.html">Streamcenter+</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -331,7 +331,7 @@ As for the coefficients for <code class="docutils literal notranslate"><span cla
 <section id="velocity-interpolation">
 <span id="intp"></span><h3>Velocity Interpolation<a class="headerlink" href="#velocity-interpolation" title="Link to this heading"></a></h3>
 <p><strong>Trilinear</strong></p>
-<p>The <code class="docutils literal notranslate"><span class="pre">trilinear</span></code> interpolation method is the fastest among all the methods given in <code class="docutils literal notranslate"><span class="pre">PyFTLE3D</span></code>, which is a low-order implement.
+<p>The <code class="docutils literal notranslate"><span class="pre">trilinear</span></code> interpolation method is the fastest among all the methods given in <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code>, which is a low-order implement.
 The continuous velocity field is reconstructed by trilinear interpolation of the component maps <code class="docutils literal notranslate"><span class="pre">u</span></code>, <code class="docutils literal notranslate"><span class="pre">v</span></code>, <code class="docutils literal notranslate"><span class="pre">w</span></code> that live on the eight vertices of a Cartesian cell:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}i   = \left\lfloor\frac{x-x_0}{\Delta x}\right\rfloor,\;
@@ -403,7 +403,31 @@ t_{z} = f_{z} - k.\]</div>
 <p><strong>Tricubic by F. Lekien</strong> <code class="docutils literal notranslate"><span class="pre">I.P.</span></code></p>
 <p>Marked as <code class="docutils literal notranslate"><span class="pre">tricubicFL</span></code>, this variation of tricubic interpolator is still under development by the author.</p>
 <p><strong>Hermite</strong></p>
-<p>The <code class="docutils literal notranslate"><span class="pre">hermite</span></code> is under an internal review by the author, thus the theoretical basis will be stated after that.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">hermite</span></code> mode in the current native solver is a separable three-dimensional cubic Hermite
+interpolator.
+It reconstructs the interval between the two central samples by using the endpoint values
+<span class="math notranslate nohighlight">\(p_1\)</span>, <span class="math notranslate nohighlight">\(p_2\)</span> together with central-difference slopes inferred from the four-point
+stencil <span class="math notranslate nohighlight">\(\{p_0,p_1,p_2,p_3\}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[m_1 = \frac{p_2-p_0}{2}, \qquad
+m_2 = \frac{p_3-p_1}{2}.\]</div>
+<p>For <span class="math notranslate nohighlight">\(t \in [0,1)\)</span>, the one-dimensional Hermite interpolant is</p>
+<div class="math notranslate nohighlight">
+\[H(t)
+= h_{00}(t)\,p_1 + h_{10}(t)\,m_1 + h_{01}(t)\,p_2 + h_{11}(t)\,m_2,\]</div>
+<p>with basis functions</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}h_{00}(t) = 2t^3 - 3t^2 + 1,\qquad
+h_{10}(t) = t^3 - 2t^2 + t,\\
+h_{01}(t) = -2t^3 + 3t^2,\qquad
+h_{11}(t) = t^3 - t^2.\end{split}\]</div>
+<p>The three-dimensional implementation applies this reconstruction successively along <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">z</span></code> on a <span class="math notranslate nohighlight">\(4\times4\times4\)</span> stencil, in the same separable manner as the Catmull-Rom
+<code class="docutils literal notranslate"><span class="pre">tricubic</span></code> mode.
+Because the Hermite kernel reuses the same scalar sampling routine as the other interpolators,
+all wall treatments described in <a class="reference internal" href="#wall"><span class="std std-ref">Wall Treatment</span></a> are applied consistently at every stencil access.</p>
+<p>Compared with <code class="docutils literal notranslate"><span class="pre">trilinear</span></code>, <code class="docutils literal notranslate"><span class="pre">hermite</span></code> is substantially more expensive due to its wider stencil,
+but it generally produces smoother velocity traces during advection.</p>
 <p><strong>WENO</strong></p>
 <p>The weighted essentially non-oscillatory <code class="docutils literal notranslate"><span class="pre">WENO</span></code> used here is a fifth-order WENO reconstruction (WENO-5). It is suggested to be used in research with intermittent capture need, e.g., high-speed flows and shock capture.
 It shows relatively poor performance in general cases, and comsuming more wall time.
@@ -456,31 +480,251 @@ C_{2,2} = \frac{f_{i} - 2\,f_{i+1} + f_{i+2}}{2}.\end{split}\]</div>
 </section>
 <section id="wall-treatment">
 <span id="wall"></span><h3>Wall Treatment<a class="headerlink" href="#wall-treatment" title="Link to this heading"></a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">Documentation</span> <span class="pre">being</span> <span class="pre">constructed</span></code></p>
+<p>The wall-treatment option is applied at the scalar-sampling level before any interpolation stencil
+is assembled.
+Therefore the same boundary behavior is honored by <code class="docutils literal notranslate"><span class="pre">trilinear</span></code>, <code class="docutils literal notranslate"><span class="pre">hermite</span></code>, <code class="docutils literal notranslate"><span class="pre">tricubic</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">WENO</span></code> alike.</p>
+<p>For each axis with valid index range <span class="math notranslate nohighlight">\(0,\dots,N-1\)</span>, the current native solver supports the
+following rules:</p>
+<p><strong>Clamp</strong></p>
+<p>Out-of-range indices are projected to the nearest valid boundary index:</p>
+<div class="math notranslate nohighlight">
+\[i^{*} = \min\bigl(\max(i,0), N-1\bigr).\]</div>
+<p>This is useful when the outermost grid values should be extended as constant boundary samples.</p>
+<p><strong>Dirichlet</strong></p>
+<p>Whenever any stencil index lies outside the valid domain, the queried scalar value is taken as
+zero:</p>
+<div class="math notranslate nohighlight">
+\[u(i,j,k)=0 \qquad \text{if any of } i,j,k \notin [0,N-1].\]</div>
+<p>This matches a homogeneous Dirichlet boundary condition for the sampled velocity component.</p>
+<p><strong>Reflect</strong></p>
+<p>Indices are mirrored back into the domain until they become valid.
+The implementation uses</p>
+<div class="math notranslate nohighlight">
+\[i \leftarrow -i-1 \quad \text{for } i&lt;0,\qquad
+i \leftarrow 2N-i-1 \quad \text{for } i\ge N,\]</div>
+<p>and repeats this operation if necessary.
+This corresponds to even reflection at the wall.</p>
+<p><strong>Periodic</strong></p>
+<p>Indices are wrapped modulo the grid size:</p>
+<div class="math notranslate nohighlight">
+\[i^{*} = i \bmod N.\]</div>
+<p>For periodic runs, the same wrap-around logic is also reused in the FTLE assembly kernel when the
+flow-map gradients are differentiated.</p>
 </section>
 </section>
 <section id="ftle-computation">
 <span id="ftlefinal"></span><h2>FTLE Computation<a class="headerlink" href="#ftle-computation" title="Link to this heading"></a></h2>
+<p>After particle advection, the solver stores the final particle locations
+<span class="math notranslate nohighlight">\(\mathbf{X}=\varphi_{t_0}^{t_0+T}(\mathbf{x}_0)\)</span> on the seed lattice.
+The FTLE field is then assembled from the deformation gradient
+<span class="math notranslate nohighlight">\(\mathbf{F}=\partial \mathbf{X}/\partial \mathbf{x}_0\)</span> and the right Cauchy-Green tensor</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{C} = \mathbf{F}^{\mathsf{T}}\mathbf{F}.\]</div>
+<p>With <span class="math notranslate nohighlight">\(\lambda_{\max}\)</span> denoting the largest eigenvalue of <span class="math notranslate nohighlight">\(\mathbf{C}\)</span>, the solver
+evaluates</p>
+<div class="math notranslate nohighlight">
+\[\sigma_T(\mathbf{x}_0)
+= \frac{1}{2|T|}\ln \lambda_{\max}\bigl(\mathbf{C}(\mathbf{x}_0)\bigr).\]</div>
+<p>In the native CUDA mainline this stage is executed by a dedicated FTLE kernel after the forward
+and optional backward branches finish advection.
+The resulting scalar arrays are written as <code class="docutils literal notranslate"><span class="pre">FTLE_forward</span></code> and, if requested, <code class="docutils literal notranslate"><span class="pre">FTLE_backward</span></code>
+in the output <code class="docutils literal notranslate"><span class="pre">.vts</span></code> files.</p>
 <section id="gradient-discretization">
 <span id="grad"></span><h3>Gradient Discretization<a class="headerlink" href="#gradient-discretization" title="Link to this heading"></a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">Documentation</span> <span class="pre">being</span> <span class="pre">constructed</span></code></p>
+<p>In the current native CUDA solver, the deformation gradient is reconstructed directly from the
+final-position lattice by second-order centered differences.
+Let
+<span class="math notranslate nohighlight">\(\mathbf{X}=(X,Y,Z)^{\mathsf{T}}\)</span>
+be the advected particle position stored at each seed point.
+For interior nodes in a fully three-dimensional case,</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial X}{\partial x}
+\approx \frac{X_{i+1,j,k}-X_{i-1,j,k}}{2\Delta x},\qquad
+\frac{\partial X}{\partial y}
+\approx \frac{X_{i,j+1,k}-X_{i,j-1,k}}{2\Delta y},\qquad
+\frac{\partial X}{\partial z}
+\approx \frac{X_{i,j,k+1}-X_{i,j,k-1}}{2\Delta z},\]</div>
+<p>and the same centered form is applied to <span class="math notranslate nohighlight">\(Y\)</span> and <span class="math notranslate nohighlight">\(Z\)</span>.
+These nine derivatives form the Jacobian matrix <span class="math notranslate nohighlight">\(\mathbf{F}\)</span>.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">wall_treatment</span> <span class="pre">=</span> <span class="pre">periodic</span></code>, the centered-difference stencil is extended to every lattice
+point by wrapped neighbors,</p>
+<div class="math notranslate nohighlight">
+\[i_{+} = (i+1)\bmod N_x,\qquad
+i_{-} = (i-1+N_x)\bmod N_x,\]</div>
+<p>with analogous formulas in <code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
+<p>For non-periodic runs, the current mainline kernel differentiates only interior points.
+Boundary FTLE values are presently written as zero, which avoids one-sided stencils inside the GPU
+kernel.</p>
+<p>For quasi-two-dimensional inputs with <span class="math notranslate nohighlight">\(n_z \le 2\)</span>, only the <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> derivatives are
+assembled and the remaining <code class="docutils literal notranslate"><span class="pre">z</span></code>-coupling terms are set to zero in the subsequent
+Cauchy-Green tensor.</p>
+<p>Although the parameter interface still accepts labels such as <code class="docutils literal notranslate"><span class="pre">O2</span></code>, <code class="docutils literal notranslate"><span class="pre">O4</span></code>, <code class="docutils literal notranslate"><span class="pre">O6</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">Spectral</span></code> for compatibility with legacy workflows, the current native CUDA FTLE kernel
+implements the centered <code class="docutils literal notranslate"><span class="pre">O2</span></code> discretization described above.</p>
 </section>
 <section id="eigenvalue-solver">
 <span id="eigen"></span><h3>Eigenvalue Solver<a class="headerlink" href="#eigenvalue-solver" title="Link to this heading"></a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">Documentation</span> <span class="pre">being</span> <span class="pre">constructed</span></code></p>
+<p>Once the symmetric Cauchy-Green tensor</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{C} =
+\begin{bmatrix}
+c_{00} &amp; c_{01} &amp; c_{02}\\
+c_{01} &amp; c_{11} &amp; c_{12}\\
+c_{02} &amp; c_{12} &amp; c_{22}
+\end{bmatrix}\end{split}\]</div>
+<p>is assembled, the native solver evaluates only its largest eigenvalue, since that is the only
+quantity required by the FTLE definition.</p>
+<p>The current CUDA kernel uses a closed-form cubic solver, exposed in code as <code class="docutils literal notranslate"><span class="pre">EigMaxSym3</span></code>.
+Define</p>
+<div class="math notranslate nohighlight">
+\[p_1 = c_{01}^2 + c_{02}^2 + c_{12}^2.\]</div>
+<p>If <span class="math notranslate nohighlight">\(p_1=0\)</span>, the matrix is diagonal and the eigenvalues are simply
+<span class="math notranslate nohighlight">\(c_{00}\)</span>, <span class="math notranslate nohighlight">\(c_{11}\)</span>, and <span class="math notranslate nohighlight">\(c_{22}\)</span>.
+Otherwise, set</p>
+<div class="math notranslate nohighlight">
+\[q = \frac{c_{00}+c_{11}+c_{22}}{3},\]</div>
+<div class="math notranslate nohighlight">
+\[p =
+\sqrt{
+   \frac{
+      (c_{00}-q)^2 + (c_{11}-q)^2 + (c_{22}-q)^2 + 2p_1
+   }{6}
+},\]</div>
+<p>and define the normalized matrix
+<span class="math notranslate nohighlight">\(\mathbf{B}=(\mathbf{C}-q\mathbf{I})/p\)</span>.
+Its scaled determinant</p>
+<div class="math notranslate nohighlight">
+\[r = \frac{\det(\mathbf{B})}{2}\]</div>
+<p>is clamped to <span class="math notranslate nohighlight">\([-1,1]\)</span>, after which</p>
+<div class="math notranslate nohighlight">
+\[\phi = \frac{1}{3}\arccos(r),\]</div>
+<div class="math notranslate nohighlight">
+\[\lambda_1 = q + 2p\cos(\phi),\qquad
+\lambda_3 = q + 2p\cos\!\left(\phi + \frac{2\pi}{3}\right),\qquad
+\lambda_2 = 3q - \lambda_1 - \lambda_3.\]</div>
+<p>The solver then takes</p>
+<div class="math notranslate nohighlight">
+\[\lambda_{\max} = \max(\lambda_1,\lambda_2,\lambda_3).\]</div>
+<p>This algebraic route avoids iterative sweeps inside the FTLE kernel and is a natural fit for the
+symmetric positive-semidefinite Cauchy-Green tensor.
+The parameter interface still recognizes <code class="docutils literal notranslate"><span class="pre">Eigen_method</span> <span class="pre">=</span> <span class="pre">jacobi</span></code> for compatibility, but the
+current native CUDA FTLE kernel always dispatches the closed-form path above.</p>
 </section>
 </section>
 <section id="windowing-for-dynamic-lcs">
 <span id="numdyn"></span><h2>Windowing for Dynamic LCS<a class="headerlink" href="#windowing-for-dynamic-lcs" title="Link to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">Documentation</span> <span class="pre">being</span> <span class="pre">constructed</span></code></p>
+<p>Dynamic mode applies a sliding temporal window over the input frame range.
+For a global range <span class="math notranslate nohighlight">\([T_s,T_e]\)</span>, window size <span class="math notranslate nohighlight">\(\Delta T_w\)</span>, and window step
+<span class="math notranslate nohighlight">\(\Delta T_s\)</span>, the native solver constructs</p>
+<div class="math notranslate nohighlight">
+\[\left[T_s^{(m)},T_e^{(m)}\right]
+=
+\left[
+   T_s + m\,\Delta T_s,\;
+   T_s + m\,\Delta T_s + \Delta T_w
+\right],\]</div>
+<p>for</p>
+<div class="math notranslate nohighlight">
+\[m = 0,1,\dots,
+\left\lfloor
+   \frac{(T_e-\Delta T_w)-T_s}{\Delta T_s} + 1
+\right\rfloor - 1,\]</div>
+<p>so long as the last admissible start time satisfies <span class="math notranslate nohighlight">\(T_e-\Delta T_w \ge T_s\)</span>.</p>
+<p>Each window is loaded and solved independently.
+Within a window, the current mainline solver chooses an anchor frame near the midpoint of the
+local frame index range.
+If the window is sufficiently long, this anchor is clamped to the interior so that both forward
+and backward FTLE can be formed without sitting directly on the edge.</p>
+<p>The advection branches are then split as follows:</p>
+<div class="math notranslate nohighlight">
+\[\text{forward: } t_{\mathrm{anchor}} \rightarrow t_{\mathrm{end}},\qquad
+\text{backward: } t_{\mathrm{anchor}} \rightarrow t_{\mathrm{start}}.\]</div>
+<p>Accordingly, the physical integration intervals used in the FTLE normalization are</p>
+<div class="math notranslate nohighlight">
+\[T_f = (n_{\mathrm{end}} - n_{\mathrm{anchor}})\,\Delta t_{\mathrm{phys}},\qquad
+T_b = n_{\mathrm{anchor}}\,\Delta t_{\mathrm{phys}}\]</div>
+<p>in local frame coordinates.</p>
+<p>Every valid window is saved to a numbered file such as <code class="docutils literal notranslate"><span class="pre">FTLE3D_NbCU_00001.vts</span></code>.
+After all windows finish, the solver writes a <code class="docutils literal notranslate"><span class="pre">.pvd</span></code> collection whose reference time is taken
+from the anchored frame reconstructed in the original global time range.
+If a window is too short to provide an interior anchor, it is skipped.</p>
 </section>
 <section id="computational-density-and-comparison">
 <span id="numcompare"></span><h2>Computational Density and Comparison<a class="headerlink" href="#computational-density-and-comparison" title="Link to this heading"></a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">Under</span> <span class="pre">testing</span></code></p>
+<p>The native solver combines one advection scheme with one interpolation scheme, so the dominant
+cost on the advection side is well approximated by</p>
+<div class="math notranslate nohighlight">
+\[N_{\mathrm{vel}} \times N_{\mathrm{stencil}},\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_{\mathrm{vel}}\)</span> is the number of velocity evaluations per integration step and
+<span class="math notranslate nohighlight">\(N_{\mathrm{stencil}}\)</span> is the scalar stencil width used by the chosen interpolator.</p>
+<p>For the current mainline code path, the time-integration stage counts are:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Velocity evaluations per step</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Euler</span></code></p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RK2</span></code></p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RK4</span></code></p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RK6</span></code></p></td>
+<td><p>6</p></td>
+</tr>
+</tbody>
+</table>
+<p>The interpolation kernels use the following one-component stencil widths:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>3D stencil per component</p></th>
+<th class="head"><p>Remarks</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">trilinear</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(2\times2\times2\)</span></p></td>
+<td><p>Lowest cost, piecewise linear</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hermite</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(4\times4\times4\)</span></p></td>
+<td><p>Smooth cubic Hermite reconstruction</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tricubic</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(4\times4\times4\)</span></p></td>
+<td><p>Catmull-Rom style cubic spline</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">WENO</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(5\times5\times5\)</span></p></td>
+<td><p>Highest stencil density, nonlinear</p></td>
+</tr>
+</tbody>
+</table>
+<p>Hence, a coarse code-level cost ranking for advection is</p>
+<div class="math notranslate nohighlight">
+\[\text{Euler+Trilinear}
+\;&lt;\;
+\text{RK2+Trilinear}
+\;&lt;\;
+\text{RK4+(Hermite/Tricubic)}
+\;&lt;\;
+\text{RK6+WENO},\]</div>
+<p>with the exact wall time also depending on particle count, GPU occupancy, memory bandwidth,
+whether backward FTLE is enabled, and whether dynamic windows are used.</p>
+<p>In practice, <code class="docutils literal notranslate"><span class="pre">RK4</span></code> with <code class="docutils literal notranslate"><span class="pre">tricubic</span></code> or <code class="docutils literal notranslate"><span class="pre">hermite</span></code> is a balanced choice for general research
+workflows, while <code class="docutils literal notranslate"><span class="pre">WENO</span></code> is more appropriate when suppressing oscillatory reconstruction is more
+important than raw speed.</p>
 <section id="general-tips">
 <span id="numtips"></span><h3>General Tips<a class="headerlink" href="#general-tips" title="Link to this heading"></a></h3>
 <p>As for your reference, and configured as defaults, the <em>Berkeley LCS Tutorials</em> used <code class="docutils literal notranslate"><span class="pre">RK4</span></code> for advection.
-The velocity fields were interpolated with <code class="docutils literal notranslate"><span class="pre">tricubic-FL</span></code> by them, originating from <a class="reference internal" href="9_references.html#lekien2005" id="id4"><span>[Lekien2005]</span></a>, which has higher performance by solving a 64×64 linear system using the function values, gradients, and mixed partial derivatives at its eight corners, which is in future development plan for <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code> with high priority.
+The velocity fields were interpolated with <code class="docutils literal notranslate"><span class="pre">tricubic-FL</span></code> by them, originating from <a class="reference internal" href="9_references.html#lekien2005" id="id4"><span>[Lekien2005]</span></a>, which has higher performance by solving a 64×64 linear system using the function values, gradients, and mixed partial derivatives at its eight corners, which is in future development plan for <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code> with high priority.
 Although not detailed, <code class="docutils literal notranslate"><span class="pre">grad_order=2</span></code> was employed by them from the equation, supposing the mesh is sufficiently refined.</p>
 <p>Please always notice that, although providing much better numerical precision and looks cool in papers, high-order methods could be resource-consuming, even several hundred times.</p>
 </section>

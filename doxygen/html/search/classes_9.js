@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kernelrequestmanager_5ft_0',['kernelRequestManager_t',['../classkernelRequestManager__t.html',1,'']]]
+  ['kernelmanager_5ft_0',['kernelManager_t',['../classkernelManager__t.html',1,'']]]
 ];

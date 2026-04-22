@@ -6,16 +6,16 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PyFTLE3D: 3D LCS Research Toolkit with GUI &mdash; PyFTLE3D 0.1 documentation</title>
+  <title>Streamcenter+: Native CUDA/Qt Toolkit for FTLE and LCS &mdash; Streamcenter+ 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=2709fde1"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -31,7 +31,7 @@
           
           
           <a href="#" class="icon icon-home">
-            PyFTLE3D
+            Streamcenter+
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -59,7 +59,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">PyFTLE3D</a>
+          <a href="#">Streamcenter+</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -67,7 +67,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">PyFTLE3D: 3D LCS Research Toolkit with GUI</li>
+      <li class="breadcrumb-item active">Streamcenter+: Native CUDA/Qt Toolkit for FTLE and LCS</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -77,22 +77,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="pyftle3d-3d-lcs-research-toolkit-with-gui">
-<h1>PyFTLE3D: 3D LCS Research Toolkit with GUI<a class="headerlink" href="#pyftle3d-3d-lcs-research-toolkit-with-gui" title="Link to this heading"></a></h1>
+  <section id="streamcenter-native-cuda-qt-toolkit-for-ftle-and-lcs">
+<h1>Streamcenter+: Native CUDA/Qt Toolkit for FTLE and LCS<a class="headerlink" href="#streamcenter-native-cuda-qt-toolkit-for-ftle-and-lcs" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><a href="#id1"><span class="problematic" id="id2">**</span></a>The toolkit is undergoing an internal testing, and currently not publicly released. Who would like to use it in advance to release for non-profit use as early birds, please feel free contact me. The planned release time is 2025.06 - 2025.07 with high-freedom opensource license type, while the author still holds the right to change the release time. **</p>
-<p><strong>Terms marked with ``I.P.`` flag are under development. If they will be released with the toolkit at the same time is without my control due to my limited time and effort.</strong></p>
-<p><strong>- Huanxia with Regards.</strong></p>
+<p>The toolkit is still undergoing internal testing and is currently not publicly released.
+Those who would like to use it early for non-profit work are welcome to contact the author.
+The previously announced release window was 2025.06-2025.07, but the schedule may still change.</p>
+<p>Terms marked with <code class="docutils literal notranslate"><span class="pre">I.P.</span></code> are under development and may not be released at the same time as
+the main toolkit.</p>
+<p>Huanxia with regards.</p>
 </div>
-<p>PyFTLE3D is a Python-based research toolkit for computing and visualizing Lagrangian coherent structures (LCS) in three-dimensional fluid flows and other complex systems by computing Finite Time Lyapunov Exponent (FTLE) field.
-Coming with GUI and integrated runtime, it is designed to be user-friendly and accessible, allowing peers to easily analyze and visualize LCS in their data, with no need for researchers to have any programming knowledge, just like using postprocessing software such as ParaView or Tecplot.
-It provides multiple OOTB numerical methods, with various computation density, accuracy, and focus preferences.
-Certainly, it is also suitable for those with programming experience who want to customize their analysis and define more functions.</p>
-<p>The computation is accelerated by CUDA (Python Numba implement), achieving over 30x speedup compared to the CPU version.
-The author currently lacks the capability to develop with OpenCL, so for now only NVIDIA GPUs are supported for acceleration.
-As most computers have larger RAM than GPU memory, the toolkit also supports CPU mode for large datasets on CPU systems.
-Although, the new features would firstly be added to the GPU version, and the CPU version would be updated with a month-scale delay.</p>
+<p>Streamcenter+ is a GPU-accelerated toolbox for computing and visualizing Lagrangian coherent
+structures (LCS) in two- and three-dimensional unsteady flows through Finite-Time Lyapunov
+Exponent (FTLE) fields.
+The current mainline is centered on a native CUDA solver and a Qt/VTK desktop GUI, combining
+structured VTK time-sequence input, <code class="docutils literal notranslate"><span class="pre">.par</span></code>-driven execution, and integrated result inspection
+in one workflow.</p>
+<p>The previous Python implementation is preserved as a legacy archive for reference and migration,
+but it is no longer the supported mainline path.
+For the mainline solver, NVIDIA GPUs are currently the supported acceleration target.
+Multiple advection, interpolation, wall-treatment, and dynamic-window options are provided so the
+user can balance computational density, smoothness, and numerical cost for a given research task.</p>
 <p>For the start, it is strongly suggested to begin with reading the review by Prof. George Haller in regard to LCS <a class="reference external" href="https://www.georgehaller.com/reprints/annurev-fluid-010313-141322.pdf">here</a>, published on Annual Review of Fluid Mechanics, instead of directly use this toolkit without any theoretical foundation.
 Some of the theories can be found in this section, but it is still more encouraged to learn LCS theories and numerical methods by reading the technical papers.</p>
 <section id="table-of-contents">
@@ -130,9 +136,9 @@ Some of the theories can be found in this section, but it is still more encourag
 <li class="toctree-l1"><a class="reference internal" href="7_command.html">Command-Line Mode (Commands)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="8_faqs.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="9_references.html">References</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="9_references.html#cited-and-suggested-by-py3dftle">Cited and Suggested by <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="9_references.html#papers-who-uses-py3dftle">Papers Who Uses <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="9_references.html#related-papers-who-cited-py3dftle">Related Papers Who Cited <code class="docutils literal notranslate"><span class="pre">Py3DFTLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="9_references.html#cited-and-suggested-by-streamcenter">Cited and Suggested by <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="9_references.html#papers-who-uses-streamcenter">Papers Who Uses <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="9_references.html#related-papers-who-cited-streamcenter">Related Papers Who Cited <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code></a></li>
 </ul>
 </li>
 </ul>

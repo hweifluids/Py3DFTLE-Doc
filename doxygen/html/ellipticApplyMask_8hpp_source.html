@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>nekRS: solvers/elliptic/ellipticApplyMask.hpp Source File</title>
+<title>nekRS: core/elliptic/ellipticApplyMask.hpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -74,7 +74,7 @@ $(document).ready(function() { init_codefold(0); });
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_65b24c28d0f232e494405d4f9f0c5236.html">solvers</a></li><li class="navelem"><a class="el" href="dir_37358d9914dc007bcced76f54f299790.html">elliptic</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_4270bfced15e0e73154b13468c7c9ad9.html">core</a></li><li class="navelem"><a class="el" href="dir_6fd56ce5ae9a08b4770a961721dbfe55.html">elliptic</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -89,16 +89,15 @@ $(document).ready(function() { init_codefold(0); });
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">class </span><a class="code hl_struct" href="structelliptic__t.html">elliptic_t</a>;</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keywordtype">void</span> ellipticApplyMask(<a class="code hl_struct" href="structelliptic__t.html">elliptic_t</a> *solver, occa::memory &amp;o_x, std::string precision);</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keywordtype">void</span> ellipticApplyMask(<a class="code hl_struct" href="structelliptic__t.html">elliptic_t</a> *solver, occa::memory &amp;o_x);</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keywordtype">void</span> ellipticApplyMask(<a class="code hl_struct" href="structelliptic__t.html">elliptic_t</a> *solver,</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>                       dlong Nelements,</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>                       dlong Nmasked,</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                       occa::memory &amp;o_elementList,</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                       occa::memory &amp;o_maskIds,</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                       occa::memory &amp;o_x,</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                       std::string precision);</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="astructelliptic__t_html"><div class="ttname"><a href="structelliptic__t.html">elliptic_t</a></div><div class="ttdef"><b>Definition</b> elliptic.h:74</div></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                       <span class="keyword">const</span> occa::memory &amp;o_elementList,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                       <span class="keyword">const</span> occa::memory &amp;o_maskIds,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                       occa::memory &amp;o_x);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="astructelliptic__t_html"><div class="ttname"><a href="structelliptic__t.html">elliptic_t</a></div><div class="ttdef"><b>Definition</b> elliptic.h:43</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

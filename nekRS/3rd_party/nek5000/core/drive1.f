@@ -99,14 +99,20 @@ c      COMMON /SCRCG/ DUMM10(LX1,LY1,LZ1,LELT,1)
       if (ifmvbd) call setup_mesh_dssum ! Set mesh dssum (needs geom)
 
       if(nio.eq.0) write(6,*) 'call usrdat2'
+      do iref=1,nhref
+         call h_refine_usrdat2(hrefcuts(iref))
+         call fix_geom
+      enddo
+
       call usrdat2
       if(nio.eq.0) write(6,'(A,/)') ' done :: usrdat2' 
 
       call count_bdry   ! count the number of faces with assigned BCs
       call fix_geom
 
+      call chk_axis         ! verify axisymmetric mesh/BC requirements
       call vrdsmsh          ! verify mesh topology
-      call mesh_metrics     ! print some metrics
+      call mesh_check(ifjac0_abort,2,0) ! check mesh and print metrics
 
       call setlog(.true.)   ! Initalize logical flags
 
@@ -140,7 +146,7 @@ c      COMMON /SCRCG/ DUMM10(LX1,LY1,LZ1,LELT,1)
          call userchk
          if(nio.eq.0) write(6,'(A,/)') ' done :: userchk' 
       endif
-
+      call mesh_check(.true.,1,1) ! check mesh for possible changes from setics or userchk
       call setprop      ! call again because input has changed in userchk
 
       if (ifcvode .and. nsteps.gt.0) call cv_init
@@ -331,16 +337,18 @@ c-----------------------------------------------------------------------
 c-----------------------------------------------------------------------
       subroutine nek_end
 
+      include 'mpif.h'
       include 'SIZE'
       include 'TOTAL'
       include 'DPROCMAP'
+      include 'RESTART'
 
       if(instep.ne.0) call runstat
 
 c      if (ifstrs) then
-c         call fgslib_crs_free(xxth_strs) 
+c         call crs_free(xxth_strs) 
 c      else
-c         call fgslib_crs_free(xxth(1))
+c         call crs_free(xxth(1))
 c      endif
 
 #ifdef DPROCMAP
@@ -348,6 +356,13 @@ c      endif
       call MPI_Win_free(dProcmapH, ierr)
 #endif
 #endif 
+ 
+#ifdef MPI
+      if (commrs .ne. MPI_COMM_NULL) then
+        call MPI_Win_free(rsH, ierr)
+      endif
+#endif
+
       call in_situ_end()
       call exitt0()
 

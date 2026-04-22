@@ -73,7 +73,6 @@ $(function() {
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classlpm__t-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">lpm_t Class Reference</div></div>
 </div><!--header-->
@@ -84,63 +83,66 @@ Public Types</h2></td></tr>
 <tr class="memitem:a5809ce22d6334fc7d9672b0aa824f518" id="r_a5809ce22d6334fc7d9672b0aa824f518"><td class="memItemLeft" align="right" valign="top"><a id="a5809ce22d6334fc7d9672b0aa824f518" name="a5809ce22d6334fc7d9672b0aa824f518"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>VerbosityLevel</b> = pointInterpolation_t::VerbosityLevel</td></tr>
 <tr class="separator:a5809ce22d6334fc7d9672b0aa824f518"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a016887bf8e727a8655d820a7b3f99930" id="r_a016887bf8e727a8655d820a7b3f99930"><td class="memItemLeft" align="right" valign="top"><a id="a016887bf8e727a8655d820a7b3f99930" name="a016887bf8e727a8655d820a7b3f99930"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>rhsFunc_t</b> = std::function&lt; void(<a class="el" href="structnrs__t.html">nrs_t</a> *nrs, <a class="el" href="classlpm__t.html">lpm_t</a> *lpm, dfloat time, occa::memory o_y, void *userdata, occa::memory o_ydot)&gt;</td></tr>
-<tr class="separator:a016887bf8e727a8655d820a7b3f99930"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c20a0ebf3b19e70a0c0f9b83fc004ae" id="r_a6c20a0ebf3b19e70a0c0f9b83fc004ae"><td class="memItemLeft" align="right" valign="top"><a id="a6c20a0ebf3b19e70a0c0f9b83fc004ae" name="a6c20a0ebf3b19e70a0c0f9b83fc004ae"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>odeSolverFunc_t</b> = std::function&lt; void(<a class="el" href="structnrs__t.html">nrs_t</a> *nrs, <a class="el" href="classlpm__t.html">lpm_t</a> *lpm, dfloat t0, dfloat tf, int step, occa::memory o_y, void *userdata, occa::memory o_ydot)&gt;</td></tr>
-<tr class="separator:a6c20a0ebf3b19e70a0c0f9b83fc004ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a070b5771f45765a8cb9a90730be0f667" id="r_a070b5771f45765a8cb9a90730be0f667"><td class="memItemLeft" align="right" valign="top"><a id="a070b5771f45765a8cb9a90730be0f667" name="a070b5771f45765a8cb9a90730be0f667"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>rhsFunc_t</b> = std::function&lt; void(<a class="el" href="classlpm__t.html">lpm_t</a> *lpm, double time, const <a class="el" href="classdeviceMemory.html">deviceMemory</a>&lt; dfloat &gt; &amp;o_y, void *userdata, <a class="el" href="classdeviceMemory.html">deviceMemory</a>&lt; dfloat &gt; &amp;o_ydot)&gt;</td></tr>
+<tr class="separator:a070b5771f45765a8cb9a90730be0f667"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56756b6b9355bcc8762a37a45f31e9a9" id="r_a56756b6b9355bcc8762a37a45f31e9a9"><td class="memItemLeft" align="right" valign="top"><a id="a56756b6b9355bcc8762a37a45f31e9a9" name="a56756b6b9355bcc8762a37a45f31e9a9"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>odeSolverFunc_t</b> = std::function&lt; void(<a class="el" href="classlpm__t.html">lpm_t</a> *lpm, double t0, double tf, int step, const <a class="el" href="classdeviceMemory.html">deviceMemory</a>&lt; dfloat &gt; &amp;o_y, void *userdata, <a class="el" href="classdeviceMemory.html">deviceMemory</a>&lt; dfloat &gt; &amp;o_ydot)&gt;</td></tr>
+<tr class="separator:a56756b6b9355bcc8762a37a45f31e9a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7e3c2d2468c9319cad21dbf11ef69f40" id="r_a7e3c2d2468c9319cad21dbf11ef69f40"><td class="memItemLeft" align="right" valign="top"><a id="a7e3c2d2468c9319cad21dbf11ef69f40" name="a7e3c2d2468c9319cad21dbf11ef69f40"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>lpm_t</b> (<a class="el" href="structnrs__t.html">nrs_t</a> *nrs, dfloat bb_tol_=0.01, dfloat newton_tol_=0.0)</td></tr>
-<tr class="separator:a7e3c2d2468c9319cad21dbf11ef69f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8477baf994d993391b150abc30935053" id="r_a8477baf994d993391b150abc30935053"><td class="memItemLeft" align="right" valign="top"><a id="a8477baf994d993391b150abc30935053" name="a8477baf994d993391b150abc30935053"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>lpm_t</b> (<a class="el" href="structmesh__t.html">mesh_t</a> *mesh, dfloat *dt, dfloat bb_tol=0.01, dfloat newton_tol=0.0)</td></tr>
+<tr class="separator:a8477baf994d993391b150abc30935053"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3336548d11c601806a86f2478354494" id="r_ae3336548d11c601806a86f2478354494"><td class="memItemLeft" align="right" valign="top"><a id="ae3336548d11c601806a86f2478354494" name="ae3336548d11c601806a86f2478354494"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>extOrder</b> (int order)</td></tr>
+<tr class="separator:ae3336548d11c601806a86f2478354494"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8078164d50f4d6f811229071d33eeeb3" id="r_a8078164d50f4d6f811229071d33eeeb3"><td class="memItemLeft" align="right" valign="top"><a id="a8078164d50f4d6f811229071d33eeeb3" name="a8078164d50f4d6f811229071d33eeeb3"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>abOrder</b> (int order)</td></tr>
 <tr class="separator:a8078164d50f4d6f811229071d33eeeb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a108cdca5fd7505248a8b59a04c8772e1" id="r_a108cdca5fd7505248a8b59a04c8772e1"><td class="memItemLeft" align="right" valign="top"><a id="a108cdca5fd7505248a8b59a04c8772e1" name="a108cdca5fd7505248a8b59a04c8772e1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>rkOrder</b> (int order)</td></tr>
 <tr class="separator:a108cdca5fd7505248a8b59a04c8772e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7b9ef01607b567dd9f7ff567d7a15b5" id="r_af7b9ef01607b567dd9f7ff567d7a15b5"><td class="memItemLeft" align="right" valign="top"><a id="af7b9ef01607b567dd9f7ff567d7a15b5" name="af7b9ef01607b567dd9f7ff567d7a15b5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setSolver</b> (std::string solver)</td></tr>
-<tr class="separator:af7b9ef01607b567dd9f7ff567d7a15b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a38cf3bd76bc8c36281110a9134d212" id="r_a7a38cf3bd76bc8c36281110a9134d212"><td class="memItemLeft" align="right" valign="top"><a id="a7a38cf3bd76bc8c36281110a9134d212" name="a7a38cf3bd76bc8c36281110a9134d212"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>registerDOF</b> (std::string dofName, bool output=true)</td></tr>
-<tr class="separator:a7a38cf3bd76bc8c36281110a9134d212"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af91dd03eb51270dab08e9f38cbe93b4c" id="r_af91dd03eb51270dab08e9f38cbe93b4c"><td class="memItemLeft" align="right" valign="top"><a id="af91dd03eb51270dab08e9f38cbe93b4c" name="af91dd03eb51270dab08e9f38cbe93b4c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>registerDOF</b> (dlong Nfields, std::string dofName, bool output=true)</td></tr>
-<tr class="separator:af91dd03eb51270dab08e9f38cbe93b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d939e6b92ac2bb81ec7220147ad9a3b" id="r_a0d939e6b92ac2bb81ec7220147ad9a3b"><td class="memItemLeft" align="right" valign="top"><a id="a0d939e6b92ac2bb81ec7220147ad9a3b" name="a0d939e6b92ac2bb81ec7220147ad9a3b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>registerProp</b> (std::string propName, bool output=true)</td></tr>
-<tr class="separator:a0d939e6b92ac2bb81ec7220147ad9a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf0c1acd42229555e131227a570f0717" id="r_adf0c1acd42229555e131227a570f0717"><td class="memItemLeft" align="right" valign="top"><a id="adf0c1acd42229555e131227a570f0717" name="adf0c1acd42229555e131227a570f0717"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>registerProp</b> (dlong Nfields, std::string propName, bool output=true)</td></tr>
-<tr class="separator:adf0c1acd42229555e131227a570f0717"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19ec1299d8763274d6f775c295f1c2c9" id="r_a19ec1299d8763274d6f775c295f1c2c9"><td class="memItemLeft" align="right" valign="top"><a id="a19ec1299d8763274d6f775c295f1c2c9" name="a19ec1299d8763274d6f775c295f1c2c9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>registerInterpField</b> (std::string interpFieldName, occa::memory o_fld, bool output=true)</td></tr>
-<tr class="separator:a19ec1299d8763274d6f775c295f1c2c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad99dc49dd1c450687172cd91fbe275fe" id="r_ad99dc49dd1c450687172cd91fbe275fe"><td class="memItemLeft" align="right" valign="top"><a id="ad99dc49dd1c450687172cd91fbe275fe" name="ad99dc49dd1c450687172cd91fbe275fe"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>registerInterpField</b> (std::string interpFieldName, dlong Nfields, occa::memory o_fld, bool output=true)</td></tr>
-<tr class="separator:ad99dc49dd1c450687172cd91fbe275fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77a0b42d22134ab8c83f0c02eafe6f7a" id="r_a77a0b42d22134ab8c83f0c02eafe6f7a"><td class="memItemLeft" align="right" valign="top"><a id="a77a0b42d22134ab8c83f0c02eafe6f7a" name="a77a0b42d22134ab8c83f0c02eafe6f7a"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>dofId</b> (std::string dofName) const</td></tr>
-<tr class="separator:a77a0b42d22134ab8c83f0c02eafe6f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3abe9dedf7e4947536a1f02f746a0bdc" id="r_a3abe9dedf7e4947536a1f02f746a0bdc"><td class="memItemLeft" align="right" valign="top"><a id="a3abe9dedf7e4947536a1f02f746a0bdc" name="a3abe9dedf7e4947536a1f02f746a0bdc"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>numDOFs</b> (std::string dofName) const</td></tr>
-<tr class="separator:a3abe9dedf7e4947536a1f02f746a0bdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9954544f46eac27cf0cc878ab067d99" id="r_ac9954544f46eac27cf0cc878ab067d99"><td class="memItemLeft" align="right" valign="top"><a id="ac9954544f46eac27cf0cc878ab067d99" name="ac9954544f46eac27cf0cc878ab067d99"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>propId</b> (std::string propName) const</td></tr>
-<tr class="separator:ac9954544f46eac27cf0cc878ab067d99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3fc950cfa414a349108cc1637f9bb21" id="r_af3fc950cfa414a349108cc1637f9bb21"><td class="memItemLeft" align="right" valign="top"><a id="af3fc950cfa414a349108cc1637f9bb21" name="af3fc950cfa414a349108cc1637f9bb21"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>numProps</b> (std::string propName) const</td></tr>
-<tr class="separator:af3fc950cfa414a349108cc1637f9bb21"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38e83429b4f4432ac0acc137affd4e2b" id="r_a38e83429b4f4432ac0acc137affd4e2b"><td class="memItemLeft" align="right" valign="top"><a id="a38e83429b4f4432ac0acc137affd4e2b" name="a38e83429b4f4432ac0acc137affd4e2b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>interpFieldId</b> (std::string interpFieldName) const</td></tr>
-<tr class="separator:a38e83429b4f4432ac0acc137affd4e2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adccfec81bc71c520dc86ae085c5499d9" id="r_adccfec81bc71c520dc86ae085c5499d9"><td class="memItemLeft" align="right" valign="top"><a id="adccfec81bc71c520dc86ae085c5499d9" name="adccfec81bc71c520dc86ae085c5499d9"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>numFieldsInterp</b> (std::string interpFieldName) const</td></tr>
-<tr class="separator:adccfec81bc71c520dc86ae085c5499d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad08838d5cf38a803982195b34980140b" id="r_ad08838d5cf38a803982195b34980140b"><td class="memItemLeft" align="right" valign="top"><a id="ad08838d5cf38a803982195b34980140b" name="ad08838d5cf38a803982195b34980140b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setSolver</b> (const std::string &amp;solver)</td></tr>
+<tr class="separator:ad08838d5cf38a803982195b34980140b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a098a85f02893955834464c0728d11cff" id="r_a098a85f02893955834464c0728d11cff"><td class="memItemLeft" align="right" valign="top"><a id="a098a85f02893955834464c0728d11cff" name="a098a85f02893955834464c0728d11cff"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addVariable</b> (const std::string &amp;dofName, bool output=true)</td></tr>
+<tr class="separator:a098a85f02893955834464c0728d11cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9f6e19e7385f72e1bd978a1edf865dc" id="r_ae9f6e19e7385f72e1bd978a1edf865dc"><td class="memItemLeft" align="right" valign="top"><a id="ae9f6e19e7385f72e1bd978a1edf865dc" name="ae9f6e19e7385f72e1bd978a1edf865dc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addVariable</b> (dlong Nfields, const std::string &amp;dofName, bool output=true)</td></tr>
+<tr class="separator:ae9f6e19e7385f72e1bd978a1edf865dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46140fefd5b27477ea339a9dc04d8543" id="r_a46140fefd5b27477ea339a9dc04d8543"><td class="memItemLeft" align="right" valign="top"><a id="a46140fefd5b27477ea339a9dc04d8543" name="a46140fefd5b27477ea339a9dc04d8543"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addProp</b> (const std::string &amp;propName, bool output=true)</td></tr>
+<tr class="separator:a46140fefd5b27477ea339a9dc04d8543"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61f61b5c8c09240f9aea4f34578f448c" id="r_a61f61b5c8c09240f9aea4f34578f448c"><td class="memItemLeft" align="right" valign="top"><a id="a61f61b5c8c09240f9aea4f34578f448c" name="a61f61b5c8c09240f9aea4f34578f448c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addProp</b> (dlong Nfields, const std::string &amp;propName, bool output=true)</td></tr>
+<tr class="separator:a61f61b5c8c09240f9aea4f34578f448c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37b1b8393ebe52cccf7eae2ae23d60c0" id="r_a37b1b8393ebe52cccf7eae2ae23d60c0"><td class="memItemLeft" align="right" valign="top"><a id="a37b1b8393ebe52cccf7eae2ae23d60c0" name="a37b1b8393ebe52cccf7eae2ae23d60c0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addInterpField</b> (const std::string &amp;interpFieldName, const occa::memory &amp;o_fld, bool output=true)</td></tr>
+<tr class="separator:a37b1b8393ebe52cccf7eae2ae23d60c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77bb7336a7cd3940c37258ca2fa7dffe" id="r_a77bb7336a7cd3940c37258ca2fa7dffe"><td class="memItemLeft" align="right" valign="top"><a id="a77bb7336a7cd3940c37258ca2fa7dffe" name="a77bb7336a7cd3940c37258ca2fa7dffe"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addInterpField</b> (const std::string &amp;interpFieldName, int Nfields, dlong fieldOffset, const occa::memory &amp;o_fld, bool output=true)</td></tr>
+<tr class="separator:a77bb7336a7cd3940c37258ca2fa7dffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4a617111d566f59b6f702b51cd4df00" id="r_af4a617111d566f59b6f702b51cd4df00"><td class="memItemLeft" align="right" valign="top"><a id="af4a617111d566f59b6f702b51cd4df00" name="af4a617111d566f59b6f702b51cd4df00"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>dofId</b> (const std::string &amp;dofName) const</td></tr>
+<tr class="separator:af4a617111d566f59b6f702b51cd4df00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83514af6cb5d557c1cb304b14c394561" id="r_a83514af6cb5d557c1cb304b14c394561"><td class="memItemLeft" align="right" valign="top"><a id="a83514af6cb5d557c1cb304b14c394561" name="a83514af6cb5d557c1cb304b14c394561"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>numDOFs</b> (const std::string &amp;dofName) const</td></tr>
+<tr class="separator:a83514af6cb5d557c1cb304b14c394561"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0df156e83c203272a62eade69b8be09c" id="r_a0df156e83c203272a62eade69b8be09c"><td class="memItemLeft" align="right" valign="top"><a id="a0df156e83c203272a62eade69b8be09c" name="a0df156e83c203272a62eade69b8be09c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>propId</b> (const std::string &amp;propName) const</td></tr>
+<tr class="separator:a0df156e83c203272a62eade69b8be09c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e9cd012b43c6542f0c41edbadd781f5" id="r_a5e9cd012b43c6542f0c41edbadd781f5"><td class="memItemLeft" align="right" valign="top"><a id="a5e9cd012b43c6542f0c41edbadd781f5" name="a5e9cd012b43c6542f0c41edbadd781f5"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>numProps</b> (const std::string &amp;propName) const</td></tr>
+<tr class="separator:a5e9cd012b43c6542f0c41edbadd781f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae88fb1b6a3f3baa127a09eb95926d870" id="r_ae88fb1b6a3f3baa127a09eb95926d870"><td class="memItemLeft" align="right" valign="top"><a id="ae88fb1b6a3f3baa127a09eb95926d870" name="ae88fb1b6a3f3baa127a09eb95926d870"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>interpFieldId</b> (const std::string &amp;interpFieldName) const</td></tr>
+<tr class="separator:ae88fb1b6a3f3baa127a09eb95926d870"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb51f4203346ec8b07b87a498fd016ab" id="r_abb51f4203346ec8b07b87a498fd016ab"><td class="memItemLeft" align="right" valign="top"><a id="abb51f4203346ec8b07b87a498fd016ab" name="abb51f4203346ec8b07b87a498fd016ab"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>numFieldsInterp</b> (const std::string &amp;interpFieldName) const</td></tr>
+<tr class="separator:abb51f4203346ec8b07b87a498fd016ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab664062402f741ccb1fe2c4acb40af41" id="r_ab664062402f741ccb1fe2c4acb40af41"><td class="memItemLeft" align="right" valign="top"><a id="ab664062402f741ccb1fe2c4acb40af41" name="ab664062402f741ccb1fe2c4acb40af41"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>initialized</b> () const</td></tr>
 <tr class="separator:ab664062402f741ccb1fe2c4acb40af41"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -153,12 +155,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setUserODESolver</b> 
 <tr class="memitem:acb3159f5ecc9985b52a2ca1cf0d2c255" id="r_acb3159f5ecc9985b52a2ca1cf0d2c255"><td class="memItemLeft" align="right" valign="top"><a id="acb3159f5ecc9985b52a2ca1cf0d2c255" name="acb3159f5ecc9985b52a2ca1cf0d2c255"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addUserData</b> (void *userdata)</td></tr>
 <tr class="separator:acb3159f5ecc9985b52a2ca1cf0d2c255"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a416700ed60de638d8fff3009758a3338" id="r_a416700ed60de638d8fff3009758a3338"><td class="memItemLeft" align="right" valign="top"><a id="a416700ed60de638d8fff3009758a3338" name="a416700ed60de638d8fff3009758a3338"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (int nParticles, dfloat t0, std::vector&lt; dfloat &gt; &amp;y0)</td></tr>
-<tr class="separator:a416700ed60de638d8fff3009758a3338"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fa1dd8b2c08d430c30f98d5025afca0" id="r_a2fa1dd8b2c08d430c30f98d5025afca0"><td class="memItemLeft" align="right" valign="top"><a id="a2fa1dd8b2c08d430c30f98d5025afca0" name="a2fa1dd8b2c08d430c30f98d5025afca0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (int nParticles, dfloat t0, occa::memory o_y0)</td></tr>
-<tr class="separator:a2fa1dd8b2c08d430c30f98d5025afca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1907a3890c8a887a2e70111d7e42b40" id="r_ad1907a3890c8a887a2e70111d7e42b40"><td class="memItemLeft" align="right" valign="top"><a id="ad1907a3890c8a887a2e70111d7e42b40" name="ad1907a3890c8a887a2e70111d7e42b40"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (int nParticles, double t0, const std::vector&lt; dfloat &gt; &amp;y0)</td></tr>
+<tr class="separator:ad1907a3890c8a887a2e70111d7e42b40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6467bc56730c65d8430f8fb79a77c45" id="r_ac6467bc56730c65d8430f8fb79a77c45"><td class="memItemLeft" align="right" valign="top"><a id="ac6467bc56730c65d8430f8fb79a77c45" name="ac6467bc56730c65d8430f8fb79a77c45"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>initialize</b> (int nParticles, double t0, const occa::memory &amp;o_y0)</td></tr>
+<tr class="separator:ac6467bc56730c65d8430f8fb79a77c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65342ead1555a86a2198ac05ab7519dc" id="r_a65342ead1555a86a2198ac05ab7519dc"><td class="memItemLeft" align="right" valign="top"><a id="a65342ead1555a86a2198ac05ab7519dc" name="a65342ead1555a86a2198ac05ab7519dc"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>fieldOffset</b> () const</td></tr>
 <tr class="separator:a65342ead1555a86a2198ac05ab7519dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -174,60 +176,48 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nInterpFields</b> () c
 <tr class="memitem:aa6dd4b2601d72167122cb5ef769b0b78" id="r_aa6dd4b2601d72167122cb5ef769b0b78"><td class="memItemLeft" align="right" valign="top"><a id="aa6dd4b2601d72167122cb5ef769b0b78" name="aa6dd4b2601d72167122cb5ef769b0b78"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>numParticles</b> () const</td></tr>
 <tr class="separator:aa6dd4b2601d72167122cb5ef769b0b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d407c61d33e784f9f69d3088abadc6e" id="r_a1d407c61d33e784f9f69d3088abadc6e"><td class="memItemLeft" align="right" valign="top"><a id="a1d407c61d33e784f9f69d3088abadc6e" name="a1d407c61d33e784f9f69d3088abadc6e"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>integrate</b> (dfloat tf)</td></tr>
-<tr class="separator:a1d407c61d33e784f9f69d3088abadc6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ee7435fbdf3a4eb6ae188255c6e7073" id="r_a6ee7435fbdf3a4eb6ae188255c6e7073"><td class="memItemLeft" align="right" valign="top"><a id="a6ee7435fbdf3a4eb6ae188255c6e7073" name="a6ee7435fbdf3a4eb6ae188255c6e7073"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>writeFld</b> ()</td></tr>
-<tr class="separator:a6ee7435fbdf3a4eb6ae188255c6e7073"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebd3c3e06c653d160bb0ee7872012998" id="r_aebd3c3e06c653d160bb0ee7872012998"><td class="memItemLeft" align="right" valign="top"><a id="aebd3c3e06c653d160bb0ee7872012998" name="aebd3c3e06c653d160bb0ee7872012998"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>restart</b> (std::string restartFile)</td></tr>
-<tr class="separator:aebd3c3e06c653d160bb0ee7872012998"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12714a8c17af6b09658ed17fef44cb58" id="r_a12714a8c17af6b09658ed17fef44cb58"><td class="memItemLeft" align="right" valign="top"><a id="a12714a8c17af6b09658ed17fef44cb58" name="a12714a8c17af6b09658ed17fef44cb58"></a>
-occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>getDOF</b> (int dofId)</td></tr>
-<tr class="separator:a12714a8c17af6b09658ed17fef44cb58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21028ed1dc08fe3f4219a66dd8926d88" id="r_a21028ed1dc08fe3f4219a66dd8926d88"><td class="memItemLeft" align="right" valign="top"><a id="a21028ed1dc08fe3f4219a66dd8926d88" name="a21028ed1dc08fe3f4219a66dd8926d88"></a>
-occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>getDOF</b> (std::string dofName)</td></tr>
-<tr class="separator:a21028ed1dc08fe3f4219a66dd8926d88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9fa628e23a90efd7ba10ea09331f04d" id="r_af9fa628e23a90efd7ba10ea09331f04d"><td class="memItemLeft" align="right" valign="top"><a id="af9fa628e23a90efd7ba10ea09331f04d" name="af9fa628e23a90efd7ba10ea09331f04d"></a>
-std::vector&lt; dfloat &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getDOFHost</b> (std::string dofName)</td></tr>
-<tr class="separator:af9fa628e23a90efd7ba10ea09331f04d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61be5c817c043675419bdd49732291eb" id="r_a61be5c817c043675419bdd49732291eb"><td class="memItemLeft" align="right" valign="top"><a id="a61be5c817c043675419bdd49732291eb" name="a61be5c817c043675419bdd49732291eb"></a>
-occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>getProp</b> (int propId)</td></tr>
-<tr class="separator:a61be5c817c043675419bdd49732291eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80c8b9f94b7bf3540362eb97fff15aed" id="r_a80c8b9f94b7bf3540362eb97fff15aed"><td class="memItemLeft" align="right" valign="top"><a id="a80c8b9f94b7bf3540362eb97fff15aed" name="a80c8b9f94b7bf3540362eb97fff15aed"></a>
-occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>getProp</b> (std::string propName)</td></tr>
-<tr class="separator:a80c8b9f94b7bf3540362eb97fff15aed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afad4e640fb9bbf143210d4401f2ed98a" id="r_afad4e640fb9bbf143210d4401f2ed98a"><td class="memItemLeft" align="right" valign="top"><a id="afad4e640fb9bbf143210d4401f2ed98a" name="afad4e640fb9bbf143210d4401f2ed98a"></a>
-std::vector&lt; dfloat &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getPropHost</b> (std::string propName)</td></tr>
-<tr class="separator:afad4e640fb9bbf143210d4401f2ed98a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcb405b3ec6b72e94c0ab6c3d6ed428f" id="r_adcb405b3ec6b72e94c0ab6c3d6ed428f"><td class="memItemLeft" align="right" valign="top"><a id="adcb405b3ec6b72e94c0ab6c3d6ed428f" name="adcb405b3ec6b72e94c0ab6c3d6ed428f"></a>
-occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>getInterpField</b> (int interpFieldId)</td></tr>
-<tr class="separator:adcb405b3ec6b72e94c0ab6c3d6ed428f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a73c859d88c65f88469be9fc94e1fcd" id="r_a9a73c859d88c65f88469be9fc94e1fcd"><td class="memItemLeft" align="right" valign="top"><a id="a9a73c859d88c65f88469be9fc94e1fcd" name="a9a73c859d88c65f88469be9fc94e1fcd"></a>
-occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>getInterpField</b> (std::string interpFieldName)</td></tr>
-<tr class="separator:a9a73c859d88c65f88469be9fc94e1fcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a26dc10e9f923c94401a905ef0d697091" id="r_a26dc10e9f923c94401a905ef0d697091"><td class="memItemLeft" align="right" valign="top"><a id="a26dc10e9f923c94401a905ef0d697091" name="a26dc10e9f923c94401a905ef0d697091"></a>
-std::vector&lt; dfloat &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getInterpFieldHost</b> (std::string interpFieldName)</td></tr>
-<tr class="separator:a26dc10e9f923c94401a905ef0d697091"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7b84031e2d94dda7edb931445833144" id="r_af7b84031e2d94dda7edb931445833144"><td class="memItemLeft" align="right" valign="top"><a id="af7b84031e2d94dda7edb931445833144" name="af7b84031e2d94dda7edb931445833144"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>integrate</b> (double tf)</td></tr>
+<tr class="separator:af7b84031e2d94dda7edb931445833144"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24312418cbaf71d14e5cd7ca0324ae97" id="r_a24312418cbaf71d14e5cd7ca0324ae97"><td class="memItemLeft" align="right" valign="top"><a id="a24312418cbaf71d14e5cd7ca0324ae97" name="a24312418cbaf71d14e5cd7ca0324ae97"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>writeToFile</b> ()</td></tr>
+<tr class="separator:a24312418cbaf71d14e5cd7ca0324ae97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43b20f1c3477aba5e927ed6c761de27e" id="r_a43b20f1c3477aba5e927ed6c761de27e"><td class="memItemLeft" align="right" valign="top"><a id="a43b20f1c3477aba5e927ed6c761de27e" name="a43b20f1c3477aba5e927ed6c761de27e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>restart</b> (const std::string &amp;restartFile)</td></tr>
+<tr class="separator:a43b20f1c3477aba5e927ed6c761de27e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee2f7afb06a9b1fddcc8d47799d4b6f6" id="r_aee2f7afb06a9b1fddcc8d47799d4b6f6"><td class="memItemLeft" align="right" valign="top"><a id="aee2f7afb06a9b1fddcc8d47799d4b6f6" name="aee2f7afb06a9b1fddcc8d47799d4b6f6"></a>
+occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>getDOF</b> (const std::string &amp;dofName) const</td></tr>
+<tr class="separator:aee2f7afb06a9b1fddcc8d47799d4b6f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0312501c7010cdda86541fba6aeff8d" id="r_ac0312501c7010cdda86541fba6aeff8d"><td class="memItemLeft" align="right" valign="top"><a id="ac0312501c7010cdda86541fba6aeff8d" name="ac0312501c7010cdda86541fba6aeff8d"></a>
+occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>getProp</b> (const std::string &amp;propName) const</td></tr>
+<tr class="separator:ac0312501c7010cdda86541fba6aeff8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a281699a8e225aacf402c25b61123601c" id="r_a281699a8e225aacf402c25b61123601c"><td class="memItemLeft" align="right" valign="top"><a id="a281699a8e225aacf402c25b61123601c" name="a281699a8e225aacf402c25b61123601c"></a>
+std::vector&lt; dfloat &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getPropHost</b> (const std::string &amp;propName) const</td></tr>
+<tr class="separator:a281699a8e225aacf402c25b61123601c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0111a998d930f8694b23cdb77132ffd3" id="r_a0111a998d930f8694b23cdb77132ffd3"><td class="memItemLeft" align="right" valign="top"><a id="a0111a998d930f8694b23cdb77132ffd3" name="a0111a998d930f8694b23cdb77132ffd3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setProp</b> (const std::string &amp;propName, const occa::memory &amp;o_fld, dlong _offset=0)</td></tr>
+<tr class="separator:a0111a998d930f8694b23cdb77132ffd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16b94c339edd3e08f0ec3bca83b2daaa" id="r_a16b94c339edd3e08f0ec3bca83b2daaa"><td class="memItemLeft" align="right" valign="top"><a id="a16b94c339edd3e08f0ec3bca83b2daaa" name="a16b94c339edd3e08f0ec3bca83b2daaa"></a>
+const occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>getInterpField</b> (const std::string &amp;interpFieldName)</td></tr>
+<tr class="separator:a16b94c339edd3e08f0ec3bca83b2daaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af741748c039ddbe60d23ac47bca72f2b" id="r_af741748c039ddbe60d23ac47bca72f2b"><td class="memItemLeft" align="right" valign="top"><a id="af741748c039ddbe60d23ac47bca72f2b" name="af741748c039ddbe60d23ac47bca72f2b"></a>
 <a class="el" href="classpointInterpolation__t.html">pointInterpolation_t</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>interpolator</b> ()</td></tr>
 <tr class="separator:af741748c039ddbe60d23ac47bca72f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcaec6ffbb2c651242cdf4eab638df45" id="r_afcaec6ffbb2c651242cdf4eab638df45"><td class="memItemLeft" align="right" valign="top"><a id="afcaec6ffbb2c651242cdf4eab638df45" name="afcaec6ffbb2c651242cdf4eab638df45"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>interpolate</b> ()</td></tr>
 <tr class="separator:afcaec6ffbb2c651242cdf4eab638df45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13b1601b4be83d984d822970af23e547" id="r_a13b1601b4be83d984d822970af23e547"><td class="memItemLeft" align="right" valign="top"><a id="a13b1601b4be83d984d822970af23e547" name="a13b1601b4be83d984d822970af23e547"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>interpolate</b> (std::string interpFieldName)</td></tr>
-<tr class="separator:a13b1601b4be83d984d822970af23e547"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39b5a87acd5897e5fa1712b859bea144" id="r_a39b5a87acd5897e5fa1712b859bea144"><td class="memItemLeft" align="right" valign="top"><a id="a39b5a87acd5897e5fa1712b859bea144" name="a39b5a87acd5897e5fa1712b859bea144"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addParticles</b> (int nParticles, occa::memory o_yNewPart, occa::memory o_propNewPart)</td></tr>
-<tr class="separator:a39b5a87acd5897e5fa1712b859bea144"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f79ed45a793c1221b64e46906176f98" id="r_a2f79ed45a793c1221b64e46906176f98"><td class="memItemLeft" align="right" valign="top"><a id="a2f79ed45a793c1221b64e46906176f98" name="a2f79ed45a793c1221b64e46906176f98"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>interpolate</b> (const std::string &amp;interpFieldName)</td></tr>
+<tr class="separator:a2f79ed45a793c1221b64e46906176f98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add8aa4f19e25eca64e56e3d02f287233" id="r_add8aa4f19e25eca64e56e3d02f287233"><td class="memItemLeft" align="right" valign="top"><a id="add8aa4f19e25eca64e56e3d02f287233" name="add8aa4f19e25eca64e56e3d02f287233"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addParticles</b> (int nParticles, const occa::memory &amp;o_yNewPart, const occa::memory &amp;o_propNewPart)</td></tr>
+<tr class="separator:add8aa4f19e25eca64e56e3d02f287233"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e0e8e880ff72449a3031e40146f97eb" id="r_a7e0e8e880ff72449a3031e40146f97eb"><td class="memItemLeft" align="right" valign="top"><a id="a7e0e8e880ff72449a3031e40146f97eb" name="a7e0e8e880ff72449a3031e40146f97eb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addParticles</b> (int nParticles, const std::vector&lt; dfloat &gt; &amp;yNewPart, const std::vector&lt; dfloat &gt; &amp;propNewPart)</td></tr>
 <tr class="separator:a7e0e8e880ff72449a3031e40146f97eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace3168cead93b351e3653f5cab20a272" id="r_ace3168cead93b351e3653f5cab20a272"><td class="memItemLeft" align="right" valign="top"><a id="ace3168cead93b351e3653f5cab20a272" name="ace3168cead93b351e3653f5cab20a272"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>addParticles</b> (int nParticles, occa::memory o_yNewPart, occa::memory o_propNewPart, occa::memory o_ydotNewPart)</td></tr>
-<tr class="separator:ace3168cead93b351e3653f5cab20a272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a294f02af1ceaf036e6b1c633a2e35d20" id="r_a294f02af1ceaf036e6b1c633a2e35d20"><td class="memItemLeft" align="right" valign="top"><a id="a294f02af1ceaf036e6b1c633a2e35d20" name="a294f02af1ceaf036e6b1c633a2e35d20"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>addParticles</b> (int nParticles, const occa::memory &amp;o_yNewPart, const occa::memory &amp;o_propNewPart, const occa::memory &amp;o_ydotNewPart)</td></tr>
+<tr class="separator:a294f02af1ceaf036e6b1c633a2e35d20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd85e72664a896fa9f8337fd7ba793e2" id="r_afd85e72664a896fa9f8337fd7ba793e2"><td class="memItemLeft" align="right" valign="top"><a id="afd85e72664a896fa9f8337fd7ba793e2" name="afd85e72664a896fa9f8337fd7ba793e2"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addParticles</b> (int nParticles, const std::vector&lt; dfloat &gt; &amp;yNewPart, const std::vector&lt; dfloat &gt; &amp;propNewPart, const std::vector&lt; dfloat &gt; &amp;ydotNewPart)</td></tr>
 <tr class="separator:afd85e72664a896fa9f8337fd7ba793e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -252,9 +242,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setTimerLevel</b> (Ti
 <tr class="memitem:a215844388d1a0affca8192167f481403" id="r_a215844388d1a0affca8192167f481403"><td class="memItemLeft" align="right" valign="top"><a id="a215844388d1a0affca8192167f481403" name="a215844388d1a0affca8192167f481403"></a>
 TimerLevel&#160;</td><td class="memItemRight" valign="bottom"><b>getTimerLevel</b> () const</td></tr>
 <tr class="separator:a215844388d1a0affca8192167f481403"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7842c87ee858c93dff6bc8f6f1c6128f" id="r_a7842c87ee858c93dff6bc8f6f1c6128f"><td class="memItemLeft" align="right" valign="top"><a id="a7842c87ee858c93dff6bc8f6f1c6128f" name="a7842c87ee858c93dff6bc8f6f1c6128f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setTimerName</b> (std::string name)</td></tr>
-<tr class="separator:a7842c87ee858c93dff6bc8f6f1c6128f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fd01743c7d11edfd5ba55b64acf950c" id="r_a1fd01743c7d11edfd5ba55b64acf950c"><td class="memItemLeft" align="right" valign="top"><a id="a1fd01743c7d11edfd5ba55b64acf950c" name="a1fd01743c7d11edfd5ba55b64acf950c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setTimerName</b> (const std::string &amp;name)</td></tr>
+<tr class="separator:a1fd01743c7d11edfd5ba55b64acf950c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af852a9fa40fd8a92db9f92b9aab66303" id="r_af852a9fa40fd8a92db9f92b9aab66303"><td class="memItemLeft" align="right" valign="top"><a id="af852a9fa40fd8a92db9f92b9aab66303" name="af852a9fa40fd8a92db9f92b9aab66303"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setVerbosity</b> (VerbosityLevel level)</td></tr>
 <tr class="separator:af852a9fa40fd8a92db9f92b9aab66303"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -270,28 +260,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a90fd64472200daaabc3c1324b03802bb" id="r_a90fd64472200daaabc3c1324b03802bb"><td class="memItemLeft" align="right" valign="top"><a id="a90fd64472200daaabc3c1324b03802bb" name="a90fd64472200daaabc3c1324b03802bb"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>registerKernels</b> (occa::properties &amp;kernelInfo)</td></tr>
 <tr class="separator:a90fd64472200daaabc3c1324b03802bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0870af55c274fbd9401afdbd0b9d39e5" id="r_a0870af55c274fbd9401afdbd0b9d39e5"><td class="memItemLeft" align="right" valign="top"><a id="a0870af55c274fbd9401afdbd0b9d39e5" name="a0870af55c274fbd9401afdbd0b9d39e5"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>fieldOffset</b> (int n)</td></tr>
-<tr class="separator:a0870af55c274fbd9401afdbd0b9d39e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a67f1388acc084dc69503b9e6e38c6569" id="r_a67f1388acc084dc69503b9e6e38c6569"><td class="memItemLeft" align="right" valign="top"><a id="a67f1388acc084dc69503b9e6e38c6569" name="a67f1388acc084dc69503b9e6e38c6569"></a>
-occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_prop</b></td></tr>
-<tr class="separator:a67f1388acc084dc69503b9e6e38c6569"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1a18570e7322ee833d348e8f8a3288e" id="r_ab1a18570e7322ee833d348e8f8a3288e"><td class="memItemLeft" align="right" valign="top"><a id="ab1a18570e7322ee833d348e8f8a3288e" name="ab1a18570e7322ee833d348e8f8a3288e"></a>
-occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_interpFld</b></td></tr>
-<tr class="separator:ab1a18570e7322ee833d348e8f8a3288e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdd6fb8679db8c4bce98a761e5cef98a" id="r_acdd6fb8679db8c4bce98a761e5cef98a"><td class="memItemLeft" align="right" valign="top"><a id="acdd6fb8679db8c4bce98a761e5cef98a" name="acdd6fb8679db8c4bce98a761e5cef98a"></a>
-occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_y</b></td></tr>
-<tr class="separator:acdd6fb8679db8c4bce98a761e5cef98a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab572f749845a29ddb67a7a16f89cda69" id="r_ab572f749845a29ddb67a7a16f89cda69"><td class="memItemLeft" align="right" valign="top"><a id="ab572f749845a29ddb67a7a16f89cda69" name="ab572f749845a29ddb67a7a16f89cda69"></a>
-occa::memory&#160;</td><td class="memItemRight" valign="bottom"><b>o_ydot</b></td></tr>
-<tr class="separator:ab572f749845a29ddb67a7a16f89cda69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>plugins/<a class="el" href="lpm_8hpp_source.html">lpm.hpp</a></li>
-<li>plugins/<b>lpm.cpp</b></li>
+<li>core/plugins/<a class="el" href="lpm_8hpp_source.html">lpm.hpp</a></li>
+<li>core/plugins/<b>lpm.cpp</b></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
