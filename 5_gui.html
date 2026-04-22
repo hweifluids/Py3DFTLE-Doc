@@ -104,8 +104,7 @@ CUDA solver.
 It is intended for users who prefer an interactive workflow for setting up <code class="docutils literal notranslate"><span class="pre">.par</span></code> files, launching
 solver runs, monitoring progress, and previewing FTLE results without typing the full command line
 manually.</p>
-<p>Unlike the archived legacy GUI, the current interface no longer offers multiple backends.
-It always launches the native CUDA solver, using the same <code class="docutils literal notranslate"><span class="pre">.par</span></code>-based workflow described in
+<p>The interface launches the native CUDA solver, using the same <code class="docutils literal notranslate"><span class="pre">.par</span></code>-based workflow described in
 <a class="reference internal" href="6_inputdeck.html#inputdeck"><span class="std std-ref">Input Deck for Solver Parameters</span></a> and the same structured-VTK input assumptions described in <a class="reference internal" href="4_input.html#input"><span class="std std-ref">Input Data Files</span></a>.</p>
 <section id="general-workflow">
 <h2>General Workflow<a class="headerlink" href="#general-workflow" title="Link to this heading"></a></h2>
@@ -220,8 +219,8 @@ Its filename follows the form
 <p>The GUI then launches the native solver executable with that generated parameter file.
 If the solver executable cannot be found, the GUI reports where it looked and instructs the user to
 build or install the solver first.</p>
-<p>At present, the GUI does not launch an alternative Python backend, nor does it expose command-line
-style ad hoc overrides outside the parameter pages.</p>
+<p>The current interaction model is centered on the parameter pages and the native solver workflow,
+instead of ad hoc command-line style overrides.</p>
 </section>
 <section id="run-monitoring">
 <h2>Run Monitoring<a class="headerlink" href="#run-monitoring" title="Link to this heading"></a></h2>
@@ -246,7 +245,7 @@ These controls are intended for long FTLE jobs where an interactive interruption
 It can open:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">*.vts</span></code> result files;</p></li>
-<li><p>legacy <code class="docutils literal notranslate"><span class="pre">*.vtk</span></code> files for general inspection;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*.vtk</span></code> files for general inspection;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">*.pvd</span></code> collections for time-series browsing.</p></li>
 </ul>
 <p>Once a result is loaded, the viewer shows:</p>
@@ -319,12 +318,11 @@ MP4 export additionally requires:</p>
 <section id="important-notes-and-limits">
 <h2>Important Notes and Limits<a class="headerlink" href="#important-notes-and-limits" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>The GUI is a front end to the native CUDA solver only; the legacy Python GUI is not the active
-mainline path.</p></li>
+<li><p>The GUI is a front end to the native CUDA solver.</p></li>
 <li><p>The GUI does not create missing input or output folders automatically; they should exist before a
 run is started.</p></li>
 <li><p>The GUI-side result viewer can open <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> files, but the solver input workflow itself still
-expects a folder of qualified legacy <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> frames as described in <a class="reference internal" href="4_input.html#input"><span class="std std-ref">Input Data Files</span></a>.</p></li>
+expects a folder of qualified <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> frames as described in <a class="reference internal" href="4_input.html#input"><span class="std std-ref">Input Data Files</span></a>.</p></li>
 <li><p>Interactive plotting through <code class="docutils literal notranslate"><span class="pre">if_visual</span></code> is not the mainline command-solver workflow. Result
 inspection is expected to happen through the embedded viewer or an external post-processor.</p></li>
 <li><p>The embedded viewer is intentionally lightweight. For more advanced clipping, transfer functions,
