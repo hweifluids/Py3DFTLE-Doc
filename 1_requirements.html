@@ -16,6 +16,7 @@
       <script src="_static/documentation_options.js?v=2709fde1"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -44,10 +45,16 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Requirements and Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#hardware-and-hardware-requirements">Hardware and Hardware Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#basic-environment">Basic Environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#add-on-libs-optional">Add-on Libs (Optional)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#quickstart">Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hardware-and-platform">Hardware and Platform</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mainline-environment">Mainline Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environment-overrides">Environment Overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#add-on-tools">Add-on Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quickstart">Quickstart</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#windows">Windows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux-debian-ubuntu">Linux (Debian/Ubuntu)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#notes-for-real-cases">Notes for Real Cases</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="2_theory.html">Theory of FTLE and LCS</a></li>
@@ -86,63 +93,167 @@
              
   <section id="requirements-and-quickstart">
 <span id="requirements"></span><h1>Requirements and Quickstart<a class="headerlink" href="#requirements-and-quickstart" title="Link to this heading"></a></h1>
-<section id="hardware-and-hardware-requirements">
-<h2>Hardware and Hardware Requirements<a class="headerlink" href="#hardware-and-hardware-requirements" title="Link to this heading"></a></h2>
-<p>The minimiums are listed as follows:</p>
+<section id="hardware-and-platform">
+<h2>Hardware and Platform<a class="headerlink" href="#hardware-and-platform" title="Link to this heading"></a></h2>
+<p>This page summarizes the supported mainline workflow of <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code>.
+The current mainline is no longer the old Python package set. It is centered on a
+native CUDA FTLE solver together with a native Qt/VTK desktop GUI.
+The archived Python implementation is still preserved under <code class="docutils literal notranslate"><span class="pre">legacy/</span></code> in the code
+repository for reference and migration, but it is no longer the primary workflow
+described in this documentation.</p>
+<p>The minimum practical requirements are listed as follows:</p>
 <ul class="simple">
-<li><p>Minimium 4GB RAM and 10GB free disk.</p></li>
-<li><p>Not sensitive to platform. Windows 11 and Ubuntu 22.04 are fully tested.</p></li>
+<li><p>At least 4 GB of system memory and about 10 GB of free disk space.</p></li>
+<li><p>A 64-bit Windows or Linux environment. The shipped install scripts currently target
+Windows and Debian/Ubuntu-style Linux systems with <code class="docutils literal notranslate"><span class="pre">apt</span></code>.</p></li>
+<li><p>An NVIDIA GPU together with a locally installed CUDA Toolkit for the mainline solver.</p></li>
 </ul>
-<p>GPU acceleration is suggested for large dataset computation. Therefore, the requirements for GPU acceleration is listed as follows:</p>
+<p>The solver configures <code class="docutils literal notranslate"><span class="pre">CMAKE_CUDA_ARCHITECTURES=native</span></code> by default, so the build
+machine is expected to have a visible local NVIDIA CUDA environment.</p>
+<p>GPU memory capacity is usually the main bottleneck for large FTLE jobs.
+A practical rule of thumb is to keep
+<span class="math notranslate nohighlight">\(N_x \times N_y \times N_z \times N_t\)</span>
+below roughly 200,000,000 Lagrangian particles per GiB of VRAM for the default
+double-sided still workflow, and lower than that for higher-order settings.</p>
+</section>
+<section id="mainline-environment">
+<h2>Mainline Environment<a class="headerlink" href="#mainline-environment" title="Link to this heading"></a></h2>
+<p>The native solver and the native GUI do not require Python or <code class="docutils literal notranslate"><span class="pre">pip</span></code> for their
+standard build-and-run path.
+Instead, the repository provides platform-specific installation scripts that prepare
+the CMake/CUDA/Qt/VTK toolchain directly.</p>
+<p>On Windows, <code class="docutils literal notranslate"><span class="pre">install.cmd</span></code> and <code class="docutils literal notranslate"><span class="pre">install.ps1</span></code> provision the following mainline
+dependencies:</p>
 <ul class="simple">
-<li><p>NVIDIA GPUs, with a minimum <a class="reference external" href="https://developer.nvidia.com/cuda-gpus">compute capability</a> of 5.0, i.e., later than GTX 750.</p></li>
-<li><p>It is suggested that, make <code class="docutils literal notranslate"><span class="pre">Nx</span></code> × <code class="docutils literal notranslate"><span class="pre">Ny</span></code> × <code class="docutils literal notranslate"><span class="pre">Nz</span></code> × <code class="docutils literal notranslate"><span class="pre">Nt</span></code> less than 200,000,000 Lagrangian particles on each Gigabyte of GPU memory for double-side computation under default numerical methods for one still. Generally half it under high-order computations. For example, you can execute on a 600×300×300 mesh for c.a. 80 time steps for a still on a welcomed RTX 2080ti 22G customized GPU, with the price of ~$400.</p></li>
-<li><p>The general short for GPU is VRAM, not computational power, hence old-but-large GPUs are great for use. Newers can be faster, but smallers can run nothing.</p></li>
-<li><p>The GPU requirements for dynamic LCS are undergoing experiments by the author.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Git</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CMake</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Ninja</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">Studio</span> <span class="pre">Build</span> <span class="pre">Tools</span> <span class="pre">2022</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NVIDIA</span> <span class="pre">CUDA</span> <span class="pre">Toolkit</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FFmpeg</span></code> for MP4 export</p></li>
+<li><p>a local <code class="docutils literal notranslate"><span class="pre">vcpkg</span></code> tree that installs <code class="docutils literal notranslate"><span class="pre">Qt6</span></code> and <code class="docutils literal notranslate"><span class="pre">VTK</span></code></p></li>
 </ul>
+<p>The default Windows dependency cache uses the <code class="docutils literal notranslate"><span class="pre">x64-windows-release</span></code> triplet, which
+avoids building both Debug and Release variants of <code class="docutils literal notranslate"><span class="pre">Qt</span></code> and <code class="docutils literal notranslate"><span class="pre">VTK</span></code> during the first
+install.
+If Debug libraries are also needed, rerun the installer with
+<code class="docutils literal notranslate"><span class="pre">-VcpkgTriplet</span> <span class="pre">x64-windows</span></code>.</p>
+<p>On Debian/Ubuntu-style Linux systems, <code class="docutils literal notranslate"><span class="pre">install.sh</span></code> installs the following packages:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">build-essential</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmake</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ninja-build</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pkg-config</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">qt6-base-dev</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">qt6-base-dev-tools</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">qt6-tools-dev</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libvtk9-dev</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">libvtk9-qt-dev</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> by default</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvidia-cuda-toolkit</span></code> by default</p></li>
+</ul>
+<p>When <code class="docutils literal notranslate"><span class="pre">nvcc</span></code> is found on Linux, the installer also records
+<code class="docutils literal notranslate"><span class="pre">STREAMCENTERPLUS_CUDA_ROOT</span></code> under
+<code class="docutils literal notranslate"><span class="pre">~/.config/streamcenterplus/env.sh</span></code> for later builds.</p>
 </section>
-<section id="basic-environment">
-<h2>Basic Environment<a class="headerlink" href="#basic-environment" title="Link to this heading"></a></h2>
-<p>This page summarizes the system requirements and dependencies of <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code>.</p>
-<p>Firstly, the following packages are supposed to be installed on your computer manually in advance.</p>
-<ol class="arabic simple">
-<li><p><a class="reference external" href="https://www.python.org/">Python</a> version 3.13. Later version than 3.8 till 3.13 should work properly, but was not fully tested. The official download could be found at <a class="reference external" href="https://www.python.org/downloads/release/python-3130/?featured_on=pythonbytes">here</a>. Please select Python installer according to your system framework.</p></li>
-<li><p><a class="reference external" href="https://developer.nvidia.com/cuda-toolkit">CUDA Toolkit</a> version 12.9 (<a class="reference external" href="https://developer.nvidia.com/cuda-toolkit-archive">Download</a>). All versions crossing 12.x.x should theoretically work, but only 12.9 was fully tested. Ealier versions could work as well, but it requires a different version of <cite>cupy</cite>, and could cause unexpected performance decay and errors. See <cite>cupy</cite> documentation for more information.</p></li>
-<li><p><a class="reference external" href="https://pypi.org/project/pip/">pip</a> newest version, which is used for installing further dependencies. It can be installed by:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">ensurepip</span> <span class="o">--</span><span class="n">upgrade</span>
-</pre></div>
-</div>
-<p>Generally, the following dependencies can be installed via <code class="docutils literal notranslate"><span class="pre">pip</span></code>, the Python package manager.</p>
-<ol class="arabic simple">
-<li><p><a class="reference external" href="https://numpy.org">numpy</a> version 1.21 or later</p></li>
-<li><p><a class="reference external" href="https://matplotlib.org">matplotlib</a> version 3.4 or later</p></li>
-<li><p><a class="reference external" href="https://pyvista.org">pyvista</a> version 0.32 or later</p></li>
-<li><p><a class="reference external" href="https://scipy.org">scipy</a> version 1.7 or later</p></li>
-<li><p><a class="reference external" href="https://github.com/paulo-herrera/PyEVTK">pyevtk</a> version 1.4 or later</p></li>
-<li><p><a class="reference external" href="https://numba.pydata.org">numba</a> version 0.54 or later</p></li>
-<li><p><a class="reference external" href="https://tqdm.github.io">tqdm</a> version 4.62 or later</p></li>
-<li><p><a class="reference external" href="https://pypi.org/project/cupy-cuda12x/">cupy-cuda12x</a> version 13.4.1 or later</p></li>
-<li><p><a class="reference external" href="https://github.com/pyvista/pyvistaqt">pyvistaqt</a> version 0.11.2 or later</p></li>
-<li><p><a class="reference external" href="https://riverbankcomputing.com/software/pyqt/intro">PyQt5</a> version 5.15.11 or later</p></li>
-</ol>
-<p>You can install them after installing <code class="docutils literal notranslate"><span class="pre">pip</span></code> by:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="o">./</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
-</pre></div>
-</div>
-<p>When it does not work, consider if your current dir is incorrect. It should be run from the project root of <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code> when undergoing configurations and under <a class="reference internal" href="7_command.html#command"><span class="std std-ref">command-line</span></a> mode. Please feel free about such thing under GUI mode.</p>
+<section id="environment-overrides">
+<h2>Environment Overrides<a class="headerlink" href="#environment-overrides" title="Link to this heading"></a></h2>
+<p>If your toolchain is installed outside the default locations, the build scripts
+understand the following environment variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">STREAMCENTERPLUS_VCPKG_ROOT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STREAMCENTERPLUS_VCPKG_TRIPLET</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STREAMCENTERPLUS_QT_ROOT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STREAMCENTERPLUS_VTK_ROOT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">STREAMCENTERPLUS_CUDA_ROOT</span></code></p></li>
+</ul>
+<p>For migration convenience, the renamed build scripts still accept the legacy
+<code class="docutils literal notranslate"><span class="pre">PY3DFTLE_*</span></code> environment variables as fallback inputs.</p>
 </section>
-<section id="add-on-libs-optional">
-<h2>Add-on Libs (Optional)<a class="headerlink" href="#add-on-libs-optional" title="Link to this heading"></a></h2>
-<p><strong>1. ParaView</strong> is a powerful beloved open-source visualization platform based on <em>vtk</em> that can be used to visualize the results of 3D FTLE computations. We also integrated the ParaView entrance into our GUI, so you can directly open ParaView from it.
-The ParaView installation-free package (v6.0) can be downloaded from <a class="reference external" href="https://www.paraview.org/paraview-downloads/download.php?submit=Download&amp;version=v6.0&amp;type=binary&amp;os=Windows&amp;downloadFile=ParaView-6.0.0-RC1-MPI-Windows-Python3.12-msvc2017-AMD64.zip">official</a>.
-For already-installed ParaView, set environment variable <code class="docutils literal notranslate"><span class="pre">PARAVIEW_PATH</span></code> pointing to the root dir of ParaView to enable integration from GUI of <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code>.</p>
+<section id="add-on-tools">
+<h2>Add-on Tools<a class="headerlink" href="#add-on-tools" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>ParaView</strong>
+ParaView remains a convenient external viewer for inspecting <code class="docutils literal notranslate"><span class="pre">.vts</span></code> and <code class="docutils literal notranslate"><span class="pre">.pvd</span></code>
+outputs generated by the native solver.
+It is optional, because the native GUI already provides an embedded VTK viewer, but
+it is still useful for post-processing and larger inspection tasks.</p></li>
+<li><p><strong>FFmpeg</strong>
+<code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> is required if you want to export MP4 animations from the GUI.
+It is optional for plain solving, parameter editing, and static visualization.</p></li>
+<li><p><strong>PowerShell on Linux</strong>
+<code class="docutils literal notranslate"><span class="pre">pwsh</span></code> is optional on Linux.
+It is only needed if you want to use the same <code class="docutils literal notranslate"><span class="pre">run.ps1</span></code> wrappers shipped for the
+Windows workflow. Otherwise the built GUI or solver binaries can be launched directly
+from their build folders.</p></li>
+</ul>
 </section>
 <section id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h2>
-<p>After configurations of environment, you can run a very first demo to test the environment as well as the code, and learn how to use this toolbox for your own data towards new insights.
-An computation example coming with a set of our in-house downscaled Direct Navier-Stokes Simulation (DNS) data is provided, including :math:
-The dataset can be downloaded from <a class="reference external" href="https://noting.noting">here</a>, and the case descriptions can be referred to paper <code class="docutils literal notranslate"><span class="pre">I.P.</span></code>.</p>
+<p>The steps below follow the current native mainline repository layout.
+They use the top-level install and build entry points and then launch the GUI or solver
+through the maintained wrapper scripts.</p>
+<section id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Link to this heading"></a></h3>
+<p>Install the required toolchain and cache the GUI dependencies:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">install</span><span class="p">.</span><span class="n">cmd</span>
+</pre></div>
+</div>
+<p>If you need advanced flags, call the PowerShell entry directly instead:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">install</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+<p>If Debug variants of <code class="docutils literal notranslate"><span class="pre">Qt</span></code> and <code class="docutils literal notranslate"><span class="pre">VTK</span></code> are needed as well, use:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">install</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-VcpkgTriplet</span> <span class="n">x64-windows</span>
+</pre></div>
+</div>
+<p>Build both the native CUDA solver and the native GUI:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">build</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-NonInteractive</span>
+</pre></div>
+</div>
+<p>Run the GUI:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">GUI</span><span class="p">\</span><span class="n">V2603</span><span class="p">\</span><span class="n">run</span><span class="p">.</span><span class="n">ps1</span>
+</pre></div>
+</div>
+<p>Optionally run the bundled solver smoke test directly:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">CUDAsolvers</span><span class="p">\</span><span class="n">V2603</span><span class="p">\</span><span class="n">run</span><span class="p">.</span><span class="n">ps1</span> <span class="p">-</span><span class="n">-par</span> <span class="p">.\</span><span class="n">CUDAsolvers</span><span class="p">\</span><span class="n">V2603</span><span class="p">\</span><span class="n">tools</span><span class="p">\</span><span class="n">regression_small</span><span class="p">.</span><span class="n">par</span>
+</pre></div>
+</div>
+</section>
+<section id="linux-debian-ubuntu">
+<h3>Linux (Debian/Ubuntu)<a class="headerlink" href="#linux-debian-ubuntu" title="Link to this heading"></a></h3>
+<p>Install the build dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>./install.sh
+</pre></div>
+</div>
+<p>Build both the solver and the GUI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>./build.sh<span class="w"> </span>--all
+</pre></div>
+</div>
+<p>Run the GUI.
+If PowerShell is available, the wrapper is:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pwsh<span class="w"> </span>./GUI/V2603/run.ps1
+</pre></div>
+</div>
+<p>Otherwise, launch the generated GUI binary directly from <code class="docutils literal notranslate"><span class="pre">GUI/V2603/build/</span></code>.</p>
+<p>Optionally run the bundled solver smoke test.
+With PowerShell:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pwsh<span class="w"> </span>./CUDAsolvers/V2603/run.ps1<span class="w"> </span>--par<span class="w"> </span>./CUDAsolvers/V2603/tools/regression_small.par
+</pre></div>
+</div>
+<p>Without PowerShell, launch the built solver binary directly from
+<code class="docutils literal notranslate"><span class="pre">CUDAsolvers/V2603/out/build/</span></code>.</p>
+</section>
+</section>
+<section id="notes-for-real-cases">
+<h2>Notes for Real Cases<a class="headerlink" href="#notes-for-real-cases" title="Link to this heading"></a></h2>
+<p>The mainline GUI always launches the native CUDA solver. There is no longer a
+Python/native backend selector in the supported workflow.</p>
+<p>The parameter format remains <code class="docutils literal notranslate"><span class="pre">.par</span></code>-based.
+When preparing your own cases, update entries such as <code class="docutils literal notranslate"><span class="pre">vtk_folder</span></code> and
+<code class="docutils literal notranslate"><span class="pre">output_dir</span></code> so that they point to locations that actually exist on your machine.
+The native parser reads those paths literally.</p>
 </section>
 </section>
 
