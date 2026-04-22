@@ -9,8 +9,7 @@ It is intended for users who prefer an interactive workflow for setting up ``.pa
 solver runs, monitoring progress, and previewing FTLE results without typing the full command line
 manually.
 
-Unlike the archived legacy GUI, the current interface no longer offers multiple backends.
-It always launches the native CUDA solver, using the same ``.par``-based workflow described in
+The interface launches the native CUDA solver, using the same ``.par``-based workflow described in
 :ref:`inputdeck` and the same structured-VTK input assumptions described in :ref:`input`.
 
 
@@ -144,8 +143,8 @@ The GUI then launches the native solver executable with that generated parameter
 If the solver executable cannot be found, the GUI reports where it looked and instructs the user to
 build or install the solver first.
 
-At present, the GUI does not launch an alternative Python backend, nor does it expose command-line
-style ad hoc overrides outside the parameter pages.
+The current interaction model is centered on the parameter pages and the native solver workflow,
+instead of ad hoc command-line style overrides.
 
 
 Run Monitoring
@@ -176,7 +175,7 @@ The right side of the main window contains an embedded VTK viewer.
 It can open:
 
 - ``*.vts`` result files;
-- legacy ``*.vtk`` files for general inspection;
+- ``*.vtk`` files for general inspection;
 - ``*.pvd`` collections for time-series browsing.
 
 Once a result is loaded, the viewer shows:
@@ -259,12 +258,11 @@ If ``ffmpeg`` is missing, the export fails with an explicit error message.
 Important Notes and Limits
 --------------------------
 
-- The GUI is a front end to the native CUDA solver only; the legacy Python GUI is not the active
-  mainline path.
+- The GUI is a front end to the native CUDA solver.
 - The GUI does not create missing input or output folders automatically; they should exist before a
   run is started.
 - The GUI-side result viewer can open ``.vtk`` files, but the solver input workflow itself still
-  expects a folder of qualified legacy ``.vtk`` frames as described in :ref:`input`.
+  expects a folder of qualified ``.vtk`` frames as described in :ref:`input`.
 - Interactive plotting through ``if_visual`` is not the mainline command-solver workflow. Result
   inspection is expected to happen through the embedded viewer or an external post-processor.
 - The embedded viewer is intentionally lightweight. For more advanced clipping, transfer functions,
