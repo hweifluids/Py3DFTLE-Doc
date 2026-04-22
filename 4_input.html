@@ -16,6 +16,7 @@
       <script src="_static/documentation_options.js?v=2709fde1"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -46,7 +47,16 @@
 <li class="toctree-l1"><a class="reference internal" href="1_requirements.html">Requirements and Quickstart</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2_theory.html">Theory of FTLE and LCS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3_numerical.html">Numerical Methods</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Input Data Files</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Input Data Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#supported-file-type">Supported File Type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#folder-based-time-sequence">Folder-Based Time Sequence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#structured-spatial-layout">Structured Spatial Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#velocity-arrays">Velocity Arrays</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#minimal-qualified-skeleton">Minimal Qualified Skeleton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#two-dimensional-and-thin-slab-data">Two-Dimensional and Thin-Slab Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#practical-checklist">Practical Checklist</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="5_gui.html">Graphical User Interface (GUI)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="6_inputdeck.html">Input Deck for Solver Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="7_command.html">Command-Line Mode (Commands)</a></li>
@@ -80,7 +90,139 @@
              
   <section id="input-data-files">
 <span id="input"></span><h1>Input Data Files<a class="headerlink" href="#input-data-files" title="Link to this heading"></a></h1>
-<p>This page describes the input file</p>
+<p>This page describes what constitutes a qualified velocity-field input for the current native
+solver. In both GUI and command-line workflows, the solver reads a folder of time-ordered
+legacy <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> files given by <code class="docutils literal notranslate"><span class="pre">vtk_folder</span></code> in <a class="reference internal" href="6_inputdeck.html#inputdeck"><span class="std std-ref">Input Deck for Solver Parameters</span></a>.
+Each file represents one time frame of the same flow field, and the whole folder is interpreted as
+one temporal sequence.</p>
+<section id="supported-file-type">
+<h2>Supported File Type<a class="headerlink" href="#supported-file-type" title="Link to this heading"></a></h2>
+<p>The current native solver scans only files whose extension is <code class="docutils literal notranslate"><span class="pre">.vtk</span></code>.
+These files are loaded through VTK’s legacy-data reader. As a consequence:</p>
+<ul class="simple">
+<li><p>legacy VTK <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> is the supported input container for the solver;</p></li>
+<li><p>ASCII and binary legacy files are both acceptable as long as VTK can parse them;</p></li>
+<li><p>XML VTK files such as <code class="docutils literal notranslate"><span class="pre">.vts</span></code> or <code class="docutils literal notranslate"><span class="pre">.vti</span></code> are not used as solver input in the current mainline,
+even though they may be viewable elsewhere.</p></li>
+</ul>
+</section>
+<section id="folder-based-time-sequence">
+<h2>Folder-Based Time Sequence<a class="headerlink" href="#folder-based-time-sequence" title="Link to this heading"></a></h2>
+<p>The solver treats the input as a folder-level sequence rather than a single file:</p>
+<ul class="simple">
+<li><p>only regular <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> files in <code class="docutils literal notranslate"><span class="pre">vtk_folder</span></code> are considered;</p></li>
+<li><p>subfolders are not scanned recursively;</p></li>
+<li><p>files are sorted by the last integer appearing in the filename;</p></li>
+<li><p>this sorted order defines the frame index used by <code class="docutils literal notranslate"><span class="pre">T_range</span></code>.</p></li>
+</ul>
+<p>For this reason, filenames such as
+<code class="docutils literal notranslate"><span class="pre">frame_00000.vtk</span></code>, <code class="docutils literal notranslate"><span class="pre">frame_00001.vtk</span></code>, <code class="docutils literal notranslate"><span class="pre">frame_00002.vtk</span></code> are strongly recommended.
+Missing frame numbers are allowed, but the ordering still follows the extracted integer tags.
+If a filename contains more than one integer group, the last one is the one used for sorting.</p>
+</section>
+<section id="structured-spatial-layout">
+<h2>Structured Spatial Layout<a class="headerlink" href="#structured-spatial-layout" title="Link to this heading"></a></h2>
+<p>The native solver assumes that every frame lies on one structured tensor-product lattice in
+<span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(y\)</span>, and <span class="math notranslate nohighlight">\(z\)</span>.
+In practice, the most reliable qualified inputs are legacy VTK files whose dataset is either
+<code class="docutils literal notranslate"><span class="pre">RECTILINEAR_GRID</span></code> or <code class="docutils literal notranslate"><span class="pre">STRUCTURED_GRID</span></code>.</p>
+<p>For a sequence to be qualified:</p>
+<ul class="simple">
+<li><p>all frames must describe the same spatial grid;</p></li>
+<li><p>the point count must remain identical across all frames;</p></li>
+<li><p>the coordinate axes must be consistent from frame to frame;</p></li>
+<li><p>each point must be mappable to one unique lattice index <span class="math notranslate nohighlight">\((i,j,k)\)</span>.</p></li>
+</ul>
+<p>For <code class="docutils literal notranslate"><span class="pre">RECTILINEAR_GRID</span></code>, the solver takes the axes directly from
+<code class="docutils literal notranslate"><span class="pre">X_COORDINATES</span></code>, <code class="docutils literal notranslate"><span class="pre">Y_COORDINATES</span></code>, and <code class="docutils literal notranslate"><span class="pre">Z_COORDINATES</span></code>.
+For other structured datasets, the solver reconstructs the axes from the point coordinates.
+Therefore, even when <code class="docutils literal notranslate"><span class="pre">STRUCTURED_GRID</span></code> is used, the point coordinates should still lie on
+separable <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(y\)</span>, <span class="math notranslate nohighlight">\(z\)</span> axes.
+General unstructured meshes are not qualified input for the present solver.</p>
+</section>
+<section id="velocity-arrays">
+<h2>Velocity Arrays<a class="headerlink" href="#velocity-arrays" title="Link to this heading"></a></h2>
+<p>Velocity must be stored in <code class="docutils literal notranslate"><span class="pre">POINT_DATA</span></code>.
+Arrays provided only in <code class="docutils literal notranslate"><span class="pre">CELL_DATA</span></code> are not sufficient for the current solver.</p>
+<p>The parser currently accepts any of the following point-data conventions:</p>
+<ul class="simple">
+<li><p>three scalar arrays named <code class="docutils literal notranslate"><span class="pre">u</span></code>, <code class="docutils literal notranslate"><span class="pre">v</span></code>, <code class="docutils literal notranslate"><span class="pre">w</span></code>;</p></li>
+<li><p>three scalar arrays named <code class="docutils literal notranslate"><span class="pre">U</span></code>, <code class="docutils literal notranslate"><span class="pre">V</span></code>, <code class="docutils literal notranslate"><span class="pre">W</span></code>;</p></li>
+<li><p>three scalar arrays named <code class="docutils literal notranslate"><span class="pre">Ux</span></code>, <code class="docutils literal notranslate"><span class="pre">Uy</span></code>, <code class="docutils literal notranslate"><span class="pre">Uz</span></code>;</p></li>
+<li><p>three scalar arrays named <code class="docutils literal notranslate"><span class="pre">Vx</span></code>, <code class="docutils literal notranslate"><span class="pre">Vy</span></code>, <code class="docutils literal notranslate"><span class="pre">Vz</span></code>;</p></li>
+<li><p>two scalar arrays named <code class="docutils literal notranslate"><span class="pre">u</span></code> and <code class="docutils literal notranslate"><span class="pre">v</span></code>;</p></li>
+<li><p>two scalar arrays named <code class="docutils literal notranslate"><span class="pre">U</span></code> and <code class="docutils literal notranslate"><span class="pre">V</span></code>;</p></li>
+<li><p>two scalar arrays named <code class="docutils literal notranslate"><span class="pre">Ux</span></code> and <code class="docutils literal notranslate"><span class="pre">Uy</span></code>;</p></li>
+<li><p>two scalar arrays named <code class="docutils literal notranslate"><span class="pre">Vx</span></code> and <code class="docutils literal notranslate"><span class="pre">Vy</span></code>;</p></li>
+<li><p>one vector array named <code class="docutils literal notranslate"><span class="pre">U</span></code>, <code class="docutils literal notranslate"><span class="pre">V</span></code>, <code class="docutils literal notranslate"><span class="pre">Velocity</span></code>, <code class="docutils literal notranslate"><span class="pre">velocity</span></code>, <code class="docutils literal notranslate"><span class="pre">Vel</span></code>, <code class="docutils literal notranslate"><span class="pre">vel</span></code>, <code class="docutils literal notranslate"><span class="pre">data</span></code>,
+or <code class="docutils literal notranslate"><span class="pre">Data</span></code> with at least two components.</p></li>
+</ul>
+<p>If only two components are present, the solver fills the third component with zero and therefore
+treats the input as quasi-two-dimensional.
+All frames in the sequence should use the same array naming convention.</p>
+</section>
+<section id="minimal-qualified-skeleton">
+<h2>Minimal Qualified Skeleton<a class="headerlink" href="#minimal-qualified-skeleton" title="Link to this heading"></a></h2>
+<p>A minimal qualified legacy-VTK frame may look conceptually like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># vtk DataFile Version 5.1
+velocity frame
+BINARY
+DATASET RECTILINEAR_GRID
+DIMENSIONS Nx Ny Nz
+X_COORDINATES Nx double
+...
+Y_COORDINATES Ny double
+...
+Z_COORDINATES Nz double
+...
+POINT_DATA Nx*Ny*Nz
+VECTORS Velocity double
+...
+</pre></div>
+</div>
+<p>An equally acceptable scalar-array variant is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>POINT_DATA Nx*Ny*Nz
+SCALARS u double
+LOOKUP_TABLE default
+...
+SCALARS v double
+LOOKUP_TABLE default
+...
+SCALARS w double
+LOOKUP_TABLE default
+...
+</pre></div>
+</div>
+<p>The exact numeric precision is not prescribed here, but the data must be readable by VTK and the
+point-data array lengths must match the total number of grid points.</p>
+</section>
+<section id="two-dimensional-and-thin-slab-data">
+<h2>Two-Dimensional and Thin-Slab Data<a class="headerlink" href="#two-dimensional-and-thin-slab-data" title="Link to this heading"></a></h2>
+<p>The current native solver can also work with quasi-two-dimensional inputs.
+In that case:</p>
+<ul class="simple">
+<li><p>the <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> directions must still contain at least two grid points;</p></li>
+<li><p>the <span class="math notranslate nohighlight">\(z\)</span> direction may be a single layer or a very thin slab;</p></li>
+<li><p>the third velocity component may be omitted if the input follows one of the accepted
+two-component conventions above.</p></li>
+</ul>
+<p>This is useful for planar velocity fields embedded in a three-dimensional file format.</p>
+</section>
+<section id="practical-checklist">
+<h2>Practical Checklist<a class="headerlink" href="#practical-checklist" title="Link to this heading"></a></h2>
+<p>Before launching the solver, it is recommended to confirm the following:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vtk_folder</span></code> points to a directory, not to a single file;</p></li>
+<li><p>the directory contains only the intended <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> time frames, or at least no unrelated
+<code class="docutils literal notranslate"><span class="pre">.vtk</span></code> files whose filename numbers would disturb the ordering;</p></li>
+<li><p>all frames share one structured grid and one consistent point-data layout;</p></li>
+<li><p>velocity is stored in <code class="docutils literal notranslate"><span class="pre">POINT_DATA</span></code>;</p></li>
+<li><p>the sorted sequence is long enough for the requested <code class="docutils literal notranslate"><span class="pre">T_range</span></code>.</p></li>
+</ul>
+<p>If <code class="docutils literal notranslate"><span class="pre">auto_wall</span> <span class="pre">=</span> <span class="pre">1</span></code>, the solver uses the outer coordinates of the input grid as the seeding bounds.
+If <code class="docutils literal notranslate"><span class="pre">auto_wall</span> <span class="pre">=</span> <span class="pre">0</span></code>, the wall ranges in the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file must instead define the computational
+domain explicitly.</p>
+</section>
 </section>
 
 

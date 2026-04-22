@@ -16,6 +16,7 @@
       <script src="_static/documentation_options.js?v=2709fde1"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -49,7 +50,17 @@
 <li class="toctree-l1"><a class="reference internal" href="4_input.html">Input Data Files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="5_gui.html">Graphical User Interface (GUI)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="6_inputdeck.html">Input Deck for Solver Parameters</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Command-Line Mode (Commands)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Command-Line Mode (Commands)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-invocation">Basic Invocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#default-behavior">Default Behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parameter-file-advice">Parameter File Advice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-run">Example Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#output-files">Output Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#indexing-and-frame-selection">Indexing and Frame Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#important-notes">Important Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#when-to-prefer-command-line-mode">When to Prefer Command-Line Mode</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="8_faqs.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="9_references.html">References</a></li>
 </ul>
@@ -80,8 +91,128 @@
              
   <section id="command-line-mode-commands">
 <span id="command"></span><h1>Command-Line Mode (Commands)<a class="headerlink" href="#command-line-mode-commands" title="Link to this heading"></a></h1>
-<p>This page describes how to perform FTLE computation under command mode via terminal and save results to standard <code class="docutils literal notranslate"><span class="pre">.vts</span></code> (Visualization Toolbox Structured data) files,
-which is a variation of <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> format and supported by official <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> API and many other post-processing platforms like <code class="docutils literal notranslate"><span class="pre">ParaView</span></code>.</p>
+<p>Command-line mode runs the native CUDA solver without the GUI.
+It is the recommended workflow for batch jobs, remote execution, scheduler submission, and any
+reproducible run driven by a checked-in <code class="docutils literal notranslate"><span class="pre">.par</span></code> file.
+The solver reads one parameter file, loads the velocity sequence described there, computes the
+requested FTLE fields, and writes VTK output to <code class="docutils literal notranslate"><span class="pre">output_dir</span></code>.</p>
+<section id="basic-invocation">
+<h2>Basic Invocation<a class="headerlink" href="#basic-invocation" title="Link to this heading"></a></h2>
+<p>The current native solver supports one explicit command-line option:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>streamcenterplus_cuda --par &lt;path-to-par-file&gt;
+</pre></div>
+</div>
+<p>In the repository workflow, the preferred entry point on Windows is the helper script:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">CUDAsolvers</span><span class="p">\</span><span class="n">V2603</span><span class="p">\</span><span class="n">run</span><span class="p">.</span><span class="n">ps1</span> <span class="p">-</span><span class="n">-par</span> <span class="n">C</span><span class="p">:\</span><span class="n">path</span><span class="p">\</span><span class="n">to</span><span class="p">\</span><span class="n">case</span><span class="p">.</span><span class="n">par</span>
+</pre></div>
+</div>
+<p>On Linux, the same wrapper can be used through PowerShell:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pwsh<span class="w"> </span>./CUDAsolvers/V2603/run.ps1<span class="w"> </span>--par<span class="w"> </span>/path/to/case.par
+</pre></div>
+</div>
+<p>If your runtime environment is already configured, the built binary may also be launched directly.
+The wrapper script remains the safer option because it resolves the newest packaged solver and adds
+the required runtime-library paths automatically.</p>
+</section>
+<section id="default-behavior">
+<h2>Default Behavior<a class="headerlink" href="#default-behavior" title="Link to this heading"></a></h2>
+<p>If <code class="docutils literal notranslate"><span class="pre">--par</span></code> is omitted, the solver looks for <code class="docutils literal notranslate"><span class="pre">default.par</span></code> in the current working directory and
+prints a warning before proceeding.
+This behavior is mainly useful for quick local tests.
+For production or shared workflows, an explicit <code class="docutils literal notranslate"><span class="pre">--par</span></code> path is strongly preferred.</p>
+<p>The command-line solver does not currently expose ad hoc overrides for individual numerical
+parameters.
+In other words, all run settings are expected to come from the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file described in
+<a class="reference internal" href="6_inputdeck.html#inputdeck"><span class="std std-ref">Input Deck for Solver Parameters</span></a>.</p>
+</section>
+<section id="parameter-file-advice">
+<h2>Parameter File Advice<a class="headerlink" href="#parameter-file-advice" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">.par</span></code> file is a plain text file using <code class="docutils literal notranslate"><span class="pre">key</span> <span class="pre">=</span> <span class="pre">value</span></code> lines, with <code class="docutils literal notranslate"><span class="pre">#</span></code> available for full-line
+or inline comments.
+For command-line use, the following practices are recommended:</p>
+<ul class="simple">
+<li><p>prefer absolute paths for <code class="docutils literal notranslate"><span class="pre">vtk_folder</span></code> and <code class="docutils literal notranslate"><span class="pre">output_dir</span></code>;</p></li>
+<li><p>keep one <code class="docutils literal notranslate"><span class="pre">.par</span></code> file per case or per numerical setup;</p></li>
+<li><p>use the folder structure and qualified VTK format described in <a class="reference internal" href="4_input.html#input"><span class="std std-ref">Input Data Files</span></a>;</p></li>
+<li><p>keep filenames stable so reruns remain reproducible.</p></li>
+</ul>
+<p>Absolute paths are recommended because the native solver uses the paths as written.
+It does not reinterpret them relative to the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file location.</p>
+</section>
+<section id="example-run">
+<h2>Example Run<a class="headerlink" href="#example-run" title="Link to this heading"></a></h2>
+<p>Assuming a valid input folder and a parameter file, a typical Windows command is:</p>
+<div class="highlight-powershell notranslate"><div class="highlight"><pre><span></span><span class="p">.\</span><span class="n">CUDAsolvers</span><span class="p">\</span><span class="n">V2603</span><span class="p">\</span><span class="n">run</span><span class="p">.</span><span class="n">ps1</span> <span class="p">-</span><span class="n">-par</span> <span class="n">C</span><span class="p">:\</span><span class="n">1_Development</span><span class="p">\</span><span class="n">Streamcenter</span><span class="p">+\</span><span class="n">CUDAsolvers</span><span class="p">\</span><span class="n">V2603</span><span class="p">\</span><span class="n">tools</span><span class="p">\</span><span class="n">case</span><span class="p">.</span><span class="n">par</span>
+</pre></div>
+</div>
+<p>During execution, the solver prints the resolved parameters, reports the number of detected VTK
+frames, performs forward FTLE assembly, and optionally performs backward FTLE assembly when
+<code class="docutils literal notranslate"><span class="pre">if_backward</span> <span class="pre">=</span> <span class="pre">1</span></code>.
+Progress messages are written to the terminal throughout loading, advection, FTLE assembly, and
+saving.</p>
+</section>
+<section id="output-files">
+<h2>Output Files<a class="headerlink" href="#output-files" title="Link to this heading"></a></h2>
+<p>The command-line solver writes structured VTK results into <code class="docutils literal notranslate"><span class="pre">output_dir</span></code>.</p>
+<p>For steady mode, namely <code class="docutils literal notranslate"><span class="pre">dyn_mode</span> <span class="pre">=</span> <span class="pre">0</span></code>, the output base name is
+<code class="docutils literal notranslate"><span class="pre">FTLE3D_NbCU</span></code> and the solver writes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FTLE3D_NbCU.vts</span></code>.</p></li>
+</ul>
+<p>For dynamic mode, namely <code class="docutils literal notranslate"><span class="pre">dyn_mode</span> <span class="pre">=</span> <span class="pre">1</span></code>, the solver writes one <code class="docutils literal notranslate"><span class="pre">.vts</span></code> file per valid sliding
+window:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FTLE3D_NbCU_00001.vts</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FTLE3D_NbCU_00002.vts</span></code>,</p></li>
+<li><p>and so forth.</p></li>
+</ul>
+<p>If at least one dynamic window is produced, the solver also writes
+<code class="docutils literal notranslate"><span class="pre">FTLE3D_NbCU_dynamic.pvd</span></code> as a collection file for time-series loading.</p>
+<p>Within each <code class="docutils literal notranslate"><span class="pre">.vts</span></code> output, the point-data arrays are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FTLE_forward</span></code> always;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FTLE_backward</span></code> only when <code class="docutils literal notranslate"><span class="pre">if_backward</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p></li>
+</ul>
+</section>
+<section id="indexing-and-frame-selection">
+<h2>Indexing and Frame Selection<a class="headerlink" href="#indexing-and-frame-selection" title="Link to this heading"></a></h2>
+<p>The frame range is controlled by <code class="docutils literal notranslate"><span class="pre">T_range</span></code> in the <code class="docutils literal notranslate"><span class="pre">.par</span></code> file.
+Its indices are applied to the input sequence after the <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> filenames have been sorted as
+described in <a class="reference internal" href="4_input.html#input"><span class="std std-ref">Input Data Files</span></a>.</p>
+<p>The current native solver:</p>
+<ul class="simple">
+<li><p>uses zero-based frame indexing internally;</p></li>
+<li><p>treats the selected range as inclusive on both ends;</p></li>
+<li><p>clamps the requested end index to the last available frame.</p></li>
+</ul>
+<p>Therefore, if a folder contains <span class="math notranslate nohighlight">\(N\)</span> sorted frames, the last valid explicit frame index is
+<span class="math notranslate nohighlight">\(N-1\)</span>.</p>
+</section>
+<section id="important-notes">
+<h2>Important Notes<a class="headerlink" href="#important-notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">if_visual</span> <span class="pre">=</span> <span class="pre">1</span></code> is intentionally ignored in the command-line solver; interactive visualization
+belongs to the GUI workflow.</p></li>
+<li><p>In dynamic mode, <code class="docutils literal notranslate"><span class="pre">win_size</span></code> and <code class="docutils literal notranslate"><span class="pre">win_step</span></code> are required. Omitting either one causes the run
+to stop with an error.</p></li>
+<li><p>The command-line solver currently reads legacy <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> input only. Result files are written as
+<code class="docutils literal notranslate"><span class="pre">.vts</span></code> and, for dynamic mode, also <code class="docutils literal notranslate"><span class="pre">.pvd</span></code>.</p></li>
+<li><p>A nonzero exit code indicates a fatal error such as a missing VTK folder, absent velocity arrays,
+or an invalid parameter combination.</p></li>
+</ul>
+</section>
+<section id="when-to-prefer-command-line-mode">
+<h2>When to Prefer Command-Line Mode<a class="headerlink" href="#when-to-prefer-command-line-mode" title="Link to this heading"></a></h2>
+<p>Command-line mode is preferable when:</p>
+<ul class="simple">
+<li><p>the run should be launched on a workstation or server without opening the GUI;</p></li>
+<li><p>one wants a reproducible case definition in a small text <code class="docutils literal notranslate"><span class="pre">.par</span></code> file;</p></li>
+<li><p>the same case must be repeated under several numerical settings;</p></li>
+<li><p>the solver is called from scripts, job schedulers, or automated regression checks.</p></li>
+</ul>
+<p>For interactive inspection of results, however, the GUI and external post-processing tools such as
+<code class="docutils literal notranslate"><span class="pre">ParaView</span></code> remain more convenient than the terminal itself.</p>
+</section>
 </section>
 
 
