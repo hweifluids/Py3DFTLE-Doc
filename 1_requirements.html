@@ -46,7 +46,7 @@
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Requirements and Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#hardware-and-platform">Hardware and Platform</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#mainline-environment">Mainline Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environment">Environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#environment-overrides">Environment Overrides</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#add-on-tools">Add-on Tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#quickstart">Quickstart</a><ul>
@@ -95,18 +95,14 @@
 <span id="requirements"></span><h1>Requirements and Quickstart<a class="headerlink" href="#requirements-and-quickstart" title="Link to this heading"></a></h1>
 <section id="hardware-and-platform">
 <h2>Hardware and Platform<a class="headerlink" href="#hardware-and-platform" title="Link to this heading"></a></h2>
-<p>This page summarizes the supported mainline workflow of <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code>.
-The current mainline is no longer the old Python package set. It is centered on a
-native CUDA FTLE solver together with a native Qt/VTK desktop GUI.
-The archived Python implementation is still preserved under <code class="docutils literal notranslate"><span class="pre">legacy/</span></code> in the code
-repository for reference and migration, but it is no longer the primary workflow
-described in this documentation.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code> consists of a native CUDA FTLE solver together with a native
+Qt/VTK desktop GUI.</p>
 <p>The minimum practical requirements are listed as follows:</p>
 <ul class="simple">
 <li><p>At least 4 GB of system memory and about 10 GB of free disk space.</p></li>
 <li><p>A 64-bit Windows or Linux environment. The shipped install scripts currently target
 Windows and Debian/Ubuntu-style Linux systems with <code class="docutils literal notranslate"><span class="pre">apt</span></code>.</p></li>
-<li><p>An NVIDIA GPU together with a locally installed CUDA Toolkit for the mainline solver.</p></li>
+<li><p>An NVIDIA GPU together with a locally installed CUDA Toolkit for the solver.</p></li>
 </ul>
 <p>The solver configures <code class="docutils literal notranslate"><span class="pre">CMAKE_CUDA_ARCHITECTURES=native</span></code> by default, so the build
 machine is expected to have a visible local NVIDIA CUDA environment.</p>
@@ -116,14 +112,11 @@ A practical rule of thumb is to keep
 below roughly 200,000,000 Lagrangian particles per GiB of VRAM for the default
 double-sided still workflow, and lower than that for higher-order settings.</p>
 </section>
-<section id="mainline-environment">
-<h2>Mainline Environment<a class="headerlink" href="#mainline-environment" title="Link to this heading"></a></h2>
-<p>The native solver and the native GUI do not require Python or <code class="docutils literal notranslate"><span class="pre">pip</span></code> for their
-standard build-and-run path.
-Instead, the repository provides platform-specific installation scripts that prepare
-the CMake/CUDA/Qt/VTK toolchain directly.</p>
-<p>On Windows, <code class="docutils literal notranslate"><span class="pre">install.cmd</span></code> and <code class="docutils literal notranslate"><span class="pre">install.ps1</span></code> provision the following mainline
-dependencies:</p>
+<section id="environment">
+<h2>Environment<a class="headerlink" href="#environment" title="Link to this heading"></a></h2>
+<p>The repository provides platform-specific installation scripts that prepare the
+CMake/CUDA/Qt/VTK toolchain directly.</p>
+<p>On Windows, <code class="docutils literal notranslate"><span class="pre">install.cmd</span></code> and <code class="docutils literal notranslate"><span class="pre">install.ps1</span></code> provision the following dependencies:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">Git</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">CMake</span></code></p></li>
@@ -168,8 +161,6 @@ understand the following environment variables:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">STREAMCENTERPLUS_VTK_ROOT</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">STREAMCENTERPLUS_CUDA_ROOT</span></code></p></li>
 </ul>
-<p>For migration convenience, the renamed build scripts still accept the legacy
-<code class="docutils literal notranslate"><span class="pre">PY3DFTLE_*</span></code> environment variables as fallback inputs.</p>
 </section>
 <section id="add-on-tools">
 <h2>Add-on Tools<a class="headerlink" href="#add-on-tools" title="Link to this heading"></a></h2>
@@ -191,7 +182,7 @@ from their build folders.</p></li>
 </section>
 <section id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading"></a></h2>
-<p>The steps below follow the current native mainline repository layout.
+<p>The steps below follow the current repository layout.
 They use the top-level install and build entry points and then launch the GUI or solver
 through the maintained wrapper scripts.</p>
 <section id="windows">
@@ -248,8 +239,7 @@ With PowerShell:</p>
 </section>
 <section id="notes-for-real-cases">
 <h2>Notes for Real Cases<a class="headerlink" href="#notes-for-real-cases" title="Link to this heading"></a></h2>
-<p>The mainline GUI always launches the native CUDA solver. There is no longer a
-Python/native backend selector in the supported workflow.</p>
+<p>The GUI launches the native CUDA solver.</p>
 <p>The parameter format remains <code class="docutils literal notranslate"><span class="pre">.par</span></code>-based.
 When preparing your own cases, update entries such as <code class="docutils literal notranslate"><span class="pre">vtk_folder</span></code> and
 <code class="docutils literal notranslate"><span class="pre">output_dir</span></code> so that they point to locations that actually exist on your machine.
