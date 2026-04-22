@@ -16,6 +16,7 @@
       <script src="_static/documentation_options.js?v=2709fde1"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -47,7 +48,25 @@
 <li class="toctree-l1"><a class="reference internal" href="2_theory.html">Theory of FTLE and LCS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3_numerical.html">Numerical Methods</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4_input.html">Input Data Files</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Graphical User Interface (GUI)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Graphical User Interface (GUI)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general-workflow">General Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#top-toolbar-and-file-menu">Top Toolbar and File Menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#left-panel-parameter-pages">Left Panel: Parameter Pages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#file-io-and-range-settings">File IO and Range Settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#numerical-methods-control">Numerical Methods Control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#visualization">Visualization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dynamic-lcs">Dynamic LCS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#launching-a-run">Launching a Run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-monitoring">Run Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#embedded-result-viewer">Embedded Result Viewer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#time-series-playback">Time-Series Playback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#saving-and-reusing-parameter-files">Saving and Reusing Parameter Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#png-and-mp4-export">PNG and MP4 Export</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#important-notes-and-limits">Important Notes and Limits</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="6_inputdeck.html">Input Deck for Solver Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="7_command.html">Command-Line Mode (Commands)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="8_faqs.html">FAQs</a></li>
@@ -80,10 +99,238 @@
              
   <section id="graphical-user-interface-gui">
 <span id="gui"></span><h1>Graphical User Interface (GUI)<a class="headerlink" href="#graphical-user-interface-gui" title="Link to this heading"></a></h1>
-<p>This page describes how to use GUI mode of <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code>, which is friendly for who would like to use the software without command-line operations.
-The author holds the opinion that coding should not be a barrier for using scientific analysis tools such as <code class="docutils literal notranslate"><span class="pre">FTLE</span></code>.
-For some peers or even experts and professors, coding is absolutely boring, especially for GPU tasks on such large dataset scale.</p>
-<p>The GUI shares exactly the same functionalities as the command-line mode, but is more difficult to customize, as <code class="docutils literal notranslate"><span class="pre">PyQt</span></code> is used for building it.</p>
+<p>The current mainline GUI of <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code> is a native Qt/VTK desktop front end for the native
+CUDA solver.
+It is intended for users who prefer an interactive workflow for setting up <code class="docutils literal notranslate"><span class="pre">.par</span></code> files, launching
+solver runs, monitoring progress, and previewing FTLE results without typing the full command line
+manually.</p>
+<p>Unlike the archived legacy GUI, the current interface no longer offers multiple backends.
+It always launches the native CUDA solver, using the same <code class="docutils literal notranslate"><span class="pre">.par</span></code>-based workflow described in
+<a class="reference internal" href="6_inputdeck.html#inputdeck"><span class="std std-ref">Input Deck for Solver Parameters</span></a> and the same structured-VTK input assumptions described in <a class="reference internal" href="4_input.html#input"><span class="std std-ref">Input Data Files</span></a>.</p>
+<section id="general-workflow">
+<h2>General Workflow<a class="headerlink" href="#general-workflow" title="Link to this heading"></a></h2>
+<p>In typical use, the GUI is operated in the following order:</p>
+<ol class="arabic simple">
+<li><p>Select the input <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> folder and the output folder.</p></li>
+<li><p>Fill in the solver parameters on the left-side parameter pages.</p></li>
+<li><p>Save or reload a <code class="docutils literal notranslate"><span class="pre">.par</span></code> file if desired.</p></li>
+<li><p>Start the FTLE run from the toolbar.</p></li>
+<li><p>Monitor progress in the run-status strip and the live console.</p></li>
+<li><p>Open the generated <code class="docutils literal notranslate"><span class="pre">.vts</span></code> or <code class="docutils literal notranslate"><span class="pre">.pvd</span></code> result for visualization.</p></li>
+<li><p>Export a PNG snapshot or, for time-series results, an MP4 animation.</p></li>
+</ol>
+<p>The GUI does not replace external post-processing entirely.
+For publication-quality rendering and advanced analysis, <code class="docutils literal notranslate"><span class="pre">ParaView</span></code> or other VTK-capable tools
+are still recommended after the initial inspection.</p>
+</section>
+<section id="top-toolbar-and-file-menu">
+<h2>Top Toolbar and File Menu<a class="headerlink" href="#top-toolbar-and-file-menu" title="Link to this heading"></a></h2>
+<p>The top toolbar combines run control and result viewing.
+Its main groups are:</p>
+<ul class="simple">
+<li><p>the file menu, opened from the left-most menu button;</p></li>
+<li><p>run controls for start, pause/resume, and stop;</p></li>
+<li><p>a result-file row for browsing and opening <code class="docutils literal notranslate"><span class="pre">*.vts</span></code>, <code class="docutils literal notranslate"><span class="pre">*.vtk</span></code>, or <code class="docutils literal notranslate"><span class="pre">*.pvd</span></code> files;</p></li>
+<li><p>animation controls for time-series browsing;</p></li>
+<li><p>view/export controls such as parallel projection, PNG capture, and MP4 export.</p></li>
+</ul>
+<p>The file menu currently provides these actions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Input</span> <span class="pre">Folder</span></code>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Output</span> <span class="pre">Folder</span></code>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Reload</span> <span class="pre">*.Par</span> <span class="pre">File</span></code>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Generate</span> <span class="pre">*.Par</span> <span class="pre">for</span> <span class="pre">FTLE</span></code>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">About</span></code>.</p></li>
+</ul>
+<p>This makes the GUI suitable both as a run launcher and as a lightweight parameter-file editor.</p>
+</section>
+<section id="left-panel-parameter-pages">
+<h2>Left Panel: Parameter Pages<a class="headerlink" href="#left-panel-parameter-pages" title="Link to this heading"></a></h2>
+<p>The left side of the window is organized as a tree and stacked pages.
+In the current mainline GUI, the main pages are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">File</span> <span class="pre">IO</span> <span class="pre">and</span> <span class="pre">Range</span> <span class="pre">Settings</span></code>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Numerical</span> <span class="pre">Methods</span> <span class="pre">Control</span></code>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Visualization</span></code>;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Dynamic</span> <span class="pre">LCS</span></code>.</p></li>
+</ul>
+<section id="file-io-and-range-settings">
+<h3>File IO and Range Settings<a class="headerlink" href="#file-io-and-range-settings" title="Link to this heading"></a></h3>
+<p>This page collects the basic case definition:</p>
+<ul class="simple">
+<li><p>input <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> folder;</p></li>
+<li><p>results folder;</p></li>
+<li><p>automatic or manual wall range;</p></li>
+<li><p>particle lattice sizes in <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(y\)</span>, and <span class="math notranslate nohighlight">\(z\)</span>;</p></li>
+<li><p>integration range <code class="docutils literal notranslate"><span class="pre">T_range</span></code>;</p></li>
+<li><p>advection step <code class="docutils literal notranslate"><span class="pre">dt</span></code>;</p></li>
+<li><p>physical frame step <code class="docutils literal notranslate"><span class="pre">physical_dt</span></code>.</p></li>
+</ul>
+<p>Both the input folder and the output folder must already exist when a run is launched.
+The current GUI checks these folders before starting the solver and warns if either one is missing.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">Auto</span> <span class="pre">wall</span> <span class="pre">range</span></code> is enabled, the solver uses the input grid bounds automatically.
+When it is disabled, the manual wall ranges must be filled explicitly.</p>
+</section>
+<section id="numerical-methods-control">
+<h3>Numerical Methods Control<a class="headerlink" href="#numerical-methods-control" title="Link to this heading"></a></h3>
+<p>This page exposes the major solver options currently supported by the native backend:</p>
+<ul class="simple">
+<li><p>direction: double-side or forward-only;</p></li>
+<li><p>wall treatment;</p></li>
+<li><p>advection scheme;</p></li>
+<li><p>interpolation method;</p></li>
+<li><p>gradient discretization;</p></li>
+<li><p>Cauchy-Green eigenvalue method.</p></li>
+</ul>
+<p>The backend label shown on this page is informative: in the current mainline it is always the
+native CUDA path.</p>
+</section>
+<section id="visualization">
+<h3>Visualization<a class="headerlink" href="#visualization" title="Link to this heading"></a></h3>
+<p>This page controls how loaded FTLE results are displayed in the embedded viewer.
+The current options include:</p>
+<ul class="simple">
+<li><p>whether to display forward FTLE, backward FTLE, or both;</p></li>
+<li><p>opaque versus transparent surface rendering;</p></li>
+<li><p>one isovalue slider for <code class="docutils literal notranslate"><span class="pre">FTLE_forward</span></code>;</p></li>
+<li><p>one isovalue slider for <code class="docutils literal notranslate"><span class="pre">FTLE_backward</span></code>.</p></li>
+</ul>
+<p>These sliders become meaningful only after a result file containing the corresponding FTLE arrays
+has been loaded.
+If one of the arrays is absent, the related control becomes unavailable automatically.</p>
+</section>
+<section id="dynamic-lcs">
+<h3>Dynamic LCS<a class="headerlink" href="#dynamic-lcs" title="Link to this heading"></a></h3>
+<p>This page switches between steady and dynamic operation:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Steady</span></code> corresponds to one still FTLE solve over the chosen range;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Dynamic</span></code> enables sliding-window processing and exposes <code class="docutils literal notranslate"><span class="pre">win_size</span></code> and <code class="docutils literal notranslate"><span class="pre">win_step</span></code>.</p></li>
+</ul>
+<p>When dynamic mode is disabled, the window-size entries are cleared and ignored.
+When dynamic mode is enabled, these values should be provided consistently with the finite-time
+interpretation discussed in <a class="reference internal" href="2_theory.html#unsteady"><span class="std std-ref">Unsteady LCS</span></a>.</p>
+</section>
+</section>
+<section id="launching-a-run">
+<h2>Launching a Run<a class="headerlink" href="#launching-a-run" title="Link to this heading"></a></h2>
+<p>Pressing the run button causes the GUI to collect the current settings, validate the required
+entries, and write an auto-generated <code class="docutils literal notranslate"><span class="pre">.par</span></code> file into the selected output directory.
+Its filename follows the form
+<code class="docutils literal notranslate"><span class="pre">GUIsolve_YYMMDDhhmmss.par</span></code>.</p>
+<p>The GUI then launches the native solver executable with that generated parameter file.
+If the solver executable cannot be found, the GUI reports where it looked and instructs the user to
+build or install the solver first.</p>
+<p>At present, the GUI does not launch an alternative Python backend, nor does it expose command-line
+style ad hoc overrides outside the parameter pages.</p>
+</section>
+<section id="run-monitoring">
+<h2>Run Monitoring<a class="headerlink" href="#run-monitoring" title="Link to this heading"></a></h2>
+<p>During execution, two feedback channels are visible:</p>
+<ul class="simple">
+<li><p>a compact run-status strip under the parameter pages;</p></li>
+<li><p>a console panel on the lower right.</p></li>
+</ul>
+<p>The run-status strip summarizes stages such as launching, loading, running, completion, pause, or
+failure.
+The console shows the forwarded solver output and GUI-side messages such as generated filenames and
+log-file locations.</p>
+<p>For each GUI-launched run, the current implementation also opens a log file in the output
+directory, named after the solver process ID, for example <code class="docutils literal notranslate"><span class="pre">12345.log</span></code>.</p>
+<p>The pause button suspends or resumes the solver process.
+The stop button terminates the running process.
+These controls are intended for long FTLE jobs where an interactive interruption may be necessary.</p>
+</section>
+<section id="embedded-result-viewer">
+<h2>Embedded Result Viewer<a class="headerlink" href="#embedded-result-viewer" title="Link to this heading"></a></h2>
+<p>The right side of the main window contains an embedded VTK viewer.
+It can open:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">*.vts</span></code> result files;</p></li>
+<li><p>legacy <code class="docutils literal notranslate"><span class="pre">*.vtk</span></code> files for general inspection;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">*.pvd</span></code> collections for time-series browsing.</p></li>
+</ul>
+<p>Once a result is loaded, the viewer shows:</p>
+<ul class="simple">
+<li><p>a structured-domain outline;</p></li>
+<li><p>FTLE isosurfaces if <code class="docutils literal notranslate"><span class="pre">FTLE_forward</span></code> and/or <code class="docutils literal notranslate"><span class="pre">FTLE_backward</span></code> arrays are present;</p></li>
+<li><p>an orientation axes marker;</p></li>
+<li><p>a small <code class="docutils literal notranslate"><span class="pre">Streamcenter+</span></code> watermark;</p></li>
+<li><p>for <code class="docutils literal notranslate"><span class="pre">.pvd</span></code> time series, a time label and a frame slider.</p></li>
+</ul>
+<p>The current visualization model is iso-surface based.
+When both forward and backward FTLE fields are available, the GUI can display both simultaneously
+with separate colors.
+The transparency toggle is useful when overlapping surfaces should remain visible.</p>
+<p>Parallel projection can be toggled directly from the toolbar.
+The viewer uses standard interactive camera manipulation through the VTK trackball camera style.</p>
+</section>
+<section id="time-series-playback">
+<h2>Time-Series Playback<a class="headerlink" href="#time-series-playback" title="Link to this heading"></a></h2>
+<p>When a <code class="docutils literal notranslate"><span class="pre">.pvd</span></code> time series is loaded, the viewer enables:</p>
+<ul class="simple">
+<li><p>jump to first frame;</p></li>
+<li><p>play or stop animation;</p></li>
+<li><p>jump to last frame;</p></li>
+<li><p>direct frame selection through the on-screen slider.</p></li>
+</ul>
+<p>The GUI sorts and follows the time information contained in the <code class="docutils literal notranslate"><span class="pre">.pvd</span></code> collection file.
+This makes it convenient to inspect dynamic-window outputs produced by the solver.</p>
+<p>The MP4 export function is available only in this time-series state.
+If a single still <code class="docutils literal notranslate"><span class="pre">.vts</span></code> file is loaded instead, the GUI informs the user that MP4 export is not
+available for that case.</p>
+</section>
+<section id="saving-and-reusing-parameter-files">
+<h2>Saving and Reusing Parameter Files<a class="headerlink" href="#saving-and-reusing-parameter-files" title="Link to this heading"></a></h2>
+<p>The GUI can both load an existing <code class="docutils literal notranslate"><span class="pre">.par</span></code> file and generate a new one from the current widget
+state.
+This is useful for moving between GUI-driven setup and command-line execution.</p>
+<p>In practical terms:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Reload</span> <span class="pre">*.Par</span> <span class="pre">File</span></code> imports settings from an existing parameter file into the GUI;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Generate</span> <span class="pre">*.Par</span> <span class="pre">for</span> <span class="pre">FTLE</span></code> writes a user-chosen parameter file without starting a run;</p></li>
+<li><p>pressing <code class="docutils literal notranslate"><span class="pre">Run</span></code> writes a fresh auto-generated <code class="docutils literal notranslate"><span class="pre">.par</span></code> file and immediately launches the solver.</p></li>
+</ul>
+<p>This workflow is especially convenient when one wants to prototype a case visually and later move
+the exact setup to command-line or batch execution.</p>
+</section>
+<section id="png-and-mp4-export">
+<h2>PNG and MP4 Export<a class="headerlink" href="#png-and-mp4-export" title="Link to this heading"></a></h2>
+<p>Two export paths are currently integrated:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PNG</span></code> saves the current viewer image as a snapshot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MP4</span></code> exports a time-series animation by rendering frames and calling <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code>.</p></li>
+</ul>
+<p>PNG export requires only a loaded scene.
+MP4 export additionally requires:</p>
+<ul class="simple">
+<li><p>a loaded <code class="docutils literal notranslate"><span class="pre">.pvd</span></code> time series;</p></li>
+<li><p>a valid output file path;</p></li>
+<li><p>an <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> executable available on <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</p></li>
+</ul>
+<p>The MP4 dialog lets the user choose:</p>
+<ul class="simple">
+<li><p>output filename;</p></li>
+<li><p>frame rate;</p></li>
+<li><p>frame stride;</p></li>
+<li><p>exported frame window.</p></li>
+</ul>
+<p>If <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> is missing, the export fails with an explicit error message.</p>
+</section>
+<section id="important-notes-and-limits">
+<h2>Important Notes and Limits<a class="headerlink" href="#important-notes-and-limits" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>The GUI is a front end to the native CUDA solver only; the legacy Python GUI is not the active
+mainline path.</p></li>
+<li><p>The GUI does not create missing input or output folders automatically; they should exist before a
+run is started.</p></li>
+<li><p>The GUI-side result viewer can open <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> files, but the solver input workflow itself still
+expects a folder of qualified legacy <code class="docutils literal notranslate"><span class="pre">.vtk</span></code> frames as described in <a class="reference internal" href="4_input.html#input"><span class="std std-ref">Input Data Files</span></a>.</p></li>
+<li><p>Interactive plotting through <code class="docutils literal notranslate"><span class="pre">if_visual</span></code> is not the mainline command-solver workflow. Result
+inspection is expected to happen through the embedded viewer or an external post-processor.</p></li>
+<li><p>The embedded viewer is intentionally lightweight. For more advanced clipping, transfer functions,
+camera scripting, or batch rendering, external VTK tools remain preferable.</p></li>
+</ul>
+</section>
 </section>
 
 
