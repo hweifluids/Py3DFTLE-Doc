@@ -6,19 +6,15 @@ Requirements and Quickstart
 Hardware and Platform
 ---------------------
 
-This page summarizes the supported mainline workflow of ``Streamcenter+``.
-The current mainline is no longer the old Python package set. It is centered on a
-native CUDA FTLE solver together with a native Qt/VTK desktop GUI.
-The archived Python implementation is still preserved under ``legacy/`` in the code
-repository for reference and migration, but it is no longer the primary workflow
-described in this documentation.
+``Streamcenter+`` consists of a native CUDA FTLE solver together with a native
+Qt/VTK desktop GUI.
 
 The minimum practical requirements are listed as follows:
 
 * At least 4 GB of system memory and about 10 GB of free disk space.
 * A 64-bit Windows or Linux environment. The shipped install scripts currently target
   Windows and Debian/Ubuntu-style Linux systems with ``apt``.
-* An NVIDIA GPU together with a locally installed CUDA Toolkit for the mainline solver.
+* An NVIDIA GPU together with a locally installed CUDA Toolkit for the solver.
 
 The solver configures ``CMAKE_CUDA_ARCHITECTURES=native`` by default, so the build
 machine is expected to have a visible local NVIDIA CUDA environment.
@@ -30,16 +26,13 @@ below roughly 200,000,000 Lagrangian particles per GiB of VRAM for the default
 double-sided still workflow, and lower than that for higher-order settings.
 
 
-Mainline Environment
---------------------
+Environment
+-----------
 
-The native solver and the native GUI do not require Python or ``pip`` for their
-standard build-and-run path.
-Instead, the repository provides platform-specific installation scripts that prepare
-the CMake/CUDA/Qt/VTK toolchain directly.
+The repository provides platform-specific installation scripts that prepare the
+CMake/CUDA/Qt/VTK toolchain directly.
 
-On Windows, ``install.cmd`` and ``install.ps1`` provision the following mainline
-dependencies:
+On Windows, ``install.cmd`` and ``install.ps1`` provision the following dependencies:
 
 * ``Git``
 * ``CMake``
@@ -87,10 +80,6 @@ understand the following environment variables:
 * ``STREAMCENTERPLUS_VTK_ROOT``
 * ``STREAMCENTERPLUS_CUDA_ROOT``
 
-For migration convenience, the renamed build scripts still accept the legacy
-``PY3DFTLE_*`` environment variables as fallback inputs.
-
-
 Add-on Tools
 ------------
 
@@ -114,7 +103,7 @@ Add-on Tools
 Quickstart
 ----------
 
-The steps below follow the current native mainline repository layout.
+The steps below follow the current repository layout.
 They use the top-level install and build entry points and then launch the GUI or solver
 through the maintained wrapper scripts.
 
@@ -196,8 +185,7 @@ Without PowerShell, launch the built solver binary directly from
 Notes for Real Cases
 --------------------
 
-The mainline GUI always launches the native CUDA solver. There is no longer a
-Python/native backend selector in the supported workflow.
+The GUI launches the native CUDA solver.
 
 The parameter format remains ``.par``-based.
 When preparing your own cases, update entries such as ``vtk_folder`` and
