@@ -48,7 +48,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'PyFTLE3D'
+project = u'Streamcenter+'
 copyright = u'2025, Huanxia Wei'
 author = u'Huanxia Wei and his buddies'
 
@@ -102,7 +102,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'FTLE3D-Doc'
+htmlhelp_basename = 'StreamcenterPlus-Doc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -139,7 +139,7 @@ latex_elements = {
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'PyFTLE3D', u'PyFTLE3D Documentation',
+    (master_doc, 'StreamcenterPlus', u'Streamcenter+ Documentation',
      [author], 1)
 ]
 
@@ -150,8 +150,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'PyFTLE3D', u'PyFTLE3D Documentation',
-     author, 'PyFTLE3D', 'The GUI-based research toolbox for Lagrangian coherent structures.',
+    (master_doc, 'StreamcenterPlus', u'Streamcenter+ Documentation',
+     author, 'StreamcenterPlus', 'A native CUDA and Qt/VTK toolbox for FTLE and LCS research.',
      'Miscellaneous'),
 ]
 
