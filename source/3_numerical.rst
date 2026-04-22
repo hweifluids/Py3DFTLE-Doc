@@ -148,7 +148,7 @@ Velocity Interpolation
 
 **Trilinear**
 
-The ``trilinear`` interpolation method is the fastest among all the methods given in ``PyFTLE3D``, which is a low-order implement.
+The ``trilinear`` interpolation method is the fastest among all the methods given in ``Streamcenter+``, which is a low-order implement.
 The continuous velocity field is reconstructed by trilinear interpolation of the component maps ``u``, ``v``, ``w`` that live on the eight vertices of a Cartesian cell:
 
 .. math::
@@ -257,7 +257,41 @@ Marked as ``tricubicFL``, this variation of tricubic interpolator is still under
 
 **Hermite**
 
-The ``hermite`` is under an internal review by the author, thus the theoretical basis will be stated after that.
+The ``hermite`` mode in the current native solver is a separable three-dimensional cubic Hermite
+interpolator.
+It reconstructs the interval between the two central samples by using the endpoint values
+:math:`p_1`, :math:`p_2` together with central-difference slopes inferred from the four-point
+stencil :math:`\{p_0,p_1,p_2,p_3\}`:
+
+.. math::
+
+   m_1 = \frac{p_2-p_0}{2}, \qquad
+   m_2 = \frac{p_3-p_1}{2}.
+
+For :math:`t \in [0,1)`, the one-dimensional Hermite interpolant is
+
+.. math::
+
+   H(t)
+   = h_{00}(t)\,p_1 + h_{10}(t)\,m_1 + h_{01}(t)\,p_2 + h_{11}(t)\,m_2,
+
+with basis functions
+
+.. math::
+
+   h_{00}(t) = 2t^3 - 3t^2 + 1,\qquad
+   h_{10}(t) = t^3 - 2t^2 + t,\\
+   h_{01}(t) = -2t^3 + 3t^2,\qquad
+   h_{11}(t) = t^3 - t^2.
+
+The three-dimensional implementation applies this reconstruction successively along ``x``, ``y``,
+and ``z`` on a :math:`4\times4\times4` stencil, in the same separable manner as the Catmull-Rom
+``tricubic`` mode.
+Because the Hermite kernel reuses the same scalar sampling routine as the other interpolators,
+all wall treatments described in :ref:`wall` are applied consistently at every stencil access.
+
+Compared with ``trilinear``, ``hermite`` is substantially more expensive due to its wider stencil,
+but it generally produces smoother velocity traces during advection.
 
 **WENO**
 
@@ -350,7 +384,58 @@ Finally, reconstruct at :math:`x = x_{i+1/2} + t\,\Delta x` by combining:
 Wall Treatment
 ~~~~~~~~~~~~~~~
 
-``Documentation being constructed``
+The wall-treatment option is applied at the scalar-sampling level before any interpolation stencil
+is assembled.
+Therefore the same boundary behavior is honored by ``trilinear``, ``hermite``, ``tricubic``, and
+``WENO`` alike.
+
+For each axis with valid index range :math:`0,\dots,N-1`, the current native solver supports the
+following rules:
+
+**Clamp**
+
+Out-of-range indices are projected to the nearest valid boundary index:
+
+.. math::
+
+   i^{*} = \min\bigl(\max(i,0), N-1\bigr).
+
+This is useful when the outermost grid values should be extended as constant boundary samples.
+
+**Dirichlet**
+
+Whenever any stencil index lies outside the valid domain, the queried scalar value is taken as
+zero:
+
+.. math::
+
+   u(i,j,k)=0 \qquad \text{if any of } i,j,k \notin [0,N-1].
+
+This matches a homogeneous Dirichlet boundary condition for the sampled velocity component.
+
+**Reflect**
+
+Indices are mirrored back into the domain until they become valid.
+The implementation uses
+
+.. math::
+
+   i \leftarrow -i-1 \quad \text{for } i<0,\qquad
+   i \leftarrow 2N-i-1 \quad \text{for } i\ge N,
+
+and repeats this operation if necessary.
+This corresponds to even reflection at the wall.
+
+**Periodic**
+
+Indices are wrapped modulo the grid size:
+
+.. math::
+
+   i^{*} = i \bmod N.
+
+For periodic runs, the same wrap-around logic is also reused in the FTLE assembly kernel when the
+flow-map gradients are differentiated.
 
 
 
@@ -366,35 +451,269 @@ Wall Treatment
 FTLE Computation
 -------------------
 
+After particle advection, the solver stores the final particle locations
+:math:`\mathbf{X}=\varphi_{t_0}^{t_0+T}(\mathbf{x}_0)` on the seed lattice.
+The FTLE field is then assembled from the deformation gradient
+:math:`\mathbf{F}=\partial \mathbf{X}/\partial \mathbf{x}_0` and the right Cauchy-Green tensor
+
+.. math::
+
+   \mathbf{C} = \mathbf{F}^{\mathsf{T}}\mathbf{F}.
+
+With :math:`\lambda_{\max}` denoting the largest eigenvalue of :math:`\mathbf{C}`, the solver
+evaluates
+
+.. math::
+
+   \sigma_T(\mathbf{x}_0)
+   = \frac{1}{2|T|}\ln \lambda_{\max}\bigl(\mathbf{C}(\mathbf{x}_0)\bigr).
+
+In the native CUDA mainline this stage is executed by a dedicated FTLE kernel after the forward
+and optional backward branches finish advection.
+The resulting scalar arrays are written as ``FTLE_forward`` and, if requested, ``FTLE_backward``
+in the output ``.vts`` files.
+
 
 
 .. _grad:
+
 Gradient Discretization
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``Documentation being constructed``
+In the current native CUDA solver, the deformation gradient is reconstructed directly from the
+final-position lattice by second-order centered differences.
+Let
+:math:`\mathbf{X}=(X,Y,Z)^{\mathsf{T}}`
+be the advected particle position stored at each seed point.
+For interior nodes in a fully three-dimensional case,
+
+.. math::
+
+   \frac{\partial X}{\partial x}
+   \approx \frac{X_{i+1,j,k}-X_{i-1,j,k}}{2\Delta x},\qquad
+   \frac{\partial X}{\partial y}
+   \approx \frac{X_{i,j+1,k}-X_{i,j-1,k}}{2\Delta y},\qquad
+   \frac{\partial X}{\partial z}
+   \approx \frac{X_{i,j,k+1}-X_{i,j,k-1}}{2\Delta z},
+
+and the same centered form is applied to :math:`Y` and :math:`Z`.
+These nine derivatives form the Jacobian matrix :math:`\mathbf{F}`.
+
+When ``wall_treatment = periodic``, the centered-difference stencil is extended to every lattice
+point by wrapped neighbors,
+
+.. math::
+
+   i_{+} = (i+1)\bmod N_x,\qquad
+   i_{-} = (i-1+N_x)\bmod N_x,
+
+with analogous formulas in ``y`` and ``z``.
+
+For non-periodic runs, the current mainline kernel differentiates only interior points.
+Boundary FTLE values are presently written as zero, which avoids one-sided stencils inside the GPU
+kernel.
+
+For quasi-two-dimensional inputs with :math:`n_z \le 2`, only the ``x`` and ``y`` derivatives are
+assembled and the remaining ``z``-coupling terms are set to zero in the subsequent
+Cauchy-Green tensor.
+
+Although the parameter interface still accepts labels such as ``O2``, ``O4``, ``O6``, and
+``Spectral`` for compatibility with legacy workflows, the current native CUDA FTLE kernel
+implements the centered ``O2`` discretization described above.
 
 
 
 .. _eigen:
+
 Eigenvalue Solver
 ~~~~~~~~~~~~~~~~~~~~
 
-``Documentation being constructed``
+Once the symmetric Cauchy-Green tensor
+
+.. math::
+
+   \mathbf{C} =
+   \begin{bmatrix}
+   c_{00} & c_{01} & c_{02}\\
+   c_{01} & c_{11} & c_{12}\\
+   c_{02} & c_{12} & c_{22}
+   \end{bmatrix}
+
+is assembled, the native solver evaluates only its largest eigenvalue, since that is the only
+quantity required by the FTLE definition.
+
+The current CUDA kernel uses a closed-form cubic solver, exposed in code as ``EigMaxSym3``.
+Define
+
+.. math::
+
+   p_1 = c_{01}^2 + c_{02}^2 + c_{12}^2.
+
+If :math:`p_1=0`, the matrix is diagonal and the eigenvalues are simply
+:math:`c_{00}`, :math:`c_{11}`, and :math:`c_{22}`.
+Otherwise, set
+
+.. math::
+
+   q = \frac{c_{00}+c_{11}+c_{22}}{3},
+
+.. math::
+
+   p =
+   \sqrt{
+      \frac{
+         (c_{00}-q)^2 + (c_{11}-q)^2 + (c_{22}-q)^2 + 2p_1
+      }{6}
+   },
+
+and define the normalized matrix
+:math:`\mathbf{B}=(\mathbf{C}-q\mathbf{I})/p`.
+Its scaled determinant
+
+.. math::
+
+   r = \frac{\det(\mathbf{B})}{2}
+
+is clamped to :math:`[-1,1]`, after which
+
+.. math::
+
+   \phi = \frac{1}{3}\arccos(r),
+
+.. math::
+
+   \lambda_1 = q + 2p\cos(\phi),\qquad
+   \lambda_3 = q + 2p\cos\!\left(\phi + \frac{2\pi}{3}\right),\qquad
+   \lambda_2 = 3q - \lambda_1 - \lambda_3.
+
+The solver then takes
+
+.. math::
+
+   \lambda_{\max} = \max(\lambda_1,\lambda_2,\lambda_3).
+
+This algebraic route avoids iterative sweeps inside the FTLE kernel and is a natural fit for the
+symmetric positive-semidefinite Cauchy-Green tensor.
+The parameter interface still recognizes ``Eigen_method = jacobi`` for compatibility, but the
+current native CUDA FTLE kernel always dispatches the closed-form path above.
 
 .. _numdyn:
 
 Windowing for Dynamic LCS
 ----------------------------------------------
 
-``Documentation being constructed``
+Dynamic mode applies a sliding temporal window over the input frame range.
+For a global range :math:`[T_s,T_e]`, window size :math:`\Delta T_w`, and window step
+:math:`\Delta T_s`, the native solver constructs
+
+.. math::
+
+   \left[T_s^{(m)},T_e^{(m)}\right]
+   =
+   \left[
+      T_s + m\,\Delta T_s,\;
+      T_s + m\,\Delta T_s + \Delta T_w
+   \right],
+
+for
+
+.. math::
+
+   m = 0,1,\dots,
+   \left\lfloor
+      \frac{(T_e-\Delta T_w)-T_s}{\Delta T_s} + 1
+   \right\rfloor - 1,
+
+so long as the last admissible start time satisfies :math:`T_e-\Delta T_w \ge T_s`.
+
+Each window is loaded and solved independently.
+Within a window, the current mainline solver chooses an anchor frame near the midpoint of the
+local frame index range.
+If the window is sufficiently long, this anchor is clamped to the interior so that both forward
+and backward FTLE can be formed without sitting directly on the edge.
+
+The advection branches are then split as follows:
+
+.. math::
+
+   \text{forward: } t_{\mathrm{anchor}} \rightarrow t_{\mathrm{end}},\qquad
+   \text{backward: } t_{\mathrm{anchor}} \rightarrow t_{\mathrm{start}}.
+
+Accordingly, the physical integration intervals used in the FTLE normalization are
+
+.. math::
+
+   T_f = (n_{\mathrm{end}} - n_{\mathrm{anchor}})\,\Delta t_{\mathrm{phys}},\qquad
+   T_b = n_{\mathrm{anchor}}\,\Delta t_{\mathrm{phys}}
+
+in local frame coordinates.
+
+Every valid window is saved to a numbered file such as ``FTLE3D_NbCU_00001.vts``.
+After all windows finish, the solver writes a ``.pvd`` collection whose reference time is taken
+from the anchored frame reconstructed in the original global time range.
+If a window is too short to provide an interior anchor, it is skipped.
 
 .. _numcompare:
 
 Computational Density and Comparison
 ----------------------------------------------
 
-``Under testing``
+The native solver combines one advection scheme with one interpolation scheme, so the dominant
+cost on the advection side is well approximated by
+
+.. math::
+
+   N_{\mathrm{vel}} \times N_{\mathrm{stencil}},
+
+where :math:`N_{\mathrm{vel}}` is the number of velocity evaluations per integration step and
+:math:`N_{\mathrm{stencil}}` is the scalar stencil width used by the chosen interpolator.
+
+For the current mainline code path, the time-integration stage counts are:
+
++-----------+--------------------------------------+
+| Method    | Velocity evaluations per step        |
++===========+======================================+
+| ``Euler`` | 1                                    |
++-----------+--------------------------------------+
+| ``RK2``   | 2                                    |
++-----------+--------------------------------------+
+| ``RK4``   | 4                                    |
++-----------+--------------------------------------+
+| ``RK6``   | 6                                    |
++-----------+--------------------------------------+
+
+The interpolation kernels use the following one-component stencil widths:
+
++---------------+-------------------------+--------------------------------------+
+| Method        | 3D stencil per component| Remarks                              |
++===============+=========================+======================================+
+| ``trilinear`` | :math:`2\times2\times2` | Lowest cost, piecewise linear        |
++---------------+-------------------------+--------------------------------------+
+| ``hermite``   | :math:`4\times4\times4` | Smooth cubic Hermite reconstruction  |
++---------------+-------------------------+--------------------------------------+
+| ``tricubic``  | :math:`4\times4\times4` | Catmull-Rom style cubic spline       |
++---------------+-------------------------+--------------------------------------+
+| ``WENO``      | :math:`5\times5\times5` | Highest stencil density, nonlinear   |
++---------------+-------------------------+--------------------------------------+
+
+Hence, a coarse code-level cost ranking for advection is
+
+.. math::
+
+   \text{Euler+Trilinear}
+   \;<\;
+   \text{RK2+Trilinear}
+   \;<\;
+   \text{RK4+(Hermite/Tricubic)}
+   \;<\;
+   \text{RK6+WENO},
+
+with the exact wall time also depending on particle count, GPU occupancy, memory bandwidth,
+whether backward FTLE is enabled, and whether dynamic windows are used.
+
+In practice, ``RK4`` with ``tricubic`` or ``hermite`` is a balanced choice for general research
+workflows, while ``WENO`` is more appropriate when suppressing oscillatory reconstruction is more
+important than raw speed.
 
 .. _numtips:
 
@@ -403,7 +722,7 @@ General Tips
 
 
 As for your reference, and configured as defaults, the *Berkeley LCS Tutorials* used ``RK4`` for advection.
-The velocity fields were interpolated with ``tricubic-FL`` by them, originating from [Lekien2005]_, which has higher performance by solving a 64×64 linear system using the function values, gradients, and mixed partial derivatives at its eight corners, which is in future development plan for ``Py3DFTLE`` with high priority.
+The velocity fields were interpolated with ``tricubic-FL`` by them, originating from [Lekien2005]_, which has higher performance by solving a 64×64 linear system using the function values, gradients, and mixed partial derivatives at its eight corners, which is in future development plan for ``Streamcenter+`` with high priority.
 Although not detailed, ``grad_order=2`` was employed by them from the equation, supposing the mesh is sufficiently refined.
 
 Please always notice that, although providing much better numerical precision and looks cool in papers, high-order methods could be resource-consuming, even several hundred times.

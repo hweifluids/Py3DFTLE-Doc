@@ -1,8 +1,9 @@
-# Py3DFTLE-GPU Documentation
+# Streamcenter+ Documentation
 
-This repository contains documentation of the [Py3DFTLE](https://github.com/hweifluids/Py3DFTLE-GPU) project
-using the [Sphinx](http://www.sphinx-doc.org/) documentation framework. A read the docs website
-is hosted [here](https://fluids.ac/Py3DFTLE-Doc/).
+This repository contains the Sphinx documentation sources for `Streamcenter+`.
+The documentation corresponds to the current mainline project, whose workflow is centered on a
+native C++/CUDA solver and a Qt/VTK desktop GUI, while the earlier Python implementation is
+retained only as a legacy archive.
 
 ## How to build locally
 

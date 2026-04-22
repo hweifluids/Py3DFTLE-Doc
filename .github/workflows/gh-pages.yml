@@ -17,11 +17,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y doxygen
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -33,11 +28,6 @@ jobs:
 
       - name: Build HTML
         run: sphinx-build -b html source build/html
-
-      - name: Clean up nested Git metadata
-        run: |
-          find build/html -type d -name .git -prune -exec rm -rf {} +
-
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
